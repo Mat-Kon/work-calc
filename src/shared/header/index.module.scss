@@ -1,0 +1,6 @@
+@import '@/styles/abstract/mixins';
+
+.wrapper {
+  @include flex();
+  background-color: $color-primer;
+}

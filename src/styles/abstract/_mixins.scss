@@ -1,0 +1,44 @@
+@import './variables';
+
+@mixin flex($direction: row, $alignItems: normal, $justify: normal) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $alignItems;
+  justify-content: $justify;
+}
+
+@mixin media-laptop {
+  @media screen and (max-width: $screen-laptop) {
+    @content;
+  }
+}
+
+@mixin media-tablet {
+  @media screen and (max-width: $screen-tablet) {
+    @content;
+  }
+}
+
+@mixin media-mobile-l {
+  @media screen and (max-width: $screen-mobile-l) {
+    @content;
+  }
+}
+
+@mixin media-mobile-m {
+  @media screen and (max-width: $screen-mobile-m) {
+    @content;
+  }
+}
+
+@mixin media-mobile-s {
+  @media screen and (max-width: $screen-mobile-s) {
+    @content;
+  }
+}
+
+@mixin hover {
+  @media (hover: hover) {
+    @content;
+  }
+}
