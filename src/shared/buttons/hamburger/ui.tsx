@@ -18,4 +18,4 @@ export const HamburgerButton: React.FC<Props> = ({ isOpen, setOpen }) => {
       <span className={st.hamburger_item}></span>
     </button>
   );
-}
+};
