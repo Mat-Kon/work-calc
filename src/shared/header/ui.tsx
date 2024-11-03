@@ -13,16 +13,24 @@ export const Header: React.FC = () => {
         <nav>
           <ul>
             <li>
-              <Link href={'/calculate'}>Рассчитать</Link>
+              <Link href={'/calculate'} data-testid="navLink">
+                Рассчитать
+              </Link>
             </li>
             <li>
-              <Link href={'/history'}>История</Link>
+              <Link href={'/history'} data-testid="navLink">
+                История
+              </Link>
             </li>
             <li>
-              <Link href={'/settings'}>Настройки</Link>
+              <Link href={'/settings'} data-testid="navLink">
+                Настройки
+              </Link>
             </li>
             <li>
-              <Link href={'/bd'}>База данных</Link>
+              <Link href={'/bd'} data-testid="navLink">
+                База данных
+              </Link>
             </li>
           </ul>
         </nav>

@@ -8,3 +8,4 @@ next.config.js
 package-lock.json
 public
 next-env.d.ts
+jest.config.ts
