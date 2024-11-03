@@ -21,6 +21,9 @@ export const Header: React.FC = () => {
             <li>
               <Link href={'/settings'}>Настройки</Link>
             </li>
+            <li>
+              <Link href={'/bd'}>База данных</Link>
+            </li>
           </ul>
         </nav>
 
