@@ -1,7 +1,18 @@
 @import '@/styles/abstract/mixins';
 
+.nav {
+  @include flex($alignItems: center);
+  @include media-tablet {
+    justify-content: center;
+  }
+}
+
 .nav__list {
   @include flex($gap: 20px);
+  @include media-tablet {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .nav__item {

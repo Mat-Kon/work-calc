@@ -1,0 +1,12 @@
+@import '@/styles/abstract/mixins';
+
+.logoBtn {
+  @include flex($alignItems: center, $gap: 5px);
+  
+  & span {
+    @include flex($alignItems: center);
+    padding: 5px;
+    background-color: $color-primer;
+    border-radius: 50%;
+  }
+}

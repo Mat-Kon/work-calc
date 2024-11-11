@@ -6,7 +6,7 @@ describe('Header', () => {
   it('render header', async () => {
     const { getByText } = render(<Header />);
 
-    expect(getByText('logo')).toBeInTheDocument();
-    expect(getByText('login')).toBeInTheDocument();
+    expect(getByText('BC')).toBeInTheDocument();
+    expect(getByText('Login')).toBeInTheDocument();
   });
 });

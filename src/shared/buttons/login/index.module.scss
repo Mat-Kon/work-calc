@@ -1,0 +1,10 @@
+@import '@/styles/abstract/mixins';
+
+.login {
+  @include flex($alignItems: center, $gap: 5px);
+
+  @include media-tablet {
+    justify-content: center;
+    font-weight: 500;
+  }
+}

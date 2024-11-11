@@ -9,4 +9,24 @@
 .mobile__menu {
   @include flex($justify: space-between);
   width: 65%;
+
+  @include media-tablet {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    gap: 50px;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    background-color: bisque;
+    padding: 30px 0;
+    transform: translateX(99999px);
+    transition: transform 0.5s;
+
+    &.active {
+      transform: translateX(0);
+    }
+  }
 }

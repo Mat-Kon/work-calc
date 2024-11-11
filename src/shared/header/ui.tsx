@@ -1,20 +1,21 @@
+'use client';
 import { HamburgerButton, LoginBtn, LogoBtn } from '../buttons';
 import { useState } from 'react';
 import { MainWrapper } from '../main-wrapper';
-import dynamic from 'next/dynamic';
 import st from './index.module.scss';
+import { isMobileView } from '../helpers/functions';
+import { NavList } from '../nav-list';
 
 export const Header: React.FC = () => {
-  const NavList = dynamic(() => import('../nav-list').then((mod) => mod.NavList), {
-    ssr: false,
-  });
   const [isOpenMenu, setOpenMenu] = useState(false);
+  const isHiddenMobileMenu = isMobileView() && !isOpenMenu;
+
   return (
     <header>
       <MainWrapper className={st.header__wrapper}>
         <LogoBtn />
 
-        <div className={st.mobile__menu}>
+        <div className={`${st.mobile__menu} ${!isHiddenMobileMenu && st.active}`}>
           <NavList />
 
           <LoginBtn />
