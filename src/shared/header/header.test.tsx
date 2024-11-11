@@ -1,13 +1,12 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Header } from './ui';
 
-describe('Headere', () => {
-  it('render header', () => {
-    render(<Header />);
+describe('Header', () => {
+  it('render header', async () => {
+    const { getByText } = render(<Header />);
 
-    const links = screen.getAllByTestId('navLink');
-
-    expect(links.length).toBe(4);
+    expect(getByText('logo')).toBeInTheDocument();
+    expect(getByText('login')).toBeInTheDocument();
   });
 });

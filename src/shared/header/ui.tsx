@@ -1,44 +1,27 @@
-import Link from 'next/link';
-import st from './index.module.scss';
-import { HamburgerButton } from '../buttons';
+import { HamburgerButton, LoginBtn, LogoBtn } from '../buttons';
 import { useState } from 'react';
+import { MainWrapper } from '../main-wrapper';
+import dynamic from 'next/dynamic';
+import st from './index.module.scss';
 
 export const Header: React.FC = () => {
+  const NavList = dynamic(() => import('../nav-list').then((mod) => mod.NavList), {
+    ssr: false,
+  });
   const [isOpenMenu, setOpenMenu] = useState(false);
   return (
     <header>
-      <div className={st.wrapper}>
-        <Link href={'/'}>logo</Link>
+      <MainWrapper className={st.header__wrapper}>
+        <LogoBtn />
 
-        <nav>
-          <ul>
-            <li>
-              <Link href={'/calculate'} data-testid="navLink">
-                Рассчитать
-              </Link>
-            </li>
-            <li>
-              <Link href={'/history'} data-testid="navLink">
-                История
-              </Link>
-            </li>
-            <li>
-              <Link href={'/settings'} data-testid="navLink">
-                Настройки
-              </Link>
-            </li>
-            <li>
-              <Link href={'/bd'} data-testid="navLink">
-                База данных
-              </Link>
-            </li>
-          </ul>
-        </nav>
+        <div className={st.mobile__menu}>
+          <NavList />
+
+          <LoginBtn />
+        </div>
 
         <HamburgerButton isOpen={isOpenMenu} setOpen={setOpenMenu} />
-
-        <Link href={'/login'}>login</Link>
-      </div>
+      </MainWrapper>
     </header>
   );
 };

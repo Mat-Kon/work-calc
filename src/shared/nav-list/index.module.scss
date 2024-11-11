@@ -1,0 +1,14 @@
+@import '@/styles/abstract/mixins';
+
+.nav__list {
+  @include flex($gap: 20px);
+}
+
+.nav__item {
+  border-bottom: 2px solid transparent;
+  transition: all 0.5s;
+  
+  &.active {
+    border-bottom: 2px solid $color-primer;
+  }
+}

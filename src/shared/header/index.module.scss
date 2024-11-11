@@ -1,6 +1,12 @@
 @import '@/styles/abstract/mixins';
 
-.wrapper {
-  @include flex();
-  background-color: $color-primer;
+.header__wrapper {
+  @include flex($justify: space-between);
+  border-bottom: 1px solid $color-primer;
+  border-top: 1px solid $color-primer;
+}
+
+.mobile__menu {
+  @include flex($justify: space-between);
+  width: 65%;
 }
