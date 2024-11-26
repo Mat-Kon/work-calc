@@ -1,0 +1,59 @@
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
+
+.login_form {
+  width: 50%;
+  margin: auto;
+  padding-top: 50px;
+  @include mix.flex($direction: column, $gap: 30px);
+
+  h2 {
+    text-align: center;
+  }
+
+  fieldset {
+    @include mix.flex($direction: column, $gap: 10px);
+    border: none;
+  }
+
+  input {
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 3px -1px vars.$color-font-base;
+  }
+
+  button {
+    width: fit-content;
+    padding: 10px 20px;
+    margin: auto;
+    border-radius: vars.$br-radius;
+    box-shadow: 0 0 3px -1px vars.$color-font-base;
+    @include mix.transition();
+
+    &:hover {
+      background-color: vars.$color-primer;
+    }
+  }
+}
+
+.open_pas {
+  width: fit-content;
+  cursor: pointer;
+  margin: auto;
+  padding: 10px;
+  border-radius: vars.$br-radius;
+  transition: all 0.5s;
+
+  &:hover {
+    background-color: vars.$color-primer;
+  }
+  
+  &.active {
+    background-color: vars.$color-primer;
+  }
+
+  input[type='checkbox'] {
+    display: none;
+  }
+}

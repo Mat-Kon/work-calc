@@ -1,5 +1,5 @@
 'use client';
-import { HamburgerButton, LoginBtn, LogoBtn } from '../buttons';
+import { HamburgerButton, LogoBtn } from '../buttons';
 import { useState } from 'react';
 import { MainWrapper } from '../main-wrapper';
 import st from './index.module.scss';
@@ -18,7 +18,7 @@ export const Header: React.FC = () => {
         <div className={`${st.mobile__menu} ${!isHiddenMobileMenu && st.active}`}>
           <NavList />
 
-          <LoginBtn />
+          {/* <LoginBtn /> */}
         </div>
 
         <HamburgerButton isOpen={isOpenMenu} setOpen={setOpenMenu} />

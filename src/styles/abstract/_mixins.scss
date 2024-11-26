@@ -1,4 +1,4 @@
-@import './variables';
+@use './variables' as vars;
 
 @mixin flex($direction: row, $alignItems: normal, $justify: normal, $gap: 0) {
   display: flex;
@@ -9,31 +9,31 @@
 }
 
 @mixin media-laptop {
-  @media screen and (max-width: $screen-laptop) {
+  @media screen and (max-width: vars.$screen-laptop) {
     @content;
   }
 }
 
 @mixin media-tablet {
-  @media screen and (max-width: $screen-tablet) {
+  @media screen and (max-width: vars.$screen-tablet) {
     @content;
   }
 }
 
 @mixin media-mobile-l {
-  @media screen and (max-width: $screen-mobile-l) {
+  @media screen and (max-width: vars.$screen-mobile-l) {
     @content;
   }
 }
 
 @mixin media-mobile-m {
-  @media screen and (max-width: $screen-mobile-m) {
+  @media screen and (max-width: vars.$screen-mobile-m) {
     @content;
   }
 }
 
 @mixin media-mobile-s {
-  @media screen and (max-width: $screen-mobile-s) {
+  @media screen and (max-width: vars.$screen-mobile-s) {
     @content;
   }
 }
@@ -42,4 +42,8 @@
   @media (hover: hover) {
     @content;
   }
+}
+
+@mixin transition($type: all, $time: 0.5s) {
+  transition: $type $time;
 }

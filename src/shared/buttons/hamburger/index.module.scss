@@ -1,4 +1,5 @@
-@import '@/styles/abstract/mixins';
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as var;
 
 .hamburger {
   z-index: 10;
@@ -12,14 +13,14 @@
     display: inline-block;
     width: 100%;
     height: 3px;
-    background-color: $color-primer;
+    background-color: var.$color-primer;
   }
 
   &.open {
     transform: rotate(90deg);
   }
 
-  @include media-tablet {
-    @include flex($direction: column, $justify: space-between);
+  @include mix.media-tablet {
+    @include mix.flex($direction: column, $justify: space-between);
   }
 }

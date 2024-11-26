@@ -1,16 +1,17 @@
-@import '@/styles/abstract/mixins';
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
 
 .header__wrapper {
-  @include flex($justify: space-between);
-  border-bottom: 1px solid $color-primer;
-  border-top: 1px solid $color-primer;
+  @include mix.flex($justify: space-between);
+  border-bottom: 1px solid vars.$color-primer;
+  border-top: 1px solid vars.$color-primer;
 }
 
 .mobile__menu {
-  @include flex($justify: space-between);
+  @include mix.flex($justify: space-between);
   width: 65%;
 
-  @include media-tablet {
+  @include mix.media-tablet {
     position: fixed;
     top: 0;
     bottom: 0;

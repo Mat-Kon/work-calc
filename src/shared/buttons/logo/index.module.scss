@@ -1,12 +1,13 @@
-@import '@/styles/abstract/mixins';
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
 
 .logoBtn {
-  @include flex($alignItems: center, $gap: 5px);
+  @include mix.flex($alignItems: center, $gap: 5px);
   
   & span {
-    @include flex($alignItems: center);
+    @include mix.flex($alignItems: center);
     padding: 5px;
-    background-color: $color-primer;
+    background-color: vars.$color-primer;
     border-radius: 50%;
   }
 }

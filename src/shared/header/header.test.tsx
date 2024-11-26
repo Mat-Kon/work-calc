@@ -7,6 +7,6 @@ describe('Header', () => {
     const { getByText } = render(<Header />);
 
     expect(getByText('BC')).toBeInTheDocument();
-    expect(getByText('Login')).toBeInTheDocument();
+    // expect(getByText('Login')).toBeInTheDocument();
   });
 });

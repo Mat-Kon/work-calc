@@ -1,9 +1,9 @@
-@import '@/styles/abstract/mixins';
+@use '@/styles/abstract/mixins' as mix;
 
 .login {
-  @include flex($alignItems: center, $gap: 5px);
+  @include mix.flex($alignItems: center, $gap: 5px);
 
-  @include media-tablet {
+  @include mix.media-tablet {
     justify-content: center;
     font-weight: 500;
   }
