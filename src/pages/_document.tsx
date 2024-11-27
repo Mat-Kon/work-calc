@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html lang="ru">
       <Head>
+        <meta name="theme-color" content="#f9c385" />
         <meta
           name="description"
           content="Приложение для мастеров по ремонту балконов. ИСпользуется для расчета стоимости ремонта и остекления балкона."

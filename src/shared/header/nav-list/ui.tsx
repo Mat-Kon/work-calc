@@ -2,30 +2,7 @@
 import Link from 'next/link';
 import st from './index.module.scss';
 import { usePathname } from 'next/navigation';
-
-type linkData = {
-  link: string;
-  verbName: string;
-};
-
-const linksMap: linkData[] = [
-  {
-    link: '/calculate',
-    verbName: 'Рассчитать',
-  },
-  {
-    link: '/history',
-    verbName: 'История',
-  },
-  {
-    link: '/settings',
-    verbName: 'Настройки',
-  },
-  {
-    link: '/bd',
-    verbName: 'База данных',
-  },
-];
+import { linksMap } from '../../constants/header';
 
 export const NavList: React.FC = () => {
   const pathName = usePathname();

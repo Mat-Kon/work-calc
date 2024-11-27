@@ -1,18 +1,7 @@
-import Link from 'next/link';
-
-interface Props {
-  typeBtn: 'link' | 'button';
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
-  href?: string;
-  className?: string;
 }
 
-export const BaseBtn: React.FC<Props> = ({ typeBtn, href, text, className }) => {
-  return typeBtn === 'link' ? (
-    <Link className={`${className ?? ''}`} href={href ?? ''}>
-      {text}
-    </Link>
-  ) : (
-    <button className={`${className ?? ''}`}>{text}</button>
-  );
+export const BaseBtn: React.FC<Props> = ({ text, ...props }) => {
+  return <button {...props}>{text}</button>;
 };

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { MainWrapper } from '../main-wrapper';
 import st from './index.module.scss';
 import { isMobileView } from '../helpers/functions';
-import { NavList } from '../nav-list';
+import { NavList } from './nav-list';
 
 export const Header: React.FC = () => {
   const [isOpenMenu, setOpenMenu] = useState(false);

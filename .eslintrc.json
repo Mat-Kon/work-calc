@@ -29,6 +29,7 @@
     "comma-dangle": ["error", "only-multiline"],
     "react/prop-types": "off",
     "react/display-name": "off",
+    "react/no-unknown-property": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/ban-ts-comment": "error",
