@@ -5,7 +5,11 @@ import { useEffect, useState } from 'react';
 import st from './index.module.scss';
 import { deleteServiceItem } from './model';
 
-export const ServiceTable: React.FC = () => {
+interface Props {
+  setServiceData: (serviceData: TServiceItem) => void;
+}
+
+export const ServiceTable: React.FC<Props> = ({ setServiceData }) => {
   const [servicesList, setServiceList] = useState<TServiceItem[]>([]);
   const [totalCost, setTotalCost] = useState(0);
 
@@ -15,6 +19,10 @@ export const ServiceTable: React.FC = () => {
     const updatedTotalCost = updatedList.reduce((acc, curValue) => acc + curValue.cost, 0);
     setServiceList(() => updatedList);
     setTotalCost(() => updatedTotalCost);
+  };
+
+  const handleClickEdit = (serviceData: TServiceItem) => {
+    setServiceData(serviceData);
   };
 
   useEffect(() => {
@@ -49,7 +57,12 @@ export const ServiceTable: React.FC = () => {
       </thead>
       <tbody>
         {servicesList.map((item) => (
-          <ServiceItem item={item} key={item.id} onDelete={() => handleClickDelete(item.id)} />
+          <ServiceItem
+            item={item}
+            key={item.id}
+            onDelete={() => handleClickDelete(item.id)}
+            onEdit={() => handleClickEdit(item)}
+          />
         ))}
       </tbody>
       <tfoot className={st.servicesTable__footer}>

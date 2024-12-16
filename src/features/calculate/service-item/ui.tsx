@@ -6,9 +6,10 @@ import st from './index.module.scss';
 interface Props {
   item: TServiceItem;
   onDelete: () => void;
+  onEdit: () => void;
 }
 
-export const ServiceItem: React.FC<Props> = ({ item, onDelete }) => {
+export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
   const { typeService, typeValue, value, cost } = item;
 
   return (
@@ -20,11 +21,11 @@ export const ServiceItem: React.FC<Props> = ({ item, onDelete }) => {
       <td>{value}</td>
       <td>{cost.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>
       <td className={st.item__btns}>
-        <IconBtn className={st.item__btn} title="Редактировать">
+        <IconBtn className={st.item__editBtn} title="Редактировать" onClick={onEdit}>
           <EditIcon />
         </IconBtn>
 
-        <IconBtn className={st.item__btn} title="Удалить" onClick={onDelete}>
+        <IconBtn className={st.item__deleteBtn} title="Удалить" onClick={onDelete}>
           <TrashIcon />
         </IconBtn>
       </td>
