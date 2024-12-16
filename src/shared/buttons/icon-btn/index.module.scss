@@ -1,0 +1,7 @@
+@use '@/styles/abstract/mixins' as mix;
+
+.iconBtn {
+  @include mix.flex($justify: center, $alignItems: center);
+  padding: 5px;
+  border-radius: 50%;
+}

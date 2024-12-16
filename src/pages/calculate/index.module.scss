@@ -17,6 +17,6 @@
   width: 100%;
 }
 
-.calc__add, .popup__btn {
+.calc__add {
   @include mix.add-btn();
 }

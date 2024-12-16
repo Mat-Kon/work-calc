@@ -1,0 +1,16 @@
+@use '@/styles/abstract/mixins' as mix;
+
+.headings {
+  text-align: left;
+  text-wrap: wrap;
+  width: 25%;
+}
+
+.item__btns {
+  @include mix.flex($alignItems: center, $justify: center);
+  flex-wrap: wrap;
+}
+
+.item__btn {
+  
+}

@@ -14,7 +14,7 @@ export const linksMap: linkData[] = [
     verbName: 'Настройки',
   },
   {
-    link: '/bd',
-    verbName: 'База данных',
+    link: '/my-services',
+    verbName: 'Мои услуги',
   },
 ];

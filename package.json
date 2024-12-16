@@ -15,10 +15,14 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "next": "15.0.1",
     "next-auth": "^4.24.10",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.2",
+    "uuid": "^11.0.3",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",

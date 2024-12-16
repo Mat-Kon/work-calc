@@ -2,13 +2,9 @@ import st from './index.module.scss';
 
 interface Props {
   children: React.ReactNode;
-  id: string | number;
+  isOpen: boolean;
 }
 
-export const PopupWrapper: React.FC<Props> = ({ children, id }) => {
-  return (
-    <div className={st.popupWrapper} id={`${id}`} popover="manual">
-      {children}
-    </div>
-  );
+export const PopupWrapper: React.FC<Props> = ({ children, isOpen }) => {
+  return <div className={`${st.popupWrapper} ${isOpen ? st.open : ''} `}>{children}</div>;
 };

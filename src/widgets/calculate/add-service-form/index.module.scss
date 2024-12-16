@@ -1,0 +1,29 @@
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
+
+.addService {
+  @include mix.flex($justify: center, $gap: 20px);
+  flex-wrap: wrap;
+
+  & select {
+    border-radius: vars.$br-radius;
+    padding: 10px;
+    border: 1px solid vars.$color-primer;
+  }
+}
+
+.addService__btn {
+  @include mix.add-btn();
+  flex: 0 0 100%;
+}
+
+.serviceValue {
+  border-radius: vars.$br-radius;
+  padding: 10px;
+  border: 1px solid vars.$color-primer;
+  outline: none;
+
+  &.error {
+    border: 1px solid vars.$color-error;
+  }
+}

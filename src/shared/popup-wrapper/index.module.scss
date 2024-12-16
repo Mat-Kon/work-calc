@@ -1,7 +1,19 @@
 @use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
 
 .popupWrapper {
+  z-index: 10;
+  display: none;
+  position: fixed;
   top: 100px;
   padding: 10px 20px;
   margin: 0 auto;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 0px vars.$color-primer;
+  background-color: vars.$color-white;
+
+  &.open {
+    display: block;
+  }
 }
