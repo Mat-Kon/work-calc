@@ -13,7 +13,7 @@ import {
   updateServiceItem,
 } from './model';
 import { v4 as uuidv4 } from 'uuid';
-import { TServiceItem } from '@/shared/types/calculate';
+import { IServiceItem } from '@/shared/types/calculate';
 import { useEffect, useState } from 'react';
 import { MY_SERVICES_LIST_NAME } from '@/shared/constants/my-service-page';
 import { IServiceItemData } from '@/shared/types/my-services';
@@ -21,7 +21,7 @@ import { IServiceItemData } from '@/shared/types/my-services';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  serviceItem: TServiceItem | null;
+  serviceItem: IServiceItem | null;
 }
 
 export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {

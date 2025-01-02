@@ -3,17 +3,17 @@ import st from './index.module.scss';
 import { type NextPage } from 'next';
 import { useState } from 'react';
 import { ServiceTable } from '@/widgets/calculate/services-table';
-import { TServiceItem } from '@/shared/types/calculate';
+import { IServiceItem } from '@/shared/types/calculate';
 
 const Calculate: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
-  const [serviceData, setServiceData] = useState<TServiceItem | null>(null);
+  const [serviceData, setServiceData] = useState<IServiceItem | null>(null);
 
   const handleClickAddBtn = () => {
     setOpenPopup(true);
   };
 
-  const handleClickEdit = (serviceData: TServiceItem) => {
+  const handleClickEdit = (serviceData: IServiceItem) => {
     setOpenPopup(true);
     setServiceData(serviceData);
   };

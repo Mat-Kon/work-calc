@@ -1,7 +1,6 @@
-export type TServiceItem = {
-  id: string;
+import { IServiceItemData } from './my-services';
+
+export interface IServiceItem extends IServiceItemData {
   value: number;
-  nameService: string;
   cost: number;
-  costPerUnit: number;
-};
+}

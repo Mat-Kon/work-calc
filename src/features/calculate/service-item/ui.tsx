@@ -1,10 +1,10 @@
 import { IconBtn } from '@/shared/buttons';
 import { EditIcon, TrashIcon } from '@/shared/icons';
-import { TServiceItem } from '@/shared/types/calculate';
+import { IServiceItem } from '@/shared/types/calculate';
 import st from './index.module.scss';
 
 interface Props {
-  item: TServiceItem;
+  item: IServiceItem;
   onDelete: () => void;
   onEdit: () => void;
 }
