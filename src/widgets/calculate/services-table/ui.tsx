@@ -1,16 +1,16 @@
 import { ServiceItem } from '@/features/calculate';
 import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
-import { TServiceItem } from '@/shared/types/calculate';
+import { IServiceItem } from '@/shared/types/calculate';
 import { useEffect, useState } from 'react';
 import st from './index.module.scss';
 import { deleteServiceItem } from './model';
 
 interface Props {
-  setServiceData: (serviceData: TServiceItem) => void;
+  setServiceData: (serviceData: IServiceItem) => void;
 }
 
 export const ServiceTable: React.FC<Props> = ({ setServiceData }) => {
-  const [servicesList, setServiceList] = useState<TServiceItem[]>([]);
+  const [servicesList, setServiceList] = useState<IServiceItem[]>([]);
   const [totalCost, setTotalCost] = useState(0);
 
   const handleClickDelete = (id: string) => {
@@ -21,14 +21,14 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData }) => {
     setTotalCost(() => updatedTotalCost);
   };
 
-  const handleClickEdit = (serviceData: TServiceItem) => {
+  const handleClickEdit = (serviceData: IServiceItem) => {
     setServiceData(serviceData);
   };
 
   useEffect(() => {
     const localList = localStorage.getItem(LOCAL_LIST_NAME);
     if (localList) {
-      const parseList: TServiceItem[] = JSON.parse(localList);
+      const parseList: IServiceItem[] = JSON.parse(localList);
       const totalCost = parseList.reduce((acc, curValue) => acc + curValue.cost, 0);
       setServiceList(parseList);
       setTotalCost(totalCost);
