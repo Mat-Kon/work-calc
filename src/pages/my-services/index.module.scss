@@ -1,0 +1,22 @@
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
+
+.myService {
+  @include mix.flex($direction: column, $alignItems: center, $gap: 20px);
+  width: 100%;
+  padding-top: 20px;
+}
+
+.myService__heading {
+  text-align: center;
+  font-weight: 400;
+}
+
+.myService__toolbar {
+  @include mix.flex($justify: center);
+  width: 100%;
+}
+
+.myService__add {
+  @include mix.add-btn();
+}

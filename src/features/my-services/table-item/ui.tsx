@@ -1,16 +1,16 @@
 import { IconBtn } from '@/shared/buttons';
 import { EditIcon, TrashIcon } from '@/shared/icons';
-import { TServiceItem } from '@/shared/types/calculate';
 import st from './index.module.scss';
+import { IServiceItemData } from '@/shared/types/my-services';
 
 interface Props {
-  item: TServiceItem;
+  item: IServiceItemData;
   onDelete: () => void;
   onEdit: () => void;
 }
 
-export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
-  const { nameService, typeValue, value, cost } = item;
+export const TableItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
+  const { costPerUnit, nameService, typeValue } = item;
 
   return (
     <tr>
@@ -18,8 +18,7 @@ export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
         {nameService}
       </th>
       <td>{typeValue}</td>
-      <td>{value}</td>
-      <td>{cost.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>
+      <td>{costPerUnit.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>
       <td className={st.item__btns}>
         <IconBtn className={st.item__editBtn} title="Редактировать" onClick={onEdit}>
           <EditIcon />

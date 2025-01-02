@@ -1,8 +1,7 @@
 export type TServiceItem = {
   id: string;
   value: number;
-  typeValue: string;
-  typeService: string;
+  nameService: string;
   cost: number;
   costPerUnit: number;
 };

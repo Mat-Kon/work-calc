@@ -1,4 +1,3 @@
-import { CalcSelect } from '@/features/calculate';
 import { BaseBtn } from '@/shared/buttons/base';
 import { TextInput } from '@/shared/inputs';
 import { PopupWrapper } from '@/shared/popup-wrapper';
@@ -7,36 +6,28 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   addServiceItem,
-  FormDataAddServiceCalc,
+  FormDataAddServiceItemData,
   schemaAddServiceForm,
   updateServiceItem,
 } from './model';
 import { v4 as uuidv4 } from 'uuid';
-import { TServiceItem } from '@/shared/types/calculate';
 import { useEffect } from 'react';
-import { MY_SERVICES_LIST_NAME } from '@/shared/constants/my-service-page';
 import { IServiceItemData } from '@/shared/types/my-services';
+import { SelectMeasure } from '@/shared/select-measure';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  serviceItem: TServiceItem | null;
+  serviceItem: IServiceItemData | null;
 }
 
-export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
-  const storageServiceList = localStorage.getItem(MY_SERVICES_LIST_NAME);
-  const myServicesList: IServiceItemData[] | null = storageServiceList
-    ? JSON.parse(storageServiceList)
-    : null;
-
-  const serviceNames = myServicesList?.map((service) => service.nameService);
-
+export const AddServiceItemData: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormDataAddServiceCalc>({
+  } = useForm<FormDataAddServiceItemData>({
     resolver: yupResolver(schemaAddServiceForm),
   });
 
@@ -48,24 +39,18 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
       reset({
         nameService: '',
         typeValue: '',
-        value: 0,
-        cost: 0,
         costPerUnit: 0,
       });
     }
   }, [serviceItem, reset]);
 
-  const onSubmit = (data: FormDataAddServiceCalc) => {
-    const curService = myServicesList?.find((service) => service.nameService === data.nameService);
-    const costPerUnit = curService?.costPerUnit ?? 0;
-    const typeValue = curService?.typeValue ?? '';
-    const totalCost = data.value * costPerUnit;
+  const onSubmit = (data: FormDataAddServiceItemData) => {
     if (serviceItem) {
-      const serviceData = { ...data, id: serviceItem.id, costPerUnit, cost: totalCost, typeValue };
+      const serviceData = { ...data, id: serviceItem.id };
       updateServiceItem(serviceData);
     } else {
       const serviceId = uuidv4();
-      const serviceData = { id: serviceId, ...data, costPerUnit, cost: totalCost, typeValue };
+      const serviceData = { id: serviceId, ...data };
       addServiceItem(serviceData);
     }
     onClose();
@@ -77,16 +62,17 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
         <BaseBtn text="Закрыть" className={st.closeBtn} onClick={onClose} />
       </div>
       <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
-        <CalcSelect
-          id="typeService"
-          optionValues={serviceNames ?? []}
+        <TextInput
+          id="nameService"
           {...register('nameService')}
+          className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
         />
 
+        <SelectMeasure id="typeValue" {...register('typeValue')} />
         <TextInput
-          {...register('value', { required: true })}
+          {...register('costPerUnit', { required: true })}
           type="number"
-          className={`${st.serviceValue} ${!!errors.value ? st.error : ''}`}
+          className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
         />
         <BaseBtn text="Добавить" className={st.addService__btn} />
       </form>
