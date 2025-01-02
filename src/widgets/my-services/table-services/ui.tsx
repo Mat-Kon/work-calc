@@ -30,9 +30,9 @@ export const TableServices: React.FC<Props> = ({ setServiceData }) => {
     }
   }, []);
 
-  return (
+  return servicesList.length > 0 ? (
     <table className={st.servicesTable}>
-      <caption>Мои услуги</caption>
+      <caption>Список услуг</caption>
       <thead className={st.servicesTable__head}>
         <tr>
           <th scope="col" className={st.servicesTable__headings}>
@@ -58,5 +58,5 @@ export const TableServices: React.FC<Props> = ({ setServiceData }) => {
         ))}
       </tbody>
     </table>
-  );
+  ) : null;
 };

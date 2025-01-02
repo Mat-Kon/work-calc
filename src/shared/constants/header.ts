@@ -6,8 +6,8 @@ export const linksMap: linkData[] = [
     verbName: 'Рассчитать',
   },
   {
-    link: '/history',
-    verbName: 'История',
+    link: '/orders',
+    verbName: 'Заказы',
   },
   {
     link: '/settings',

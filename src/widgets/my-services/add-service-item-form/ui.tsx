@@ -72,6 +72,7 @@ export const AddServiceItemData: React.FC<Props> = ({ isOpen, onClose, serviceIt
         <TextInput
           {...register('costPerUnit', { required: true })}
           type="number"
+          step="any"
           className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
         />
         <BaseBtn text="Добавить" className={st.addService__btn} />

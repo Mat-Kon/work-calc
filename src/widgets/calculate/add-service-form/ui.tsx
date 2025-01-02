@@ -27,6 +27,7 @@ interface Props {
 export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
   const [services, setServices] = useState<IServiceItemData[]>([]);
   const [serviceNames, setServicesName] = useState<string[]>([]);
+  const hasServices = services.length > 0;
 
   const {
     register,
@@ -84,20 +85,25 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
       <div className={st.wrapCloseBtn}>
         <BaseBtn text="Закрыть" className={st.closeBtn} onClick={onClose} />
       </div>
-      <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
-        <CalcSelect
-          id="typeService"
-          optionValues={serviceNames ?? []}
-          {...register('nameService')}
-        />
+      {hasServices ? (
+        <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
+          <CalcSelect
+            id="typeService"
+            optionValues={serviceNames ?? []}
+            {...register('nameService')}
+          />
 
-        <TextInput
-          {...register('value', { required: true })}
-          type="number"
-          className={`${st.serviceValue} ${!!errors.value ? st.error : ''}`}
-        />
-        <BaseBtn text="Добавить" className={st.addService__btn} />
-      </form>
+          <TextInput
+            {...register('value', { required: true })}
+            type="number"
+            step="any"
+            className={`${st.serviceValue} ${!!errors.value ? st.error : ''}`}
+          />
+          <BaseBtn text="Добавить" className={st.addService__btn} />
+        </form>
+      ) : (
+        <p>Добавьте хотя бы одну услугу в &quot;Мои услуги&quot;</p>
+      )}
     </PopupWrapper>
   );
 };

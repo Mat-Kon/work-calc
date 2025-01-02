@@ -1,0 +1,31 @@
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
+
+.orderForm {
+  @include mix.flex($direction: column, $alignItems: flex-start, $gap: 10px);
+  width: 90%
+}
+
+.textInput {
+  width: 50%;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: vars.$p-size;
+  border: 1px solid vars.$color-grey-light;
+  
+  & .error {
+    border: 1px solid vars.$color-error;
+  }
+}
+
+.dateLabel {
+  @include mix.flex($alignItems: center, $gap: 30px);
+  font-size: vars.$p-size;
+  
+  & input {
+    padding: 5px;
+    font-size: vars.$p-size;
+    border: 1px solid vars.$color-grey-light;
+    border-radius: 5px;
+  }
+}

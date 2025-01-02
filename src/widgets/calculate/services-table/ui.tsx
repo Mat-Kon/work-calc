@@ -35,7 +35,7 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData }) => {
     }
   }, []);
 
-  return (
+  return servicesList.length > 0 ? (
     <table className={st.servicesTable}>
       <caption>Необходимые работы</caption>
       <thead className={st.servicesTable__head}>
@@ -75,5 +75,5 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData }) => {
         </tr>
       </tfoot>
     </table>
-  );
+  ) : null;
 };
