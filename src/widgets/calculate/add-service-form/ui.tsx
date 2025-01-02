@@ -1,3 +1,4 @@
+'use client';
 import { CalcSelect } from '@/features/calculate';
 import { BaseBtn } from '@/shared/buttons/base';
 import { TextInput } from '@/shared/inputs';
@@ -13,7 +14,7 @@ import {
 } from './model';
 import { v4 as uuidv4 } from 'uuid';
 import { TServiceItem } from '@/shared/types/calculate';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { MY_SERVICES_LIST_NAME } from '@/shared/constants/my-service-page';
 import { IServiceItemData } from '@/shared/types/my-services';
 
@@ -24,12 +25,8 @@ interface Props {
 }
 
 export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
-  const storageServiceList = localStorage.getItem(MY_SERVICES_LIST_NAME);
-  const myServicesList: IServiceItemData[] | null = storageServiceList
-    ? JSON.parse(storageServiceList)
-    : null;
-
-  const serviceNames = myServicesList?.map((service) => service.nameService);
+  const [services, setServices] = useState<IServiceItemData[]>([]);
+  const [serviceNames, setServicesName] = useState<string[]>([]);
 
   const {
     register,
@@ -39,6 +36,17 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
   } = useForm<FormDataAddServiceCalc>({
     resolver: yupResolver(schemaAddServiceForm),
   });
+
+  useEffect(() => {
+    const storageServiceList = localStorage.getItem(MY_SERVICES_LIST_NAME);
+    if (storageServiceList) {
+      const myServicesList: IServiceItemData[] = JSON.parse(storageServiceList);
+
+      const names = myServicesList.map((service) => service.nameService);
+      setServices(myServicesList);
+      setServicesName(names);
+    }
+  }, [isOpen]);
 
   //TODO: remove useEffect
   useEffect(() => {
@@ -56,7 +64,7 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
   }, [serviceItem, reset]);
 
   const onSubmit = (data: FormDataAddServiceCalc) => {
-    const curService = myServicesList?.find((service) => service.nameService === data.nameService);
+    const curService = services.find((service) => service.nameService === data.nameService);
     const costPerUnit = curService?.costPerUnit ?? 0;
     const typeValue = curService?.typeValue ?? '';
     const totalCost = data.value * costPerUnit;
