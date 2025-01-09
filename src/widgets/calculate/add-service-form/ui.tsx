@@ -27,15 +27,20 @@ interface Props {
 export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
   const [services, setServices] = useState<IServiceItemData[]>([]);
   const [serviceNames, setServicesName] = useState<string[]>([]);
+
+  const btnName = serviceItem ? 'Обновить' : 'Добавить';
   const hasServices = services.length > 0;
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<FormDataAddServiceCalc>({
     resolver: yupResolver(schemaAddServiceForm),
+    defaultValues: {
+      value: serviceItem?.value ?? 0,
+      nameService: serviceItem?.nameService ?? '',
+    },
   });
 
   useEffect(() => {
@@ -48,21 +53,6 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
       setServicesName(names);
     }
   }, [isOpen]);
-
-  //TODO: remove useEffect
-  useEffect(() => {
-    if (serviceItem) {
-      reset({ ...serviceItem });
-    } else {
-      reset({
-        nameService: '',
-        typeValue: '',
-        value: 0,
-        cost: 0,
-        costPerUnit: 0,
-      });
-    }
-  }, [serviceItem, reset]);
 
   const onSubmit = (data: FormDataAddServiceCalc) => {
     const curService = services.find((service) => service.nameService === data.nameService);
@@ -99,7 +89,7 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
             step="any"
             className={`${st.serviceValue} ${!!errors.value ? st.error : ''}`}
           />
-          <BaseBtn text="Добавить" className={st.addService__btn} />
+          <BaseBtn text={btnName} className={st.addService__btn} />
         </form>
       ) : (
         <p>Добавьте хотя бы одну услугу в &quot;Мои услуги&quot;</p>

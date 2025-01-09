@@ -47,11 +47,13 @@ const Calculate: NextPage = () => {
 
       <BaseBtn text="Сохранить" className={st.calc__add} onClick={handleClickSaveOrder} />
 
-      <AddServicePopup
-        isOpen={isOpenPopup}
-        onClose={handleClickCloseBtn}
-        serviceItem={serviceData}
-      />
+      {isOpenPopup && (
+        <AddServicePopup
+          isOpen={isOpenPopup}
+          onClose={handleClickCloseBtn}
+          serviceItem={serviceData}
+        />
+      )}
     </div>
   );
 };
