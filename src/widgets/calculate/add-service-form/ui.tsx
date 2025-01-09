@@ -38,7 +38,7 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
   } = useForm<FormDataAddServiceCalc>({
     resolver: yupResolver(schemaAddServiceForm),
     defaultValues: {
-      value: serviceItem?.value ?? 0,
+      count: serviceItem?.count ?? 0,
       nameService: serviceItem?.nameService ?? '',
     },
   });
@@ -58,7 +58,7 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
     const curService = services.find((service) => service.nameService === data.nameService);
     const costPerUnit = curService?.costPerUnit ?? 0;
     const typeValue = curService?.typeValue ?? '';
-    const totalCost = data.value * costPerUnit;
+    const totalCost = data.count * costPerUnit;
     if (serviceItem) {
       const serviceData = { ...data, id: serviceItem.id, costPerUnit, cost: totalCost, typeValue };
       updateServiceItem(serviceData);
@@ -84,10 +84,10 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
           />
 
           <TextInput
-            {...register('value', { required: true })}
+            {...register('count', { required: true })}
             type="number"
             step="any"
-            className={`${st.serviceValue} ${!!errors.value ? st.error : ''}`}
+            className={`${st.serviceValue} ${!!errors.count ? st.error : ''}`}
           />
           <BaseBtn text={btnName} className={st.addService__btn} />
         </form>

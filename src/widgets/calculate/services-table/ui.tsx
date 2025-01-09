@@ -7,9 +7,10 @@ import { deleteServiceItem } from './model';
 
 interface Props {
   setServiceData: (serviceData: IServiceItem) => void;
+  isOpen: boolean;
 }
 
-export const ServiceTable: React.FC<Props> = ({ setServiceData }) => {
+export const ServiceTable: React.FC<Props> = ({ setServiceData, isOpen }) => {
   const [servicesList, setServiceList] = useState<IServiceItem[]>([]);
   const [totalCost, setTotalCost] = useState(0);
 
@@ -33,7 +34,7 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData }) => {
       setServiceList(parseList);
       setTotalCost(totalCost);
     }
-  }, []);
+  }, [isOpen]);
 
   return servicesList.length > 0 ? (
     <table className={st.servicesTable}>

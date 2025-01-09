@@ -1,16 +1,16 @@
 import { IServiceItemData } from './my-services';
 
 export interface IServiceItem extends IServiceItemData {
-  value: number;
+  count: number;
   cost: number;
 }
 
-export interface Order {
+export interface IOrder {
   id: string;
   name: string;
   address: string;
   meetingDateTime: Date;
   startWorkDate: Date;
-  phoneNumber: number;
+  phoneNumber: string;
   orderServices: IServiceItem[];
 }

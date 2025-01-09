@@ -6,12 +6,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   addServiceItem,
-  FormDataAddServiceItemData,
+  FormDataAddMyServiceFrom,
   schemaAddServiceForm,
   updateServiceItem,
 } from './model';
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect } from 'react';
 import { IServiceItemData } from '@/shared/types/my-services';
 import { SelectMeasure } from '@/shared/select-measure';
 
@@ -21,30 +20,22 @@ interface Props {
   serviceItem: IServiceItemData | null;
 }
 
-export const AddServiceItemData: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
+export const AddMyServiceFrom: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
+  const btnName = serviceItem ? 'Изменить' : 'Добавить';
+
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm<FormDataAddServiceItemData>({
+  } = useForm<FormDataAddMyServiceFrom>({
     resolver: yupResolver(schemaAddServiceForm),
+    defaultValues: {
+      nameService: serviceItem?.nameService ?? '',
+      costPerUnit: serviceItem?.costPerUnit ?? 0,
+    },
   });
 
-  //TODO: remove useEffect
-  useEffect(() => {
-    if (serviceItem) {
-      reset({ ...serviceItem });
-    } else {
-      reset({
-        nameService: '',
-        typeValue: '',
-        costPerUnit: 0,
-      });
-    }
-  }, [serviceItem, reset]);
-
-  const onSubmit = (data: FormDataAddServiceItemData) => {
+  const onSubmit = (data: FormDataAddMyServiceFrom) => {
     if (serviceItem) {
       const serviceData = { ...data, id: serviceItem.id };
       updateServiceItem(serviceData);
@@ -63,6 +54,7 @@ export const AddServiceItemData: React.FC<Props> = ({ isOpen, onClose, serviceIt
       </div>
       <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
         <TextInput
+          placeholder="Название услуги"
           id="nameService"
           {...register('nameService')}
           className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
@@ -75,7 +67,7 @@ export const AddServiceItemData: React.FC<Props> = ({ isOpen, onClose, serviceIt
           step="any"
           className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
         />
-        <BaseBtn text="Добавить" className={st.addService__btn} />
+        <BaseBtn text={btnName} className={st.addService__btn} />
       </form>
     </PopupWrapper>
   );

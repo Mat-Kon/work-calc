@@ -4,7 +4,7 @@ import * as yup from 'yup';
 
 export const schemaAddServiceForm = yup.object({
   nameService: yup.string().required(),
-  value: yup.number().min(1).required(),
+  count: yup.number().min(1).required(),
   typeValue: yup.string(),
   cost: yup.number(),
   costPerUnit: yup.number(),

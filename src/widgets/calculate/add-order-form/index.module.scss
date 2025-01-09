@@ -13,7 +13,8 @@
   font-size: vars.$p-size;
   border: 1px solid vars.$color-grey-light;
   
-  & .error {
+  &.error {
+    outline: none;
     border: 1px solid vars.$color-error;
   }
 }

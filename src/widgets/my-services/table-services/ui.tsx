@@ -7,9 +7,10 @@ import { IServiceItemData } from '@/shared/types/my-services';
 
 interface Props {
   setServiceData: (serviceData: IServiceItemData) => void;
+  isOpen: boolean;
 }
 
-export const TableServices: React.FC<Props> = ({ setServiceData }) => {
+export const TableServices: React.FC<Props> = ({ setServiceData, isOpen }) => {
   const [servicesList, setServiceList] = useState<IServiceItemData[]>([]);
 
   const handleClickDelete = (id: string) => {
@@ -28,7 +29,7 @@ export const TableServices: React.FC<Props> = ({ setServiceData }) => {
       const parseList: IServiceItemData[] = JSON.parse(localList);
       setServiceList(parseList);
     }
-  }, []);
+  }, [isOpen]);
 
   return servicesList.length > 0 ? (
     <table className={st.servicesTable}>

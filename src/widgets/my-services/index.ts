@@ -1,2 +1,2 @@
-export { AddServiceItemData } from './add-service-item-form';
+export { AddMyServiceFrom } from './add-my-service-form';
 export { TableServices } from './table-services';

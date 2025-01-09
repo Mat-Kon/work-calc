@@ -12,7 +12,7 @@ const MEASURES = ['м2', 'пог.м', 'за услугу', 'за штуку'];
 export const SelectMeasure: React.FC<Props> = forwardRef<Ref, Props>(
   ({ name, id, ...props }, ref) => {
     return (
-      <select name={name} id={id} {...props} ref={ref}>
+      <select name={name} id={id} {...props} ref={ref} defaultValue={MEASURES[0]}>
         {MEASURES.map((value, index) => (
           <option key={index} value={value}>
             {value}

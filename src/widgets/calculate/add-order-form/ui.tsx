@@ -1,23 +1,33 @@
 import { TextInput } from '@/shared/inputs';
 import st from './index.module.scss';
+import { v4 as uuidv4 } from 'uuid';
 import { useForm } from 'react-hook-form';
-import { Order } from '@/shared/types/calculate';
 import { forwardRef } from 'react';
-import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
+import { LOCAL_LIST_NAME, ORDERS_LIST_NAME } from '@/shared/constants/calculate-page';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { addOrder, FormDataAddOrder, schemaAddOrderForm } from './model';
+import { IServiceItem } from '@/shared/types/calculate';
 
 export const AddOrderForm = forwardRef<HTMLFormElement>((props, ref) => {
   const {
     formState: { errors },
     handleSubmit,
     register,
-  } = useForm<Order>();
+  } = useForm<FormDataAddOrder>({
+    resolver: yupResolver(schemaAddOrderForm),
+  });
 
-  const onSubmit = (orderData: Order) => {
+  const onSubmit = (orderData: FormDataAddOrder) => {
     const localServicesList = localStorage.getItem(LOCAL_LIST_NAME);
+    let orderServices: IServiceItem[] = [];
     if (localServicesList) {
-      const orderServices = JSON.parse(localServicesList);
-      console.log({ ...orderData, services: orderServices });
+      orderServices = JSON.parse(localServicesList);
     }
+    const orderId = uuidv4();
+    const order = { ...orderData, id: orderId, orderServices: orderServices };
+    console.log(ORDERS_LIST_NAME, order);
+    // localStorage.removeItem(LOCAL_LIST_NAME);
+    addOrder(order);
   };
 
   return (
@@ -27,10 +37,14 @@ export const AddOrderForm = forwardRef<HTMLFormElement>((props, ref) => {
         className={`${st.textInput} ${errors.name && st.error}`}
         {...register('name')}
       />
-      <TextInput placeholder="Адрес" className={st.textInput} {...register('address')} />
+      <TextInput
+        placeholder="Адрес"
+        className={`${st.textInput} ${errors.address && st.error}`}
+        {...register('address')}
+      />
       <TextInput
         placeholder="Номер телефона"
-        className={st.textInput}
+        className={`${st.textInput} ${errors.phoneNumber && st.error}`}
         {...register('phoneNumber')}
       />
       <label className={st.dateLabel}>

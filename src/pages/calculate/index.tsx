@@ -43,7 +43,7 @@ const Calculate: NextPage = () => {
         </button>
       </nav>
 
-      {!isOpenPopup && <ServiceTable setServiceData={handleClickEdit} />}
+      <ServiceTable setServiceData={handleClickEdit} isOpen={isOpenPopup} />
 
       <BaseBtn text="Сохранить" className={st.calc__add} onClick={handleClickSaveOrder} />
 

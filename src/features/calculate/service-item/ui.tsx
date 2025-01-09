@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
-  const { nameService, typeValue, value, cost } = item;
+  const { nameService, typeValue, count, cost } = item;
 
   return (
     <tr>
@@ -18,7 +18,7 @@ export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
         {nameService}
       </th>
       <td>{typeValue}</td>
-      <td>{value}</td>
+      <td>{count}</td>
       <td>{cost.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>
       <td className={st.item__btns}>
         <IconBtn className={st.item__editBtn} title="Редактировать" onClick={onEdit}>
