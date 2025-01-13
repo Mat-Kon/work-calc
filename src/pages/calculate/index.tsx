@@ -6,6 +6,7 @@ import { ServiceTable } from '@/widgets/calculate/services-table';
 import { IServiceItem } from '@/shared/types/calculate';
 import { BaseBtn } from '@/shared/buttons/base';
 import { AddOrderForm } from '@/widgets/calculate';
+import { PageHeading } from '@/shared/page-heading';
 
 const Calculate: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
@@ -33,28 +34,30 @@ const Calculate: NextPage = () => {
   };
 
   return (
-    <div className={st.calc}>
-      <AddOrderForm ref={formRef} />
-      <h1 className={st.heading}>Расчет стоимости</h1>
+    <>
+      <PageHeading text="Расчет стоимости" />
+      <div className={st.calc}>
+        <AddOrderForm ref={formRef} />
 
-      <nav className={st.calc__toolbar}>
-        <button className={st.calc__add} onClick={handleClickAddBtn}>
-          Добавить услугу
-        </button>
-      </nav>
+        <nav className={st.calc__toolbar}>
+          <button className={st.calc__add} onClick={handleClickAddBtn}>
+            Добавить услугу
+          </button>
+        </nav>
 
-      <ServiceTable setServiceData={handleClickEdit} isOpen={isOpenPopup} />
+        <ServiceTable setServiceData={handleClickEdit} isOpen={isOpenPopup} />
 
-      <BaseBtn text="Сохранить" className={st.calc__add} onClick={handleClickSaveOrder} />
+        <BaseBtn text="Сохранить" className={st.calc__add} onClick={handleClickSaveOrder} />
 
-      {isOpenPopup && (
-        <AddServicePopup
-          isOpen={isOpenPopup}
-          onClose={handleClickCloseBtn}
-          serviceItem={serviceData}
-        />
-      )}
-    </div>
+        {isOpenPopup && (
+          <AddServicePopup
+            isOpen={isOpenPopup}
+            onClose={handleClickCloseBtn}
+            serviceItem={serviceData}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

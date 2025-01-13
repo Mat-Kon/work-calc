@@ -1,3 +1,5 @@
+import { PageHeading } from '@/shared/page-heading';
+
 export default function Settings() {
-  return <h1>Настройки</h1>;
+  return <PageHeading text="Настройки" />;
 }

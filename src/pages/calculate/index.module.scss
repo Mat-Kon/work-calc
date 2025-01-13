@@ -7,11 +7,6 @@
   padding-top: 20px;
 }
 
-.calc__heading {
-  text-align: center;
-  font-weight: 400;
-}
-
 .calc__toolbar {
   @include mix.flex($justify: center);
   width: 100%;

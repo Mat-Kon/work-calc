@@ -3,6 +3,8 @@ import { type NextPage } from 'next';
 import { useState } from 'react';
 import { IServiceItemData } from '@/shared/types/my-services';
 import { AddMyServiceFrom, TableServices } from '@/widgets/my-services';
+import { BaseBtn } from '@/shared/buttons/base';
+import { PageHeading } from '@/shared/page-heading';
 
 const MyServices: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
@@ -22,26 +24,30 @@ const MyServices: NextPage = () => {
     setServiceData(null);
   };
 
+  //TODO: add sort for services
   return (
-    <div className={st.myService}>
-      <h1 className={st.heading}>Мои услуги</h1>
+    <>
+      <PageHeading text="Мои услуги" />
+      <div className={st.myService}>
+        <nav className={st.myService__toolbar}>
+          <BaseBtn
+            text="Добавить услугу"
+            className={st.myService__add}
+            onClick={handleClickAddBtn}
+          />
+        </nav>
 
-      <nav className={st.myService__toolbar}>
-        <button className={st.myService__add} onClick={handleClickAddBtn}>
-          Добавить услугу
-        </button>
-      </nav>
+        <TableServices setServiceData={handleClickEdit} isOpen={isOpenPopup} />
 
-      <TableServices setServiceData={handleClickEdit} isOpen={isOpenPopup} />
-
-      {isOpenPopup && (
-        <AddMyServiceFrom
-          isOpen={isOpenPopup}
-          onClose={handleClickCloseBtn}
-          serviceItem={serviceData}
-        />
-      )}
-    </div>
+        {isOpenPopup && (
+          <AddMyServiceFrom
+            isOpen={isOpenPopup}
+            onClose={handleClickCloseBtn}
+            serviceItem={serviceData}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

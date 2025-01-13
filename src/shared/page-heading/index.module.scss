@@ -1,0 +1,9 @@
+@use '@/styles/abstract/variables' as vars;
+
+.pageHeading {
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid vars.$color-primer;
+  font-size: vars.$h2-size;
+  font-weight: 500;
+}

@@ -3,12 +3,14 @@ import st from './index.module.scss';
 import { v4 as uuidv4 } from 'uuid';
 import { useForm } from 'react-hook-form';
 import { forwardRef } from 'react';
-import { LOCAL_LIST_NAME, ORDERS_LIST_NAME } from '@/shared/constants/calculate-page';
+import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { addOrder, FormDataAddOrder, schemaAddOrderForm } from './model';
 import { IServiceItem } from '@/shared/types/calculate';
+import { useRouter } from 'next/navigation';
 
 export const AddOrderForm = forwardRef<HTMLFormElement>((props, ref) => {
+  const { replace } = useRouter();
   const {
     formState: { errors },
     handleSubmit,
@@ -25,9 +27,9 @@ export const AddOrderForm = forwardRef<HTMLFormElement>((props, ref) => {
     }
     const orderId = uuidv4();
     const order = { ...orderData, id: orderId, orderServices: orderServices };
-    console.log(ORDERS_LIST_NAME, order);
-    // localStorage.removeItem(LOCAL_LIST_NAME);
     addOrder(order);
+    localStorage.removeItem(LOCAL_LIST_NAME);
+    replace(`/orders/${order.id}`);
   };
 
   return (

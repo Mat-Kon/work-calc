@@ -9,7 +9,6 @@
 
 .mobile__menu {
   @include mix.flex($justify: space-between);
-  width: 65%;
 
   @include mix.media-tablet {
     position: fixed;
