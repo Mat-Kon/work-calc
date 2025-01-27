@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
       <MainWrapper className={st.header__wrapper}>
         <LogoBtn />
 
-        <div className={`${st.mobile__menu} ${!isHiddenMobileMenu && st.active}`}>
+        <div className={`${st.mobile__menu} ${!isHiddenMobileMenu ? st.active : ''}`}>
           <NavList />
 
           {/* <LoginBtn /> */}

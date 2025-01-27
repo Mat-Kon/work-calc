@@ -1,0 +1,8 @@
+@use '@/styles/abstract/variables' as vars;
+
+.sort {
+  border: none;
+  border-radius: vars.$br-radius;
+  padding: 5px 10px;
+  box-shadow: 0px 0px 4px 1px vars.$color-primer;
+}

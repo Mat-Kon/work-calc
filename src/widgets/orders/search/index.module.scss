@@ -1,0 +1,14 @@
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
+
+.label {
+  @include mix.flex($gap: 10px, $alignItems: center);
+  font-size: vars.$p-size;
+
+  & input {
+    border: none;
+    border-radius: vars.$br-radius;
+    padding: 5px 10px;
+    box-shadow: 0px 0px 4px 1px vars.$color-primer;
+  }
+}

@@ -14,3 +14,7 @@ export interface IOrder {
   phoneNumber: string;
   orderServices: IServiceItem[];
 }
+
+export interface ISortedOrder extends IOrder {
+  totalCost: number;
+}

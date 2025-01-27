@@ -1,0 +1,66 @@
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
+
+.item {
+  @include mix.flex($justify: space-between, $gap: 10px);
+  width: 100%;
+
+  @include mix.media-mobile-l {
+    border: 1px solid vars.$color-primer;
+    border-radius: vars.$br-radius;
+  }
+}
+
+.item__link {
+  width: 100%;
+  @include mix.flex($gap: 10px);
+
+  & span {
+    font-size: vars.$p-size;
+    font-weight: 500;
+  }
+}
+
+.item__number {
+  @include mix.flex($justify: center, $alignItems: center);
+  padding: 10px;
+  border: 1px solid vars.$color-primer;
+  border-radius: vars.$br-radius;
+  
+  @include mix.media-mobile-l {
+    border: none;
+    border-right: 1px solid vars.$color-primer;
+    border-radius: 0;
+  }
+}
+
+.item__info {
+  flex: 1;
+
+  & h3 {
+    font-size: vars.$h3-size;
+    font-weight: 500;
+
+    & a {
+      margin-left: 20px;
+      border-bottom: 2px solid vars.$color-primer;
+    }
+
+    @include mix.media-mobile-l {
+      font-size: vars.$p-size;
+    }
+  }
+
+  & h4 {
+    font-size: vars.$p-size;
+    font-weight: 400;
+  }
+
+  @include mix.media-mobile-l {
+    padding: 5px 0;
+  }
+}
+
+.item__btnsWrapper {
+  @include mix.flex($gap: 10px, $alignItems: center);
+}

@@ -1,0 +1,24 @@
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
+
+.contentWrapper {
+  @include mix.flex($direction: column, $alignItems: center, $gap: 30px);
+}
+
+.btns {
+  @include mix.flex($justify: space-between);
+  width: 100%;
+  flex-wrap: wrap;
+
+  & button {
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: vars.$br-radius;
+    &:first-child {
+      background-color: vars.$color-warning ;
+    }
+    &:last-child {
+      background-color: vars.$color-green-btn;
+    }
+  }
+}

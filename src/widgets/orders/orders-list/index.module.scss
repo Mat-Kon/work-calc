@@ -1,0 +1,19 @@
+@use '@/styles/abstract/mixins' as mix;
+@use '@/styles/abstract/variables' as vars;
+
+.listWrapper {
+  @include mix.flex($direction: column, $alignItems: center);
+}
+
+.orderList {
+  @include mix.flex($direction: column, $gap: 10px);
+  width: 80%;
+  margin: 30px auto 0;
+
+  @include mix.media-mobile-l {
+    width: 100%;
+    padding: 20px 10px;
+    margin: 0;
+    gap: 20px;
+  }
+}

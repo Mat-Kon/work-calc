@@ -2,7 +2,7 @@
 import { CalcSelect } from '@/features/calculate';
 import { BaseBtn } from '@/shared/buttons/base';
 import { TextInput } from '@/shared/inputs';
-import { PopupWrapper } from '@/shared/popup-wrapper';
+import { PopupWrapper } from '@/shared/popups';
 import st from './index.module.scss';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

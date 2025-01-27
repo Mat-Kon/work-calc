@@ -1,0 +1,14 @@
+@use '@/styles/abstract/mixins' as mix;
+
+.navbar {
+  @include mix.flex($justify: center, $gap: 20px);
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 10px 0;
+
+  @include mix.media-mobile-l {
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px;
+  }
+}
