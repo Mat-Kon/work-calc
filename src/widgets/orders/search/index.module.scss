@@ -1,5 +1,5 @@
-@use '@/styles/abstract/mixins' as mix;
-@use '@/styles/abstract/variables' as vars;
+
+
 
 .label {
   @include mix.flex($gap: 10px, $alignItems: center);

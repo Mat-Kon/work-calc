@@ -1,9 +1,9 @@
 import { OrderListItem } from '@/features/orders';
 import { IOrder } from '@/shared/types/calculate';
 import { useEffect, useState } from 'react';
-import { getOrders, removeOrder } from './model';
 import st from './index.module.scss';
 import { PopupConfirmation } from '@/shared/popups';
+import { getOrdersList, removeOrderById } from '@/features/orders/model';
 
 interface Props {
   updatedOrders?: IOrder[] | null;
@@ -18,8 +18,8 @@ export const OrdersList: React.FC<Props> = ({ updatedOrders }) => {
     if (updatedOrders) {
       setOrders(updatedOrders);
     } else {
-      const savedOrders = getOrders();
-      setOrders(savedOrders);
+      const savedOrders = getOrdersList();
+      setOrders(savedOrders ?? []);
     }
   }, [isOpen, updatedOrders]);
 
@@ -30,7 +30,7 @@ export const OrdersList: React.FC<Props> = ({ updatedOrders }) => {
 
   const onConfirm = () => {
     if (DeleteOrderData) {
-      removeOrder(DeleteOrderData.id);
+      removeOrderById(DeleteOrderData.id);
     }
     setOrderData(null);
     setOpen(false);

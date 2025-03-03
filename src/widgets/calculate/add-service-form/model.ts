@@ -1,5 +1,8 @@
 import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
+import { MY_SERVICES_LIST_NAME } from '@/shared/constants/my-service-page';
+import { getServicesList } from '@/shared/helpers/functions';
 import { IServiceItem } from '@/shared/types/calculate';
+import { IServiceItemData } from '@/shared/types/my-services';
 import * as yup from 'yup';
 
 export const schemaAddServiceForm = yup.object({
@@ -12,10 +15,17 @@ export const schemaAddServiceForm = yup.object({
 
 export type FormDataAddServiceCalc = yup.InferType<typeof schemaAddServiceForm>;
 
+export const getMyServicesList = () => {
+  const storageServiceList = localStorage.getItem(MY_SERVICES_LIST_NAME);
+  if (storageServiceList) {
+    const myServicesList: IServiceItemData[] = JSON.parse(storageServiceList);
+    return myServicesList;
+  }
+};
+
 export const addServiceItem = (data: IServiceItem) => {
-  const localData = localStorage.getItem(LOCAL_LIST_NAME);
-  if (localData) {
-    const localList: IServiceItem[] = JSON.parse(localData);
+  const localList = getServicesList();
+  if (localList) {
     const updatedList = [...localList, data];
     localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(updatedList));
   } else {
@@ -24,9 +34,8 @@ export const addServiceItem = (data: IServiceItem) => {
 };
 
 export const updateServiceItem = (data: IServiceItem) => {
-  const localData = localStorage.getItem(LOCAL_LIST_NAME);
-  if (localData) {
-    const localList: IServiceItem[] = JSON.parse(localData);
+  const localList = getServicesList();
+  if (localList) {
     const updatedList = localList.map((item) =>
       item.id === data.id ? { ...item, ...data } : item
     );

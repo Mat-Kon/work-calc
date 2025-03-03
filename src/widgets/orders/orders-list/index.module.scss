@@ -1,5 +1,5 @@
-@use '@/styles/abstract/mixins' as mix;
-@use '@/styles/abstract/variables' as vars;
+
+
 
 .listWrapper {
   @include mix.flex($direction: column, $alignItems: center);

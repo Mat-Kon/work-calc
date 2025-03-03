@@ -1,5 +1,5 @@
-@use '@/styles/abstract/mixins' as mix;
-@use '@/styles/abstract/variables' as vars;
+
+
 
 .header__wrapper {
   @include mix.flex($justify: space-between);

@@ -7,9 +7,10 @@ interface Props {
   item: IServiceItem;
   onDelete: () => void;
   onEdit: () => void;
+  isEditPage: boolean;
 }
 
-export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
+export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit, isEditPage }) => {
   const { nameService, typeValue, count, cost } = item;
 
   return (
@@ -20,15 +21,17 @@ export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
       <td>{typeValue}</td>
       <td>{count}</td>
       <td>{cost.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>
-      <td className={st.item__btns}>
-        <IconBtn className={st.item__editBtn} title="Редактировать" onClick={onEdit}>
-          <EditIcon />
-        </IconBtn>
+      {isEditPage && (
+        <td className={st.item__btns}>
+          <IconBtn className={st.item__editBtn} title="Редактировать" onClick={onEdit}>
+            <EditIcon />
+          </IconBtn>
 
-        <IconBtn className={st.item__deleteBtn} title="Удалить" onClick={onDelete}>
-          <TrashIcon />
-        </IconBtn>
-      </td>
+          <IconBtn className={st.item__deleteBtn} title="Удалить" onClick={onDelete}>
+            <TrashIcon />
+          </IconBtn>
+        </td>
+      )}
     </tr>
   );
 };

@@ -9,13 +9,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
   addServiceItem,
   FormDataAddServiceCalc,
+  getMyServicesList,
   schemaAddServiceForm,
   updateServiceItem,
 } from './model';
 import { v4 as uuidv4 } from 'uuid';
 import { IServiceItem } from '@/shared/types/calculate';
 import { useEffect, useState } from 'react';
-import { MY_SERVICES_LIST_NAME } from '@/shared/constants/my-service-page';
 import { IServiceItemData } from '@/shared/types/my-services';
 
 interface Props {
@@ -44,12 +44,10 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
   });
 
   useEffect(() => {
-    const storageServiceList = localStorage.getItem(MY_SERVICES_LIST_NAME);
-    if (storageServiceList) {
-      const myServicesList: IServiceItemData[] = JSON.parse(storageServiceList);
-
-      const names = myServicesList.map((service) => service.nameService);
-      setServices(myServicesList);
+    const myServiceList = getMyServicesList();
+    if (myServiceList) {
+      const names = myServiceList.map((service) => service.nameService);
+      setServices(myServiceList);
       setServicesName(names);
     }
   }, [isOpen]);

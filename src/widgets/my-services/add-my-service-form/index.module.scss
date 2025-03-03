@@ -1,5 +1,5 @@
-@use '@/styles/abstract/mixins' as mix;
-@use '@/styles/abstract/variables' as vars;
+
+
 
 .addService {
   @include mix.flex($justify: center, $gap: 20px);

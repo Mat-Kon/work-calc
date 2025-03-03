@@ -2,38 +2,65 @@ import { TextInput } from '@/shared/inputs';
 import st from './index.module.scss';
 import { v4 as uuidv4 } from 'uuid';
 import { useForm } from 'react-hook-form';
-import { forwardRef } from 'react';
-import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
+import { forwardRef, useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { addOrder, FormDataAddOrder, schemaAddOrderForm } from './model';
-import { IServiceItem } from '@/shared/types/calculate';
+import { addOrder, FormDataAddOrder, schemaAddOrderForm, updateOrders } from './model';
+import { IOrder } from '@/shared/types/calculate';
 import { useRouter } from 'next/navigation';
+import { getServicesList } from '@/shared/helpers/functions';
 
-export const AddOrderForm = forwardRef<HTMLFormElement>((props, ref) => {
+interface Props {
+  order?: IOrder | null;
+}
+
+export const AddOrderForm = forwardRef<HTMLFormElement, Props>(({ order }, ref) => {
   const { replace } = useRouter();
   const {
     formState: { errors },
     handleSubmit,
     register,
+    reset,
   } = useForm<FormDataAddOrder>({
     resolver: yupResolver(schemaAddOrderForm),
   });
 
-  const onSubmit = (orderData: FormDataAddOrder) => {
-    const localServicesList = localStorage.getItem(LOCAL_LIST_NAME);
-    let orderServices: IServiceItem[] = [];
-    if (localServicesList) {
-      orderServices = JSON.parse(localServicesList);
+  useEffect(() => {
+    if (order) {
+      const { id: _id, orderServices: _orderServices, ...orderData } = order;
+      const defaultData = {
+        ...orderData,
+        startWorkDate: orderData.startWorkDate.toString().slice(0, 16),
+        meetingDateTime: orderData.meetingDateTime.toString().slice(0, 16),
+      };
+
+      reset(defaultData);
     }
+  }, [order]);
+
+  const onSubmit = (orderData: FormDataAddOrder) => {
+    const orderServices = getServicesList();
     const orderId = uuidv4();
-    const order = { ...orderData, id: orderId, orderServices: orderServices };
-    addOrder(order);
-    localStorage.removeItem(LOCAL_LIST_NAME);
-    replace(`/orders/${order.id}`);
+
+    if (orderServices) {
+      if (order) {
+        const updateOrder = { ...orderData, id: order.id, orderServices: orderServices };
+        console.log(updateOrder);
+        updateOrders(updateOrder);
+      } else {
+        const updateOrder = { ...orderData, id: orderId, orderServices: orderServices };
+        addOrder(updateOrder);
+      }
+    }
+    replace(`/orders/${order?.id ?? orderId}`);
   };
 
   return (
     <form className={st.orderForm} onSubmit={handleSubmit(onSubmit)} ref={ref}>
+      <TextInput
+        placeholder="Номер договора"
+        className={`${st.textInput} ${errors.name && st.error}`}
+        {...register('orderNumber')}
+      />
       <TextInput
         placeholder="ФИО"
         className={`${st.textInput} ${errors.name && st.error}`}

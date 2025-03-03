@@ -1,18 +1,17 @@
-
-
-
 .servicesTable {
   width: 90%;
   border-spacing: 0;
   font-size: vars.$p-size;
   border: 1px solid vars.$color-grey-light;
-  
+  margin: auto;
+
   & caption {
     font-size: vars.$h3-size;
     padding-bottom: 20px;
   }
-  
-  & th, td {
+
+  & th,
+  td {
     border-bottom: 1px solid vars.$color-grey-light;
     border-right: 1px solid vars.$color-grey-light;
     padding: 5px;
@@ -32,7 +31,8 @@
 }
 
 .servicesTable__footer {
-  & th, td {
+  & th,
+  td {
     border-right: 1px solid vars.$color-grey-light;
     padding: 5px;
     border-bottom: none;

@@ -1,10 +1,9 @@
-import { ORDERS_LIST_NAME } from '@/shared/constants/calculate-page';
-import { IOrder, ISortedOrder } from '@/shared/types/calculate';
+import { getOrdersList } from '@/features/orders/model';
+import { ISortedOrder } from '@/shared/types/calculate';
 
 const sortByDateMeeting = () => {
-  const localOrders = localStorage.getItem(ORDERS_LIST_NAME);
-  if (localOrders) {
-    const orders: IOrder[] = JSON.parse(localOrders);
+  const orders = getOrdersList();
+  if (orders) {
     return orders.toSorted(
       (a, b) => Number(a.meetingDateTime.toString()) - Number(b.meetingDateTime.toString())
     );
@@ -12,9 +11,8 @@ const sortByDateMeeting = () => {
 };
 
 const sortByDateWork = () => {
-  const localOrders = localStorage.getItem(ORDERS_LIST_NAME);
-  if (localOrders) {
-    const orders: IOrder[] = JSON.parse(localOrders);
+  const orders = getOrdersList();
+  if (orders) {
     return orders.toSorted(
       (a, b) => Number(a.startWorkDate.toString()) - Number(b.startWorkDate.toString())
     );
@@ -22,9 +20,8 @@ const sortByDateWork = () => {
 };
 
 const sortByTotalCost = () => {
-  const localOrders = localStorage.getItem(ORDERS_LIST_NAME);
-  if (localOrders) {
-    const orders: IOrder[] = JSON.parse(localOrders);
+  const orders = getOrdersList();
+  if (orders) {
     const ordersWidthTotals: ISortedOrder[] = orders.map((order) => {
       const totalCost = order.orderServices.reduce(
         (acc, currentOrder) => acc + currentOrder.cost,

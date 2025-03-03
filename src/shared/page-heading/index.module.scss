@@ -1,9 +1,25 @@
-@use '@/styles/abstract/variables' as vars;
-
 .pageHeading {
-  text-align: center;
-  padding: 10px 0;
+  @include mix.flex($alignItems: center);
+  width: 100%;
   border-bottom: 1px solid vars.$color-primer;
-  font-size: vars.$h2-size;
-  font-weight: 500;
+  padding: 0 10px;
+
+  & h1 {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    font-size: vars.$h2-size;
+    font-weight: 500;
+
+    &.hasButton {
+      padding-left: 20px;
+    }
+  }
+
+  & button {
+    padding-bottom: 2px;
+    border-bottom: 2px solid  vars.$color-primer;
+    font-weight: 600;
+    height: fit-content;
+  }
 }

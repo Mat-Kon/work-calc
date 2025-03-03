@@ -3,6 +3,7 @@ import st from './index.module.scss';
 import Link from 'next/link';
 import { IconBtn } from '@/shared/buttons';
 import { EditIcon, TrashIcon } from '@/shared/icons';
+import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
 
 interface Props {
   order: IOrder;
@@ -10,7 +11,11 @@ interface Props {
   onDelete: () => void;
 }
 export const OrderListItem: React.FC<Props> = ({ order, orderNumber, onDelete }) => {
-  const { name, address, phoneNumber } = order;
+  const { name, address, phoneNumber, orderServices } = order;
+
+  const handleClickEdit = () => {
+    localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(orderServices));
+  };
 
   return (
     <div className={st.item}>
@@ -26,7 +31,7 @@ export const OrderListItem: React.FC<Props> = ({ order, orderNumber, onDelete })
         </div>
       </Link>
       <div className={st.item__btnsWrapper}>
-        <Link href={`/orders/${order.id}/edit`}>
+        <Link href={`/orders/${order.id}/edit`} onClick={handleClickEdit}>
           <EditIcon />
         </Link>
 

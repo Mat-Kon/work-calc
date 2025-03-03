@@ -7,10 +7,11 @@ export interface IServiceItem extends IServiceItemData {
 
 export interface IOrder {
   id: string;
+  orderNumber?: string;
   name: string;
   address: string;
-  meetingDateTime: Date;
-  startWorkDate: Date;
+  meetingDateTime: Date | string;
+  startWorkDate: Date | string;
   phoneNumber: string;
   orderServices: IServiceItem[];
 }
