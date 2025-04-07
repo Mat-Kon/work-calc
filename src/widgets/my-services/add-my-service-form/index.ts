@@ -1,1 +1,1 @@
-export { AddMyServiceFrom } from './ui';
+export { AddMyServiceForm } from './ui';

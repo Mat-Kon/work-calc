@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   addServiceItem,
-  FormDataAddMyServiceFrom,
+  FormDataAddMyServiceForm,
   schemaAddServiceForm,
   updateServiceItem,
 } from './model';
@@ -20,14 +20,14 @@ interface Props {
   serviceItem: IServiceItemData | null;
 }
 
-export const AddMyServiceFrom: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
+export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
   const btnName = serviceItem ? 'Изменить' : 'Добавить';
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormDataAddMyServiceFrom>({
+  } = useForm<FormDataAddMyServiceForm>({
     resolver: yupResolver(schemaAddServiceForm),
     defaultValues: {
       nameService: serviceItem?.nameService ?? '',
@@ -35,7 +35,7 @@ export const AddMyServiceFrom: React.FC<Props> = ({ isOpen, onClose, serviceItem
     },
   });
 
-  const onSubmit = (data: FormDataAddMyServiceFrom) => {
+  const onSubmit = (data: FormDataAddMyServiceForm) => {
     if (serviceItem) {
       const serviceData = { ...data, id: serviceItem.id };
       updateServiceItem(serviceData);

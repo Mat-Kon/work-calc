@@ -2,11 +2,11 @@ import st from './index.module.scss';
 import { type NextPage } from 'next';
 import { useState } from 'react';
 import { IServiceItemData } from '@/shared/types/my-services';
-import { AddMyServiceFrom, TableServices } from '@/widgets/my-services';
+import { AddMyServiceForm, TableServices } from '@/widgets/my-services';
 import { BaseBtn } from '@/shared/buttons/base';
 import { PageHeading } from '@/shared/page-heading';
 
-const MyServices: NextPage = () => {
+const Services: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
   const [serviceData, setServiceData] = useState<IServiceItemData | null>(null);
 
@@ -40,7 +40,7 @@ const MyServices: NextPage = () => {
         <TableServices setServiceData={handleClickEdit} isOpen={isOpenPopup} />
 
         {isOpenPopup && (
-          <AddMyServiceFrom
+          <AddMyServiceForm
             isOpen={isOpenPopup}
             onClose={handleClickCloseBtn}
             serviceItem={serviceData}
@@ -51,4 +51,4 @@ const MyServices: NextPage = () => {
   );
 };
 
-export default MyServices;
+export default Services;

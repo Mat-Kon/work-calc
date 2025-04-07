@@ -8,7 +8,7 @@ export const schemaAddServiceForm = yup.object({
   costPerUnit: yup.number().required(),
 });
 
-export type FormDataAddMyServiceFrom = yup.InferType<typeof schemaAddServiceForm>;
+export type FormDataAddMyServiceForm = yup.InferType<typeof schemaAddServiceForm>;
 
 export const addServiceItem = (data: IServiceItemData) => {
   const localData = localStorage.getItem(MY_SERVICES_LIST_NAME);

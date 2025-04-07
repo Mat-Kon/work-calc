@@ -2,8 +2,8 @@ import { linkData } from '../types/header';
 
 export const linksMap: linkData[] = [
   {
-    link: '/my-services',
-    verbName: 'Мои услуги',
+    link: '/services',
+    verbName: 'Услуги',
   },
   {
     link: '/calculate',
@@ -12,6 +12,10 @@ export const linksMap: linkData[] = [
   {
     link: '/orders',
     verbName: 'Заказы',
+  },
+  {
+    link: '/materials',
+    verbName: 'Материалы',
   },
   // {
   //   link: '/settings',
