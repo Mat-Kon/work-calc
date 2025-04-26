@@ -1,3 +1,4 @@
+'use client';
 import { AddServicePopup } from '@/widgets/calculate/add-service-form';
 import st from './index.module.scss';
 import { type NextPage } from 'next';

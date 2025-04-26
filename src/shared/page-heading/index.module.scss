@@ -1,8 +1,8 @@
 .pageHeading {
+  position: relative;
   @include mix.flex($alignItems: center);
   width: 100%;
   border-bottom: 1px solid vars.$color-primer;
-  padding: 0 10px;
 
   & h1 {
     width: 100%;
@@ -17,6 +17,9 @@
   }
 
   & button {
+    position: absolute;
+    right: 20px;
+    top: calc(50% - 12px);
     padding-bottom: 2px;
     border-bottom: 2px solid  vars.$color-primer;
     font-weight: 600;

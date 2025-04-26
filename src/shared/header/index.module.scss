@@ -1,10 +1,8 @@
-
-
-
-.header__wrapper {
+.header {
   @include mix.flex($justify: space-between);
   border-bottom: 1px solid vars.$color-primer;
   border-top: 1px solid vars.$color-primer;
+  padding: 10px 30px;
 }
 
 .mobile__menu {

@@ -1,3 +1,4 @@
+'use client';
 import { OrderInfo, ServiceViewTable } from '@/features/orders';
 import { getOrderById } from '@/features/orders/model';
 import { PageHeading } from '@/shared/page-heading';

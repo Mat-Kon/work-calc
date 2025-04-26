@@ -1,49 +1,51 @@
+'use client';
 import st from './index.module.scss';
 import { type NextPage } from 'next';
 import { useState } from 'react';
-import { IServiceItemData } from '@/shared/types/my-services';
-import { AddMyServiceForm, TableServices } from '@/widgets/my-services';
+// import { TableServices } from '@/widgets/my-services';
 import { BaseBtn } from '@/shared/buttons/base';
 import { PageHeading } from '@/shared/page-heading';
+import { IMaterialItemData } from '@/shared/types/materials';
+import { AddMaterialForm } from '@/widgets/materials';
 
-const Services: NextPage = () => {
+const Materials: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
-  const [serviceData, setServiceData] = useState<IServiceItemData | null>(null);
+  const [materialData, setMaterialData] = useState<IMaterialItemData | null>(null);
 
   const handleClickAddBtn = () => {
     setOpenPopup(true);
   };
 
-  const handleClickEdit = (serviceData: IServiceItemData) => {
-    setOpenPopup(true);
-    setServiceData(serviceData);
-  };
+  // const handleClickEdit = (materialData: IMaterialItemData) => {
+  //   setOpenPopup(true);
+  //   setMaterialData(materialData);
+  // };
 
   const handleClickCloseBtn = () => {
     setOpenPopup(false);
-    setServiceData(null);
+    setMaterialData(null);
   };
 
   //TODO: add sort for services
   return (
     <>
-      <PageHeading text="Мои услуги" />
+      <PageHeading text="Мои материалы" />
       <div className={st.myService}>
         <nav className={st.myService__toolbar}>
           <BaseBtn
-            text="Добавить услугу"
+            text="Добавить материал"
             className={st.myService__add}
             onClick={handleClickAddBtn}
           />
         </nav>
 
-        <TableServices setServiceData={handleClickEdit} isOpen={isOpenPopup} />
+        {/* <TableServices setMaterialData={handleClickEdit} isOpen={isOpenPopup} /> */}
 
         {isOpenPopup && (
-          <AddMyServiceForm
+          <AddMaterialForm
             isOpen={isOpenPopup}
             onClose={handleClickCloseBtn}
-            serviceItem={serviceData}
+            materialItem={materialData}
           />
         )}
       </div>
@@ -51,4 +53,4 @@ const Services: NextPage = () => {
   );
 };
 
-export default Services;
+export default Materials;

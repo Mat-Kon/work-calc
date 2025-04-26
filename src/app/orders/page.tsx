@@ -1,3 +1,4 @@
+'use client';
 import { PageHeading } from '@/shared/page-heading';
 import { IOrder } from '@/shared/types/calculate';
 import { OrdersList, SearchOrder, SelectSort } from '@/widgets/orders';
