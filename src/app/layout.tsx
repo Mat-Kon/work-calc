@@ -11,7 +11,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const metadate: Metadata = {
+export const metadata: Metadata = {
   title: 'MKcalc',
   description:
     'Приложение для мастеров по ремонту балконов. ИСпользуется для расчета стоимости ремонта и остекления балкона.',
