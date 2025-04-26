@@ -6,6 +6,7 @@
 }
 
 .mobile__menu {
+  z-index: 10;
   @include mix.flex($justify: space-between);
 
   @include mix.media-tablet {

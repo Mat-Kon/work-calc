@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { IMaterialItemData } from '@/shared/types/materials';
 import st from './index.module.scss';
 import { PopupWrapper } from '@/shared/popups';
@@ -6,6 +5,8 @@ import { BaseBtn } from '@/shared/buttons';
 import { TextInput } from '@/shared/inputs';
 import { SelectMeasure } from '@/shared/select-measure';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormDataAddMaterial, schemaAddMaterialForm } from './model';
 
 interface Props {
   isOpen: boolean;
@@ -20,10 +21,9 @@ export const AddMaterialForm: React.FC<Props> = ({ isOpen, materialItem, onClose
     register,
     // handleSubmit,
     formState: { errors },
-    //TODO: change any type!!!and create schema
     /* eslint eqeqeq: "off", curly: "error" */
-  } = useForm<any>({
-    // resolver: yupResolver(schemaAddServiceForm),
+  } = useForm<FormDataAddMaterial>({
+    resolver: yupResolver(schemaAddMaterialForm),
     defaultValues: {
       nameMaterial: materialItem?.nameMaterial ?? '',
       costPerUnit: materialItem?.costPerUnit ?? 0,
