@@ -1,7 +1,7 @@
 'use client';
 import { BaseBtn } from '@/shared/buttons';
 import { PageHeading } from '@/shared/page-heading';
-import { IOrder, IServiceItem } from '@/shared/types/calculate';
+import { IOrder, ICalcItem } from '@/shared/types/calculate';
 import { AddOrderForm, AddServicePopup, ServiceTable } from '@/widgets/calculate';
 import { type NextPage } from 'next';
 import { useParams } from 'next/navigation';
@@ -14,7 +14,7 @@ const OrderEditPage: NextPage = () => {
   const orderId = params?.id ?? null;
 
   const [isOpenPopup, setOpenPopup] = useState(false);
-  const [serviceData, setServiceData] = useState<IServiceItem | null>(null);
+  const [serviceData, setServiceData] = useState<ICalcItem | null>(null);
   const [orderData, setOrderData] = useState<IOrder | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -22,7 +22,7 @@ const OrderEditPage: NextPage = () => {
     setOpenPopup(true);
   };
 
-  const handleClickEdit = (serviceData: IServiceItem) => {
+  const handleClickEdit = (serviceData: ICalcItem) => {
     setOpenPopup(true);
     setServiceData(serviceData);
   };

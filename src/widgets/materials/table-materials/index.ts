@@ -1,1 +1,1 @@
-export { TableServices } from './ui';
+export { TableMaterials } from './ui';

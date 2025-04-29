@@ -6,7 +6,7 @@ import { BaseBtn } from '@/shared/buttons/base';
 import { PageHeading } from '@/shared/page-heading';
 import { IMaterialItemData } from '@/shared/types/materials';
 import { AddMaterialForm } from '@/widgets/materials';
-import { TableMaterials } from '@/widgets/materials/table-materials/ui';
+import { TableMaterials } from '@/widgets/materials/table-materials';
 
 const Materials: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
