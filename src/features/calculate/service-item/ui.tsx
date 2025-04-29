@@ -1,22 +1,22 @@
 import { IconBtn } from '@/shared/buttons';
 import { EditIcon, TrashIcon } from '@/shared/icons';
-import { IServiceItem } from '@/shared/types/calculate';
+import { ICalcItem } from '@/shared/types/calculate';
 import st from './index.module.scss';
 
 interface Props {
-  item: IServiceItem;
+  item: ICalcItem;
   onDelete: () => void;
   onEdit: () => void;
   isEditPage: boolean;
 }
 
 export const ServiceItem: React.FC<Props> = ({ item, onDelete, onEdit, isEditPage }) => {
-  const { nameService, typeValue, count, cost } = item;
+  const { name, typeValue, count, cost } = item;
 
   return (
     <tr>
       <th scope="row" className={st.headings}>
-        {nameService}
+        {name}
       </th>
       <td>{typeValue}</td>
       <td>{count}</td>

@@ -1,12 +1,12 @@
 import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
 import { MY_SERVICES_LIST_NAME } from '@/shared/constants/my-service-page';
-import { getServicesList } from '@/shared/helpers/functions';
-import { IServiceItem } from '@/shared/types/calculate';
+import { getCalcList } from '@/shared/helpers/functions';
+import { ICalcItem } from '@/shared/types/calculate';
 import { IServiceItemData } from '@/shared/types/my-services';
 import * as yup from 'yup';
 
 export const schemaAddServiceForm = yup.object({
-  nameService: yup.string().required(),
+  name: yup.string().required(),
   count: yup.number().min(1).required(),
   typeValue: yup.string(),
   cost: yup.number(),
@@ -23,8 +23,8 @@ export const getMyServicesList = () => {
   }
 };
 
-export const addServiceItem = (data: IServiceItem) => {
-  const localList = getServicesList();
+export const addServiceItem = (data: ICalcItem) => {
+  const localList = getCalcList();
   if (localList) {
     const updatedList = [...localList, data];
     localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(updatedList));
@@ -33,8 +33,8 @@ export const addServiceItem = (data: IServiceItem) => {
   }
 };
 
-export const updateServiceItem = (data: IServiceItem) => {
-  const localList = getServicesList();
+export const updateServiceItem = (data: ICalcItem) => {
+  const localList = getCalcList();
   if (localList) {
     const updatedList = localList.map((item) =>
       item.id === data.id ? { ...item, ...data } : item

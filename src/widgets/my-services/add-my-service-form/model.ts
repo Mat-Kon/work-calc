@@ -3,7 +3,7 @@ import { IServiceItemData } from '@/shared/types/my-services';
 import * as yup from 'yup';
 
 export const schemaAddServiceForm = yup.object({
-  nameService: yup.string().required(),
+  name: yup.string().required(),
   typeValue: yup.string().required(),
   costPerUnit: yup.number().required(),
 });

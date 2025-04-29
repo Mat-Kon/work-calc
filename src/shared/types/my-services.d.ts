@@ -1,6 +1,6 @@
 export interface IServiceItemData {
   id: string;
   typeValue: string;
-  nameService: string;
+  name: string;
   costPerUnit: number;
 }

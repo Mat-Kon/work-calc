@@ -30,7 +30,7 @@ export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem
   } = useForm<FormDataAddMyServiceForm>({
     resolver: yupResolver(schemaAddServiceForm),
     defaultValues: {
-      nameService: serviceItem?.nameService ?? '',
+      name: serviceItem?.name ?? '',
       costPerUnit: serviceItem?.costPerUnit ?? 0,
     },
   });
@@ -56,7 +56,7 @@ export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem
         <TextInput
           placeholder="Название услуги"
           id="nameService"
-          {...register('nameService')}
+          {...register('name')}
           className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
         />
 

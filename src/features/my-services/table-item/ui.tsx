@@ -2,20 +2,21 @@ import { IconBtn } from '@/shared/buttons';
 import { EditIcon, TrashIcon } from '@/shared/icons';
 import st from './index.module.scss';
 import { IServiceItemData } from '@/shared/types/my-services';
+import { IMaterialItemData } from '@/shared/types/materials';
 
 interface Props {
-  item: IServiceItemData;
+  item: IServiceItemData | IMaterialItemData;
   onDelete: () => void;
   onEdit: () => void;
 }
 
 export const TableItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
-  const { costPerUnit, nameService, typeValue } = item;
+  const { costPerUnit, name, typeValue } = item;
 
   return (
     <tr>
       <th scope="row" className={st.headings}>
-        {nameService}
+        {name}
       </th>
       <td>{typeValue}</td>
       <td>{costPerUnit.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>

@@ -2,11 +2,11 @@
 import st from './index.module.scss';
 import { type NextPage } from 'next';
 import { useState } from 'react';
-// import { TableServices } from '@/widgets/my-services';
 import { BaseBtn } from '@/shared/buttons/base';
 import { PageHeading } from '@/shared/page-heading';
 import { IMaterialItemData } from '@/shared/types/materials';
 import { AddMaterialForm } from '@/widgets/materials';
+import { TableMaterials } from '@/widgets/materials/table-materials/ui';
 
 const Materials: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
@@ -16,17 +16,16 @@ const Materials: NextPage = () => {
     setOpenPopup(true);
   };
 
-  // const handleClickEdit = (materialData: IMaterialItemData) => {
-  //   setOpenPopup(true);
-  //   setMaterialData(materialData);
-  // };
+  const handleClickEdit = (materialData: IMaterialItemData) => {
+    setOpenPopup(true);
+    setMaterialData(materialData);
+  };
 
   const handleClickCloseBtn = () => {
     setOpenPopup(false);
     setMaterialData(null);
   };
 
-  //TODO: add sort for services
   return (
     <>
       <PageHeading text="Мои материалы" />
@@ -39,7 +38,7 @@ const Materials: NextPage = () => {
           />
         </nav>
 
-        {/* <TableServices setMaterialData={handleClickEdit} isOpen={isOpenPopup} /> */}
+        <TableMaterials setMaterialsData={handleClickEdit} isOpen={isOpenPopup} />
 
         {isOpenPopup && (
           <AddMaterialForm

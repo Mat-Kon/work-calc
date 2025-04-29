@@ -1,9 +1,9 @@
 import { ServiceItem } from '@/features/calculate';
-import { IServiceItem } from '@/shared/types/calculate';
+import { ICalcItem } from '@/shared/types/calculate';
 import st from './index.module.scss';
 
 interface Props {
-  servicesList: IServiceItem[];
+  servicesList: ICalcItem[];
 }
 
 export const ServiceViewTable: React.FC<Props> = ({ servicesList }) => {

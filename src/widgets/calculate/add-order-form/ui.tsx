@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { addOrder, FormDataAddOrder, schemaAddOrderForm, updateOrders } from './model';
 import { IOrder } from '@/shared/types/calculate';
 import { useRouter } from 'next/navigation';
-import { getServicesList } from '@/shared/helpers/functions';
+import { getCalcList, removeCalcList } from '@/shared/helpers/functions';
 
 interface Props {
   order?: IOrder | null;
@@ -38,13 +38,12 @@ export const AddOrderForm = forwardRef<HTMLFormElement, Props>(({ order }, ref) 
   }, [order]);
 
   const onSubmit = (orderData: FormDataAddOrder) => {
-    const orderServices = getServicesList();
+    const orderServices = getCalcList();
     const orderId = uuidv4();
 
     if (orderServices) {
       if (order) {
         const updateOrder = { ...orderData, id: order.id, orderServices: orderServices };
-        console.log(updateOrder);
         updateOrders(updateOrder);
       } else {
         const updateOrder = { ...orderData, id: orderId, orderServices: orderServices };
@@ -52,6 +51,7 @@ export const AddOrderForm = forwardRef<HTMLFormElement, Props>(({ order }, ref) 
       }
     }
     replace(`/orders/${order?.id ?? orderId}`);
+    removeCalcList();
   };
 
   return (

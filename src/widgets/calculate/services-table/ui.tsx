@@ -1,17 +1,17 @@
 import { ServiceItem } from '@/features/calculate';
-import { IServiceItem } from '@/shared/types/calculate';
+import { ICalcItem } from '@/shared/types/calculate';
 import { useEffect, useState } from 'react';
 import st from './index.module.scss';
 import { deleteServiceItem } from './model';
-import { getServicesList } from '@/shared/helpers/functions';
+import { getCalcList } from '@/shared/helpers/functions';
 
 interface Props {
-  setServiceData: (serviceData: IServiceItem) => void;
+  setServiceData: (serviceData: ICalcItem) => void;
   isOpen: boolean;
 }
 
 export const ServiceTable: React.FC<Props> = ({ setServiceData, isOpen }) => {
-  const [services, setServiceList] = useState<IServiceItem[]>([]);
+  const [services, setServiceList] = useState<ICalcItem[]>([]);
   const [totalCost, setTotalCost] = useState(0);
 
   const handleClickDelete = (id: string) => {
@@ -22,12 +22,12 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData, isOpen }) => {
     setTotalCost(() => updatedTotalCost);
   };
 
-  const handleClickEdit = (serviceData: IServiceItem) => {
+  const handleClickEdit = (serviceData: ICalcItem) => {
     setServiceData(serviceData);
   };
 
   useEffect(() => {
-    const servicesFromStorage = getServicesList();
+    const servicesFromStorage = getCalcList();
     if (servicesFromStorage?.length) {
       setServiceList(servicesFromStorage);
       setTotalCost(servicesFromStorage.reduce((acc, curValue) => acc + curValue.cost, 0));

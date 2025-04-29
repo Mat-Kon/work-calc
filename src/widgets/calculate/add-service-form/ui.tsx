@@ -14,19 +14,22 @@ import {
   updateServiceItem,
 } from './model';
 import { v4 as uuidv4 } from 'uuid';
-import { IServiceItem } from '@/shared/types/calculate';
+import { ICalcItem } from '@/shared/types/calculate';
 import { useEffect, useState } from 'react';
 import { IServiceItemData } from '@/shared/types/my-services';
+import { getMaterialsList } from '@/widgets/materials/model';
+import { IMaterialItemData } from '@/shared/types/materials';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  serviceItem: IServiceItem | null;
+  serviceItem: ICalcItem | null;
 }
 
 export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
   const [services, setServices] = useState<IServiceItemData[]>([]);
-  const [serviceNames, setServicesName] = useState<string[]>([]);
+  const [materials, setMaterials] = useState<IMaterialItemData[]>([]);
+  const [names, setName] = useState<string[]>([]);
 
   const btnName = serviceItem ? 'Обновить' : 'Добавить';
   const hasServices = services.length > 0;
@@ -39,23 +42,32 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
     resolver: yupResolver(schemaAddServiceForm),
     defaultValues: {
       count: serviceItem?.count ?? 0,
-      nameService: serviceItem?.nameService ?? '',
+      name: serviceItem?.name ?? '',
     },
   });
 
   useEffect(() => {
     const myServiceList = getMyServicesList();
+    const myMaterialsList = getMaterialsList();
     if (myServiceList) {
-      const names = myServiceList.map((service) => service.nameService);
+      const serviceNames = myServiceList.map((service) => service.name);
       setServices(myServiceList);
-      setServicesName(names);
+      setName(serviceNames);
+    }
+
+    if (myMaterialsList) {
+      const materialNames = myMaterialsList.map((mat) => mat.name);
+      setMaterials(myMaterialsList);
+      setName((prev) => [...prev, ...materialNames]);
     }
   }, [isOpen]);
 
   const onSubmit = (data: FormDataAddServiceCalc) => {
-    const curService = services.find((service) => service.nameService === data.nameService);
-    const costPerUnit = curService?.costPerUnit ?? 0;
-    const typeValue = curService?.typeValue ?? '';
+    const curItem =
+      services.find((service) => service.name === data.name) ??
+      materials.find((mat) => mat.name === data.name);
+    const costPerUnit = curItem?.costPerUnit ?? 0;
+    const typeValue = curItem?.typeValue ?? '';
     const totalCost = data.count * costPerUnit;
     if (serviceItem) {
       const serviceData = { ...data, id: serviceItem.id, costPerUnit, cost: totalCost, typeValue };
@@ -75,11 +87,7 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
       </div>
       {hasServices ? (
         <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
-          <CalcSelect
-            id="typeService"
-            optionValues={serviceNames ?? []}
-            {...register('nameService')}
-          />
+          <CalcSelect id="typeService" optionValues={names ?? []} {...register('name')} />
 
           <TextInput
             {...register('count', { required: true })}

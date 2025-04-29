@@ -1,6 +1,6 @@
 import { IServiceItemData } from './my-services';
 
-export interface IServiceItem extends IServiceItemData {
+export interface ICalcItem extends IServiceItemData {
   count: number;
   cost: number;
 }
