@@ -17,6 +17,10 @@ export const linksMap: linkData[] = [
     link: '/materials',
     verbName: 'Материалы',
   },
+  {
+    link: '/login',
+    verbName: 'Вход',
+  },
   // {
   //   link: '/settings',
   //   verbName: 'Настройки',

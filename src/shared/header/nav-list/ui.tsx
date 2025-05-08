@@ -14,7 +14,7 @@ export const NavList: React.FC = () => {
     <nav className={st.nav}>
       <ul className={st.nav__list}>
         {linksMap.map((linkData, index) => (
-          <li key={index}>
+          <li key={index} id={linkData.link}>
             <Link
               href={linkData.link}
               className={`${st.nav__item} ${activeClassName(linkData.link)}`}
