@@ -1,4 +1,7 @@
 'use client';
+
+import { signIn, signOut, useSession } from 'next-auth/react';
+
 import Link from 'next/link';
 import st from './index.module.scss';
 import { usePathname } from 'next/navigation';
@@ -9,6 +12,7 @@ export const NavList: React.FC = () => {
   const activeClassName = (link: string) => {
     return pathName && pathName.includes(link) ? st.active : '';
   };
+  const { data: session } = useSession();
 
   return (
     <nav className={st.nav}>
@@ -25,6 +29,14 @@ export const NavList: React.FC = () => {
           </li>
         ))}
       </ul>
+      {session ? (
+        <div className={st.auth}>
+          <img alt="avatar" src={session.user?.image ?? ''} width={32} height={32} />
+          <button onClick={() => signOut()}>Выход</button>
+        </div>
+      ) : (
+        <button onClick={() => signIn()}>Вход</button>
+      )}
     </nav>
   );
 };

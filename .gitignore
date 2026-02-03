@@ -30,7 +30,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # env files (can opt-in for commiting if needed)
-.env*
+.env
+.env.local
 
 # vercel
 .vercel
@@ -46,3 +47,22 @@ next-env.d.ts
 **/public/sw.js.map
 **/public/workbox-*.js.map
 **/public/worker-*.js.map
+
+# Prisma
+prisma/migrations/*
+!prisma/migrations/.gitkeep
+.prisma
+.env
+*.db
+*.db-journal
+
+# Сгенерированные файлы Prisma
+src/generated/
+node_modules/.prisma/
+
+# БД для разработки
+dev.db
+test.db
+
+# Переменные окружения
+.env*.local

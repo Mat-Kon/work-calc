@@ -1,5 +1,5 @@
 .nav {
-  @include mix.flex($alignItems: center);
+  @include mix.flex($alignItems: center, $gap: 20px);
   @include mix.media-tablet {
     justify-content: center;
   }
@@ -27,5 +27,14 @@
 
   &.active {
     border-bottom: 2px solid vars.$color-primer;
+  }
+}
+
+.auth {
+  @include mix.flex($gap: 10px, $alignItems: center);
+  padding-left: 30px;
+
+  & img {
+    border-radius: 50%;
   }
 }
