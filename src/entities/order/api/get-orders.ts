@@ -42,6 +42,8 @@ export async function getOrders({
       address: order.address,
       phoneNumber: order.phoneNumber,
       status: order.status as OrderStatus,
+      discountPercent: toNumber(order.discountPercent),
+      isPrepaid: order.isPrepaid,
       meetingDateTime: order.meetingDateTime.toISOString(),
       startWorkDate: order.startWorkDate.toISOString(),
       createdAt: order.createdAt.toISOString(),

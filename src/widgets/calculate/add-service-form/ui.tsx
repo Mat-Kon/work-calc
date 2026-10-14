@@ -10,11 +10,8 @@ import { catalogApi } from "@/shared/api";
 import { BaseBtn } from "@/shared/buttons/base";
 import { TextInput } from "@/shared/inputs";
 import { PopupWrapper } from "@/shared/popups";
-import {
-  type CalcItem,
-  type ItemKind,
-  type ItemData,
-} from "@/shared/types/calculate";
+import { type CalcItem, type ItemKind } from "@/shared/types/calculate";
+import { type ServiceItemData } from "@/shared/types/my-services";
 
 import st from "./index.module.scss";
 import {
@@ -35,8 +32,8 @@ export function AddServicePopup({
   onClose,
   serviceItem,
 }: AddServicePopupProps) {
-  const [services, setServices] = useState<ItemData[]>([]);
-  const [materials, setMaterials] = useState<ItemData[]>([]);
+  const [services, setServices] = useState<ServiceItemData[]>([]);
+  const [materials, setMaterials] = useState<ServiceItemData[]>([]);
 
   const names = [...services, ...materials].map((item) => item.name);
   const btnName = serviceItem ? "Обновить" : "Добавить";
@@ -100,7 +97,7 @@ export function AddServicePopup({
   return (
     <PopupWrapper isOpen={isOpen}>
       <div className={st.wrapCloseBtn}>
-        <BaseBtn text="Закрыть" onClick={onClose} />
+        <BaseBtn text="Закрыть" variant="ghost" onClick={onClose} />
       </div>
 
       {hasServices ? (

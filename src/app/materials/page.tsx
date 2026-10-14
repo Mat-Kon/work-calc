@@ -1,24 +1,27 @@
-'use client';
-import st from './index.module.scss';
-import { type NextPage } from 'next';
-import { useState } from 'react';
-import { BaseBtn } from '@/shared/buttons/base';
-import { PageHeading } from '@/shared/page-heading';
-import { IMaterialItemData } from '@/shared/types/materials';
-import { AddMaterialForm } from '@/widgets/materials';
-import { TableMaterials } from '@/widgets/materials/table-materials';
+"use client";
+
+import { type NextPage } from "next";
+import { useState } from "react";
+
+import { BaseBtn } from "@/shared/buttons/base";
+import { PageHeading } from "@/shared/page-heading";
+import { type MaterialItemData } from "@/shared/types/materials";
+import { AddMaterialForm } from "@/widgets/materials";
+import { TableMaterials } from "@/widgets/materials/table-materials";
+
+import st from "./index.module.scss";
 
 const Materials: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
-  const [materialData, setMaterialData] = useState<IMaterialItemData | null>(null);
+  const [materialData, setMaterialData] = useState<MaterialItemData | null>(
+    null,
+  );
 
-  const handleClickAddBtn = () => {
-    setOpenPopup(true);
-  };
+  const handleClickAddBtn = () => setOpenPopup(true);
 
-  const handleClickEdit = (materialData: IMaterialItemData) => {
+  const handleClickEdit = (material: MaterialItemData) => {
     setOpenPopup(true);
-    setMaterialData(materialData);
+    setMaterialData(material);
   };
 
   const handleClickCloseBtn = () => {
@@ -31,22 +34,21 @@ const Materials: NextPage = () => {
       <PageHeading text="Мои материалы" />
       <div className={st.myService}>
         <nav className={st.myService__toolbar}>
-          <BaseBtn
-            text="Добавить материал"
-            className={st.myService__add}
-            onClick={handleClickAddBtn}
-          />
+          <BaseBtn text="Добавить материал" onClick={handleClickAddBtn} />
         </nav>
 
-        <TableMaterials setMaterialsData={handleClickEdit} isOpen={isOpenPopup} />
+        <TableMaterials
+          setMaterialsData={handleClickEdit}
+          isOpen={isOpenPopup}
+        />
 
-        {isOpenPopup && (
+        {isOpenPopup ? (
           <AddMaterialForm
             isOpen={isOpenPopup}
             onClose={handleClickCloseBtn}
             materialItem={materialData}
           />
-        )}
+        ) : null}
       </div>
     </>
   );

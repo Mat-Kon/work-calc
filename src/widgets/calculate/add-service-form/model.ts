@@ -1,7 +1,8 @@
+import * as yup from 'yup';
+
 import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
 import { getCalcList } from '@/shared/helpers/functions';
-import { ICalcItem } from '@/shared/types/calculate';
-import * as yup from 'yup';
+import { type CalcItem } from '@/shared/types/calculate';
 
 export const schemaAddServiceForm = yup.object({
   name: yup.string().required(),
@@ -13,23 +14,18 @@ export const schemaAddServiceForm = yup.object({
 
 export type FormDataAddServiceCalc = yup.InferType<typeof schemaAddServiceForm>;
 
-// Черновик расчёта пока остаётся в localStorage: это временные данные до сохранения заказа
-export const addServiceItem = (data: ICalcItem) => {
-  const localList = getCalcList();
-  if (localList) {
-    const updatedList = [...localList, data];
-    localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(updatedList));
-  } else {
-    localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify([data]));
-  }
+export const addServiceItem = (data: CalcItem) => {
+  const list = getCalcList() ?? [];
+  const updated = [...list, data];
+  localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(updated));
 };
 
-export const updateServiceItem = (data: ICalcItem) => {
-  const localList = getCalcList();
-  if (localList) {
-    const updatedList = localList.map((item) =>
-      item.id === data.id ? { ...item, ...data } : item
-    );
-    localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(updatedList));
-  }
+export const updateServiceItem = (data: CalcItem) => {
+  const list = getCalcList();
+  if (!list) return;
+
+  const updated = list.map((item) =>
+    item.id === data.id ? { ...item, ...data } : item,
+  );
+  localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(updated));
 };

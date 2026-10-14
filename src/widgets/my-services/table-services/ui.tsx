@@ -1,15 +1,18 @@
-import st from "./index.module.scss";
+"use client";
+
 import { TableItem } from "@/features/my-services";
-import { IServiceItemData } from "@/shared/types/my-services";
 import { catalogApi } from "@/shared/api";
 import { useCatalog } from "@/shared/api/use-catalog";
+import { type ServiceItemData } from "@/shared/types/my-services";
 
-interface Props {
-  setServiceData: (serviceData: IServiceItemData) => void;
+import st from "./index.module.scss";
+
+interface TableServicesProps {
+  setServiceData: (service: ServiceItemData) => void;
   isOpen: boolean;
 }
 
-export const TableServices: React.FC<Props> = ({ setServiceData, isOpen }) => {
+export function TableServices({ setServiceData, isOpen }: TableServicesProps) {
   const { items, setItems, isLoading, error } = useCatalog("SERVICE", isOpen);
 
   const handleClickDelete = async (id: string) => {
@@ -23,46 +26,35 @@ export const TableServices: React.FC<Props> = ({ setServiceData, isOpen }) => {
 
   if (isLoading) return <p>Загрузка...</p>;
   if (error) return <p role="alert">Ошибка: {error}</p>;
+  if (items.length === 0) return null;
 
-  return items.length > 0 ? (
+  return (
     <table className={st.servicesTable}>
       <caption>Список услуг</caption>
       <thead className={st.servicesTable__head}>
         <tr>
-          <th
-            scope="col"
-            className={st.servicesTable__headings}
-            style={{ width: "50%" }}
-          >
+          <th scope="col" className={st.servicesTable__headings}>
             Название
           </th>
-          <th
-            scope="col"
-            className={st.servicesTable__headings}
-            style={{ width: "20%" }}
-          >
+          <th scope="col" className={st.servicesTable__headings}>
             Ед. измерения
           </th>
-          <th
-            scope="col"
-            className={st.servicesTable__headings}
-            style={{ width: "20%" }}
-          >
+          <th scope="col" className={st.servicesTable__headings}>
             Стоимость
           </th>
-          <th style={{ width: "100px" }}></th>
+          <th aria-label="Действия" />
         </tr>
       </thead>
       <tbody>
         {items.map((item) => (
           <TableItem
-            item={item}
             key={item.id}
+            item={item}
             onDelete={() => handleClickDelete(item.id)}
             onEdit={() => setServiceData(item)}
           />
         ))}
       </tbody>
     </table>
-  ) : null;
-};
+  );
+}

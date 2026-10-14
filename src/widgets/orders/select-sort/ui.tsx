@@ -1,19 +1,32 @@
-import { CustomSelect } from '@/shared/select';
-import st from './index.module.scss';
-import { SORT_OPTIONS } from '@/features/orders/model';
+"use client";
 
-interface Props {
+import { type ChangeEvent } from "react";
+
+import { DEFAULT_SORT, SORT_OPTIONS } from "@/features/orders/model";
+import { CustomSelect } from "@/shared/select";
+
+import st from "./index.module.scss";
+
+interface SelectSortProps {
   onChange: (value: string) => void;
+  defaultValue?: string;
 }
 
-export const SelectSort: React.FC<Props> = ({ onChange }) => {
+export function SelectSort({
+  onChange,
+  defaultValue = DEFAULT_SORT,
+}: SelectSortProps) {
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    onChange(e.target.value);
+  };
+
   return (
     <CustomSelect
       className={st.sort}
-      optionValues={SORT_OPTIONS}
-      defaultValue={SORT_OPTIONS[0]}
+      optionValues={[...SORT_OPTIONS]}
+      defaultValue={defaultValue}
       hasDisable
-      onChange={(e) => onChange(e.target.value)}
+      onChange={handleChange}
     />
   );
-};
+}

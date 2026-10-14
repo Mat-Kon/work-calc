@@ -1,30 +1,37 @@
-import st from './index.module.scss';
-import { TableItem } from '@/features/my-services';
-import { IMaterialItemData } from '@/shared/types/materials';
-import { catalogApi } from '@/shared/api';
-import { useCatalog } from '@/shared/api/use-catalog';
+"use client";
 
-interface Props {
-  setMaterialsData: (MaterialsData: IMaterialItemData) => void;
+import { TableItem } from "@/features/my-services";
+import { catalogApi } from "@/shared/api";
+import { useCatalog } from "@/shared/api/use-catalog";
+import { type MaterialItemData } from "@/shared/types/materials";
+
+import st from "./index.module.scss";
+
+interface TableMaterialsProps {
+  setMaterialsData: (material: MaterialItemData) => void;
   isOpen: boolean;
 }
 
-export const TableMaterials: React.FC<Props> = ({ setMaterialsData, isOpen }) => {
-  const { items, setItems, isLoading, error } = useCatalog('MATERIAL', isOpen);
+export function TableMaterials({
+  setMaterialsData,
+  isOpen,
+}: TableMaterialsProps) {
+  const { items, setItems, isLoading, error } = useCatalog("MATERIAL", isOpen);
 
   const handleClickDelete = async (id: string) => {
     try {
       await catalogApi.remove(id);
       setItems((prev) => prev.filter((item) => item.id !== id));
     } catch {
-      alert('Не удалось удалить');
+      alert("Не удалось удалить");
     }
   };
 
   if (isLoading) return <p>Загрузка...</p>;
   if (error) return <p role="alert">Ошибка: {error}</p>;
+  if (items.length === 0) return null;
 
-  return items.length > 0 ? (
+  return (
     <table className={st.servicesTable}>
       <caption>Список материалов</caption>
       <thead className={st.servicesTable__head}>
@@ -38,19 +45,19 @@ export const TableMaterials: React.FC<Props> = ({ setMaterialsData, isOpen }) =>
           <th scope="col" className={st.servicesTable__headings}>
             Стоимость
           </th>
-          <th></th>
+          <th aria-label="Действия" />
         </tr>
       </thead>
       <tbody>
         {items.map((item) => (
           <TableItem
-            item={item}
             key={item.id}
+            item={item}
             onDelete={() => handleClickDelete(item.id)}
             onEdit={() => setMaterialsData(item)}
           />
         ))}
       </tbody>
     </table>
-  ) : null;
-};
+  );
+}

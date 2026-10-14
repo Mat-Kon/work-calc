@@ -1,17 +1,18 @@
-import { IOrder } from "@/shared/types/calculate";
+import { type Order } from "@/shared/types/calculate";
+
 import st from "./index.module.scss";
 
-interface Props {
-  order?: IOrder | null;
+interface PrintHeaderProps {
+  order?: Order | null;
 }
 
-export const PrintHeader: React.FC<Props> = ({ order }) => {
+export function PrintHeader({ order }: PrintHeaderProps) {
   if (!order) return null;
 
   return (
     <div className={st.printHeader}>
       <h1>Смета на работы</h1>
-      {order.orderNumber && <p>Договор № {order.orderNumber}</p>}
+      {order.orderNumber ? <p>Договор № {order.orderNumber}</p> : null}
       <p>
         <strong>Заказчик:</strong> {order.name}
       </p>
@@ -23,4 +24,4 @@ export const PrintHeader: React.FC<Props> = ({ order }) => {
       </p>
     </div>
   );
-};
+}

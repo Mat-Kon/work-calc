@@ -1,24 +1,32 @@
-import { BaseBtn } from '@/shared/buttons/base';
-import { TextInput } from '@/shared/inputs';
-import { PopupWrapper } from '@/shared/popups';
-import st from './index.module.scss';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormDataAddMyServiceForm, schemaAddServiceForm } from './model';
-import { IServiceItemData } from '@/shared/types/my-services';
-import { SelectMeasure } from '@/shared/select-measure';
-import { catalogApi } from '@/shared/api';
+"use client";
 
-interface Props {
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { catalogApi } from "@/shared/api";
+import { BaseBtn } from "@/shared/buttons/base";
+import { TextInput } from "@/shared/inputs";
+import { PopupWrapper } from "@/shared/popups";
+import { SelectMeasure } from "@/shared/select-measure";
+import { type ServiceItemData } from "@/shared/types/my-services";
+
+import st from "./index.module.scss";
+import { type FormDataAddMyServiceForm, schemaAddServiceForm } from "./model";
+
+interface AddMyServiceFormProps {
   isOpen: boolean;
   onClose: () => void;
-  serviceItem: IServiceItemData | null;
+  serviceItem: ServiceItemData | null;
 }
 
-export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
-  const btnName = serviceItem ? 'Изменить' : 'Добавить';
-  const [submitError, setSubmitError] = useState('');
+export function AddMyServiceForm({
+  isOpen,
+  onClose,
+  serviceItem,
+}: AddMyServiceFormProps) {
+  const btnName = serviceItem ? "Изменить" : "Добавить";
+  const [submitError, setSubmitError] = useState("");
 
   const {
     register,
@@ -27,7 +35,7 @@ export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem
   } = useForm<FormDataAddMyServiceForm>({
     resolver: yupResolver(schemaAddServiceForm),
     defaultValues: {
-      name: serviceItem?.name ?? '',
+      name: serviceItem?.name ?? "",
       costPerUnit: serviceItem?.costPerUnit ?? 0,
     },
   });
@@ -37,37 +45,40 @@ export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem
       if (serviceItem) {
         await catalogApi.update(serviceItem.id, data);
       } else {
-        await catalogApi.add('SERVICE', data);
+        await catalogApi.add("SERVICE", data);
       }
       onClose();
     } catch (e) {
-      setSubmitError(e instanceof Error ? e.message : 'Не удалось сохранить');
+      setSubmitError(e instanceof Error ? e.message : "Не удалось сохранить");
     }
   };
 
   return (
-    <PopupWrapper isOpen={isOpen}>
+    <PopupWrapper isOpen={isOpen} onClose={onClose}>
       <div className={st.wrapCloseBtn}>
-        <BaseBtn text="Закрыть" className={st.closeBtn} onClick={onClose} />
+        <BaseBtn text="Закрыть" variant="ghost" onClick={onClose} />
       </div>
       <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           placeholder="Название услуги"
           id="nameService"
-          {...register('name')}
-          className={`${st.serviceInput} ${!!errors.name ? st.error : ''}`}
+          {...register("name")}
+          className={`${st.serviceInput} ${errors.name ? st.error : ""}`}
         />
 
-        <SelectMeasure id="typeValue" {...register('typeValue')} />
+        <SelectMeasure id="typeValue" {...register("typeValue")} />
+
         <TextInput
-          {...register('costPerUnit', { required: true })}
           type="number"
           step="any"
-          className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
+          {...register("costPerUnit", { required: true })}
+          className={`${st.serviceInput} ${errors.costPerUnit ? st.error : ""}`}
         />
-        {submitError && <p role="alert">{submitError}</p>}
-        <BaseBtn text={btnName} className={st.addService__btn} />
+
+        {submitError ? <p role="alert">{submitError}</p> : null}
+
+        <BaseBtn text={btnName} type="submit" />
       </form>
     </PopupWrapper>
   );
-};
+}

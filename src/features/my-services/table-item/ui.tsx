@@ -1,16 +1,19 @@
-import { IconBtn } from '@/shared/buttons';
-import { EditIcon, TrashIcon } from '@/shared/icons';
-import st from './index.module.scss';
-import { IServiceItemData } from '@/shared/types/my-services';
-import { IMaterialItemData } from '@/shared/types/materials';
+import { IconBtn } from "@/shared/buttons/icon-btn";
+import { EditIcon, TrashIcon } from "@/shared/icons";
+import { type MaterialItemData } from "@/shared/types/materials";
+import { type ServiceItemData } from "@/shared/types/my-services";
 
-interface Props {
-  item: IServiceItemData | IMaterialItemData;
+import st from "./index.module.scss";
+
+type ItemData = ServiceItemData | MaterialItemData;
+
+interface TableItemProps {
+  item: ItemData;
   onDelete: () => void;
   onEdit: () => void;
 }
 
-export const TableItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
+export function TableItem({ item, onDelete, onEdit }: TableItemProps) {
   const { costPerUnit, name, typeValue } = item;
 
   return (
@@ -19,16 +22,29 @@ export const TableItem: React.FC<Props> = ({ item, onDelete, onEdit }) => {
         {name}
       </th>
       <td>{typeValue}</td>
-      <td>{costPerUnit.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>
+      <td>
+        {costPerUnit.toLocaleString("ru-RU", {
+          style: "currency",
+          currency: "RUB",
+        })}
+      </td>
       <td className={st.item__btns}>
-        <IconBtn className={st.item__editBtn} title="Редактировать" onClick={onEdit}>
+        <IconBtn
+          className={st.item__editBtn}
+          title="Редактировать"
+          onClick={onEdit}
+        >
           <EditIcon />
         </IconBtn>
 
-        <IconBtn className={st.item__deleteBtn} title="Удалить" onClick={onDelete}>
+        <IconBtn
+          className={st.item__deleteBtn}
+          title="Удалить"
+          onClick={onDelete}
+        >
           <TrashIcon />
         </IconBtn>
       </td>
     </tr>
   );
-};
+}
