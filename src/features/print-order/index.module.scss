@@ -1,0 +1,7 @@
+@use "../../styles/abstract/variables" as vars;
+
+.printBtn {
+    background-color: vars.$color-grey-light;
+    padding: 10px;
+    border-radius: vars.$br-radius;
+}

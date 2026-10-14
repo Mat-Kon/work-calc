@@ -1,0 +1,18 @@
+@use "../../styles/abstract/variables" as vars;
+@use "../../styles/abstract/mixins" as mix;
+
+.footer {
+  @include mix.flex($justify: space-between, $alignItems: center);
+  border-top: 1px solid vars.$color-primer;
+  padding: 10px 30px;
+  font-size: 1.4rem;
+  color: vars.$color-font-base;
+}
+
+.copyright {
+  opacity: 0.7;
+}
+
+.version {
+  opacity: 0.5;
+}

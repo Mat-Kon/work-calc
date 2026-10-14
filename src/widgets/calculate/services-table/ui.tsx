@@ -1,9 +1,9 @@
-import { ServiceItem } from '@/features/calculate';
-import { ICalcItem } from '@/shared/types/calculate';
-import { useEffect, useState } from 'react';
-import st from './index.module.scss';
-import { deleteServiceItem } from './model';
-import { getCalcList } from '@/shared/helpers/functions';
+import { ServiceItem } from "@/features/calculate";
+import { ICalcItem } from "@/shared/types/calculate";
+import { useEffect, useState } from "react";
+import st from "./index.module.scss";
+import { deleteServiceItem } from "./model";
+import { getCalcList } from "@/shared/helpers/functions";
 
 interface Props {
   setServiceData: (serviceData: ICalcItem) => void;
@@ -17,7 +17,10 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData, isOpen }) => {
   const handleClickDelete = (id: string) => {
     deleteServiceItem(id);
     const updatedList = services.filter((item) => item.id !== id);
-    const updatedTotalCost = updatedList.reduce((acc, curValue) => acc + curValue.cost, 0);
+    const updatedTotalCost = updatedList.reduce(
+      (acc, curValue) => acc + curValue.cost,
+      0,
+    );
     setServiceList(() => updatedList);
     setTotalCost(() => updatedTotalCost);
   };
@@ -30,7 +33,9 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData, isOpen }) => {
     const servicesFromStorage = getCalcList();
     if (servicesFromStorage?.length) {
       setServiceList(servicesFromStorage);
-      setTotalCost(servicesFromStorage.reduce((acc, curValue) => acc + curValue.cost, 0));
+      setTotalCost(
+        servicesFromStorage.reduce((acc, curValue) => acc + curValue.cost, 0),
+      );
     }
   }, [isOpen]);
 
@@ -51,7 +56,7 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData, isOpen }) => {
           <th scope="col" className={st.servicesTable__headings}>
             Стоимость
           </th>
-          <th></th>
+          <th className={st.noPrint}></th>
         </tr>
       </thead>
       <tbody>
@@ -70,8 +75,13 @@ export const ServiceTable: React.FC<Props> = ({ setServiceData, isOpen }) => {
           <th scope="row" colSpan={3} className={st.headings}>
             Итого
           </th>
-          <td>{totalCost.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>
-          <th></th>
+          <td>
+            {totalCost.toLocaleString("ru-RU", {
+              style: "currency",
+              currency: "RUB",
+            })}
+          </td>
+          <th className={st.noPrint}></th>
         </tr>
       </tfoot>
     </table>

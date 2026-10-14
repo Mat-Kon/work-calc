@@ -1,5 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
+import { Footer } from "@/widgets/footer";
 import st from "./index.module.scss";
 
 const Header = dynamic(() => import("../header").then((mod) => mod.Header), {
@@ -15,7 +16,7 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
     <>
       <Header />
       <main className={st.main}>{children}</main>
-      <div>footer</div>
+      <Footer />
     </>
   );
 };

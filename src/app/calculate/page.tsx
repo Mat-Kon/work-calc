@@ -1,13 +1,14 @@
-'use client';
-import { AddServicePopup } from '@/widgets/calculate/add-service-form';
-import st from './index.module.scss';
-import { type NextPage } from 'next';
-import { useRef, useState } from 'react';
-import { ServiceTable } from '@/widgets/calculate/services-table';
-import { ICalcItem } from '@/shared/types/calculate';
-import { BaseBtn } from '@/shared/buttons/base';
-import { AddOrderForm } from '@/widgets/calculate';
-import { PageHeading } from '@/shared/page-heading';
+"use client";
+import { AddServicePopup } from "@/widgets/calculate/add-service-form";
+import st from "./index.module.scss";
+import { type NextPage } from "next";
+import { useRef, useState } from "react";
+import { ServiceTable } from "@/widgets/calculate/services-table";
+import { ICalcItem } from "@/shared/types/calculate";
+import { BaseBtn } from "@/shared/buttons/base";
+import { AddOrderForm } from "@/widgets/calculate";
+import { PageHeading } from "@/shared/page-heading";
+import { PrintOrderButton } from "@/features/print-order";
 
 const Calculate: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
@@ -30,7 +31,7 @@ const Calculate: NextPage = () => {
 
   const handleClickSaveOrder = () => {
     if (formRef.current) {
-      formRef.current.dispatchEvent(new Event('submit', { bubbles: true }));
+      formRef.current.dispatchEvent(new Event("submit", { bubbles: true }));
     }
   };
 
@@ -40,15 +41,24 @@ const Calculate: NextPage = () => {
       <div className={st.calc}>
         <AddOrderForm ref={formRef} />
 
-        <nav className={st.calc__toolbar}>
+        <nav className={`${st.calc__toolbar} no-print`}>
           <button className={st.calc__add} onClick={handleClickAddBtn}>
             Добавить
           </button>
         </nav>
 
-        <ServiceTable setServiceData={handleClickEdit} isOpen={isOpenPopup} />
+        <div className={st.printArea}>
+          <ServiceTable setServiceData={handleClickEdit} isOpen={isOpenPopup} />
+        </div>
 
-        <BaseBtn text="Сохранить" className={st.calc__add} onClick={handleClickSaveOrder} />
+        <div className={`${st.calc__actions} no-print`}>
+          <PrintOrderButton />
+          <BaseBtn
+            text="Сохранить"
+            className={st.calc__add}
+            onClick={handleClickSaveOrder}
+          />
+        </div>
 
         {isOpenPopup && (
           <AddServicePopup

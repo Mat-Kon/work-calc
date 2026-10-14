@@ -15,3 +15,13 @@
 .calc__add {
   @include mix.add-btn();
 }
+
+.calc__actions {
+  @include mix.flex($gap: 30px);
+  padding-bottom: 30px;
+}
+
+.printArea {
+  display: flex;
+  justify-content: center;
+}

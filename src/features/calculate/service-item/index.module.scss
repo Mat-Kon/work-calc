@@ -1,9 +1,6 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-
-
-
 .headings {
   text-align: left;
   text-wrap: wrap;
@@ -15,7 +12,8 @@
   flex-wrap: wrap;
 }
 
-.item__editBtn, .item__deleteBtn {
+.item__editBtn,
+.item__deleteBtn {
   padding: 3px;
 
   @include mix.hover {
@@ -24,7 +22,6 @@
       border: 3px solid vars.$color-font-base;
     }
   }
-
 }
 
 .item__editBtn {
@@ -35,4 +32,9 @@
 .item__deleteBtn {
   border: 3px solid vars.$color-error;
   color: vars.$color-error;
+}
+.noPrint {
+  @media print {
+    display: none !important;
+  }
 }
