@@ -1,24 +1,55 @@
-import { HamburgerButton, LoginBtn, LogoBtn } from '../buttons';
-import { useState } from 'react';
-import { isMobileView } from '../helpers/functions';
-import { NavList } from './nav-list';
-import st from './index.module.scss';
+"use client";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { HamburgerButton, LoginBtn, LogoBtn } from "../buttons";
+import { NavList } from "./nav-list";
+import { MenuProvider, useMenu } from "./model/menu-context";
+import st from "./index.module.scss";
 
-export const Header: React.FC = () => {
-  const [isOpenMenu, setOpenMenu] = useState(false);
-  const isHiddenMobileMenu = isMobileView() && !isOpenMenu;
+const HeaderContent: React.FC = () => {
+  const { isOpen, close } = useMenu();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    close();
+  }, [pathname, close]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const onEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onEscape);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onEscape);
+    };
+  }, [isOpen, close]);
 
   return (
     <header className={st.header}>
       <LogoBtn />
 
-      <div className={`${st.mobile__menu} ${!isHiddenMobileMenu ? st.active : ''}`}>
+      <div
+        id="mobile-menu"
+        className={`${st.mobile__menu} ${isOpen ? st.active : ""}`}
+        aria-hidden={!isOpen}
+      >
         <NavList />
-
         <LoginBtn />
       </div>
 
-      <HamburgerButton isOpen={isOpenMenu} setOpen={setOpenMenu} />
+      <HamburgerButton />
     </header>
   );
 };
+
+export const Header: React.FC = () => (
+  <MenuProvider>
+    <HeaderContent />
+  </MenuProvider>
+);

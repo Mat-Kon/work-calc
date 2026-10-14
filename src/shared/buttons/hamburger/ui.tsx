@@ -1,21 +1,22 @@
-import { type Dispatch, type SetStateAction } from 'react';
-import st from './index.module.scss';
+"use client";
+import { useMenu } from "@/shared/header/model/menu-context";
+import st from "./index.module.scss";
 
-interface Props {
-  isOpen: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}
-
-export const HamburgerButton: React.FC<Props> = ({ isOpen, setOpen }) => {
-  const handleClick = () => {
-    setOpen((prev) => !prev);
-  };
+export const HamburgerButton: React.FC = () => {
+  const { isOpen, toggle } = useMenu();
 
   return (
-    <button className={`${st.hamburger} ${isOpen ? st.open : ''}`} onClick={handleClick}>
-      <span className={st.hamburger_item}></span>
-      <span className={st.hamburger_item}></span>
-      <span className={st.hamburger_item}></span>
+    <button
+      type="button"
+      className={`${st.hamburger} ${isOpen ? st.active : ""}`}
+      onClick={toggle}
+      aria-label={isOpen ? "Закрыть меню" : "Открыть меню"}
+      aria-expanded={isOpen}
+      aria-controls="mobile-menu"
+    >
+      <span />
+      <span />
+      <span />
     </button>
   );
 };

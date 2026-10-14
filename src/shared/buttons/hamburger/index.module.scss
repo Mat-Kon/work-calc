@@ -2,25 +2,36 @@
 @use "../../../styles/abstract/mixins" as mix;
 
 .hamburger {
-  z-index: 10;
+  z-index: 20;
   position: relative;
   display: none;
   width: 32px;
   height: 32px;
-  transition: transform 0.5s;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 
   & span {
     display: inline-block;
     width: 100%;
     height: 3px;
     background-color: vars.$color-primer;
+    transition: background-color 0.3s ease;
   }
 
-  &.open {
+  &.active {
     transform: rotate(90deg);
+
+    & span {
+      background-color: vars.$color-font-base;
+    }
   }
 
   @include mix.media-tablet {
-    @include mix.flex($direction: column, $justify: space-between);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }
