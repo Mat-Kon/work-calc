@@ -1,47 +1,98 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-.servicesTable {
-  width: 90%;
-  border-spacing: 0;
-  font-size: vars.$p-size;
-  border: 1px solid vars.$color-grey-light;
-  margin: auto;
+.wrap {
+  width: 100%;
+  max-width: 960px;
+  margin: vars.$space-lg auto 0;
+  padding: vars.$space-md;
+  border: 1px solid vars.$border-base;
+  border-radius: vars.$radius-lg;
+  background-color: vars.$bg-surface-2;
 
-  & caption {
-    font-size: vars.$h3-size;
-    padding-bottom: 20px;
+  @include mix.media-mobile-l {
+    padding: vars.$space-xs;
   }
+}
 
-  & th,
-  td {
-    border-bottom: 1px solid vars.$color-grey-light;
-    border-right: 1px solid vars.$color-grey-light;
-    padding: 5px;
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: vars.$bg-surface;
+  border-radius: vars.$radius-md;
+  overflow: hidden;
 
-    &:last-child {
-      border-right: none;
-    }
+  @include mix.media-mobile-l {
+    font-size: vars.$fs-sm;
+  }
+}
+
+.caption {
+  caption-side: top;
+  padding: 0 0 vars.$space-sm;
+  font-size: vars.$fs-lg;
+  font-weight: 600;
+  text-align: left;
+  color: vars.$text-base;
+}
+
+.table th,
+.table td {
+  padding: vars.$space-xs vars.$space-sm;
+  text-align: left;
+  border-bottom: 1px solid vars.$border-base;
+
+  &:last-child {
+    text-align: right;
   }
 
   @include mix.media-mobile-l {
-    font-size: 1rem;
+    padding: vars.$space-2xs vars.$space-xs;
   }
 }
 
-.servicesTable__headings {
-  text-align: left;
+.table thead th {
+  font-weight: 600;
+  color: vars.$text-muted;
+  background-color: vars.$bg-surface-2;
 }
 
-.servicesTable__footer {
-  & th,
-  td {
-    border-right: 1px solid vars.$color-grey-light;
-    padding: 5px;
-    border-bottom: none;
+.table tbody th {
+  font-weight: 600;
+  color: vars.$text-base;
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media print {
+  .wrap {
+    max-width: none;
+    padding: 0;
+    margin-top: 12pt;
+    border: none;
+    background: none;
   }
 
-  & th {
-    text-align: left;
+  .table {
+    font-size: 11pt;
+  }
+
+  .caption {
+    font-size: 14pt;
+    padding-bottom: 6pt;
+  }
+
+  .table th,
+  .table td {
+    border: 1px solid #000;
+    padding: 6px 8px;
+  }
+
+  .table thead th {
+    background: none;
+    color: #000;
   }
 }

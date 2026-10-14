@@ -1,0 +1,44 @@
+@use "../../../styles/abstract/variables" as vars;
+@use "../../../styles/abstract/mixins" as mix;
+
+.totals {
+  @include mix.flex($direction: column, $gap: vars.$space-2xs);
+  width: 100%;
+  max-width: 960px;
+  margin: vars.$space-lg auto 0;
+  padding: vars.$space-md;
+  border: 1px solid vars.$border-base;
+  border-radius: vars.$radius-lg;
+  background-color: vars.$bg-surface-2;
+}
+
+.row {
+  @include mix.flex(
+    $justify: space-between,
+    $alignItems: baseline,
+    $gap: vars.$space-md
+  );
+  font-size: vars.$fs-md;
+
+  @include mix.media-mobile-l {
+    font-size: vars.$fs-sm;
+  }
+}
+
+.discount {
+  color: vars.$color-warning;
+}
+
+.total {
+  padding-top: vars.$space-xs;
+  border-top: 1px solid vars.$border-base;
+  font-weight: 700;
+  font-size: vars.$fs-lg;
+}
+
+.toPay {
+  padding-top: vars.$space-xs;
+  border-top: 1px solid vars.$border-base;
+  font-weight: 700;
+  color: vars.$accent-hover;
+}

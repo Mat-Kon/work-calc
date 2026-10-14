@@ -18,6 +18,8 @@ export interface Order {
   address: string;
   phoneNumber: string;
   status: OrderStatus;
+  discountPercent: number;
+  isPrepaid: boolean;
   meetingDateTime: string;
   startWorkDate: string;
   createdAt: string;
@@ -33,6 +35,8 @@ export interface OrderInput {
   name: string;
   address: string;
   phoneNumber: string;
+  discountPercent: number;
+  isPrepaid: boolean;
   meetingDateTime: string;
   startWorkDate: string;
   items: Array<{

@@ -51,6 +51,8 @@ model Order {
   address         String
   phoneNumber     String
   status          OrderStatus @default(QUEUED)
+  discountPercent Decimal     @default(0) @db.Decimal(5, 2)
+  isPrepaid       Boolean     @default(false)
   meetingDateTime DateTime
   startWorkDate   DateTime
   createdAt       DateTime    @default(now())

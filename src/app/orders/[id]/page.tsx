@@ -4,7 +4,12 @@ import { type NextPage } from "next";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { OrderInfo, ServiceViewTable } from "@/features/orders";
+import {
+  OrderInfo,
+  OrderStatusActions,
+  OrderTotals,
+  ServiceViewTable,
+} from "@/features/orders";
 import { PrintOrderButton } from "@/features/print-order";
 import { ordersApi } from "@/shared/api";
 import { PageHeading } from "@/shared/page-heading";
@@ -62,9 +67,11 @@ const OrderPage: NextPage = () => {
       <div className="print-area">
         <OrderInfo order={order} />
         <ServiceViewTable items={order.items} />
+        <OrderTotals order={order} />
       </div>
 
       <div className={`${st.actions} no-print`}>
+        <OrderStatusActions order={order} onChanged={setOrder} />
         <PrintOrderButton />
       </div>
     </>

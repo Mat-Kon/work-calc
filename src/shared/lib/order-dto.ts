@@ -20,6 +20,8 @@ export interface OrderDto {
   address: string;
   phoneNumber: string;
   status: OrderStatusDto;
+  discountPercent: number;
+  isPrepaid: boolean;
   meetingDateTime: string;
   startWorkDate: string;
   createdAt: string;
@@ -43,6 +45,8 @@ export function orderToDto(order: Order & { items: OrderItem[] }): OrderDto {
     address: order.address,
     phoneNumber: order.phoneNumber,
     status: order.status,
+    discountPercent: toNumber(order.discountPercent),
+    isPrepaid: order.isPrepaid,
     meetingDateTime: order.meetingDateTime.toISOString(),
     startWorkDate: order.startWorkDate.toISOString(),
     createdAt: order.createdAt.toISOString(),
@@ -75,6 +79,8 @@ export interface ParsedOrderBody {
   name: string;
   address: string;
   phoneNumber: string;
+  discountPercent: number;
+  isPrepaid: boolean;
   meetingDateTime: Date;
   startWorkDate: Date;
   items: ParsedOrderItemInput[];
@@ -86,11 +92,16 @@ export function parseOrderBody(body: unknown): ParsedOrderBody {
     Record<string, unknown>
   >;
 
+  const discountRaw = Number(data.discountPercent ?? 0);
+  const discountPercent = Math.min(100, Math.max(0, discountRaw));
+
   return {
     orderNumber: String(data.orderNumber ?? ""),
     name: String(data.name ?? ""),
     address: String(data.address ?? ""),
     phoneNumber: String(data.phoneNumber ?? ""),
+    discountPercent,
+    isPrepaid: Boolean(data.isPrepaid),
     meetingDateTime: new Date(String(data.meetingDateTime)),
     startWorkDate: new Date(String(data.startWorkDate)),
     items: rawItems.map((item) => ({

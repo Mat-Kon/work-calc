@@ -1,3 +1,3 @@
-export { OrdersList } from './orders-list';
-export { SearchOrder } from './search';
-export { SelectSort } from './select-sort';
+export { OrdersList } from './orders-list/ui';
+export { SearchOrder } from './search/ui';
+export { SelectSort } from './select-sort/ui';

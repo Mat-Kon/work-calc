@@ -30,6 +30,10 @@ export const AddOrderForm = forwardRef<HTMLFormElement, AddOrderFormProps>(
       reset,
     } = useForm<FormDataAddOrder>({
       resolver: yupResolver(schemaAddOrderForm),
+      defaultValues: {
+        discountPercent: 0,
+        isPrepaid: false,
+      },
     });
 
     useEffect(() => {
@@ -42,6 +46,8 @@ export const AddOrderForm = forwardRef<HTMLFormElement, AddOrderFormProps>(
         orderNumber: orderData.orderNumber ?? "",
         startWorkDate: toInputValue(orderData.startWorkDate),
         meetingDateTime: toInputValue(orderData.meetingDateTime),
+        discountPercent: orderData.discountPercent,
+        isPrepaid: orderData.isPrepaid,
       });
     }, [order, reset]);
 
@@ -60,6 +66,8 @@ export const AddOrderForm = forwardRef<HTMLFormElement, AddOrderFormProps>(
         name: formData.name,
         address: formData.address,
         phoneNumber: formData.phoneNumber,
+        discountPercent: formData.discountPercent ?? 0,
+        isPrepaid: Boolean(formData.isPrepaid),
         meetingDateTime: toIso(formData.meetingDateTime),
         startWorkDate: toIso(formData.startWorkDate),
         items: items.map(({ kind, name, typeValue, costPerUnit, count }) => ({
@@ -124,6 +132,23 @@ export const AddOrderForm = forwardRef<HTMLFormElement, AddOrderFormProps>(
         <label className={st.dateLabel}>
           Начало работ на
           <TextInput type="datetime-local" {...register("startWorkDate")} />
+        </label>
+
+        <label className={st.dateLabel}>
+          Скидка, %
+          <TextInput
+            type="number"
+            min={0}
+            max={100}
+            step="any"
+            className={`${st.textInput} ${errors.discountPercent ? st.error : ""}`}
+            {...register("discountPercent", { valueAsNumber: true })}
+          />
+        </label>
+
+        <label className={st.checkboxLabel}>
+          <input type="checkbox" {...register("isPrepaid")} />
+          <span>Внесена предоплата 50%</span>
         </label>
 
         {submitError ? (

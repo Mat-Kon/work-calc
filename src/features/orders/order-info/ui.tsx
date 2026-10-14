@@ -1,35 +1,33 @@
-import { IOrder } from '@/shared/types/calculate';
-import st from './index.module.scss';
+import { type Order } from "@/shared/types/calculate";
 
-interface Props {
-  order: IOrder;
+import st from "./index.module.scss";
+
+interface OrderInfoProps {
+  order: Order;
 }
 
-export const OrderInfo: React.FC<Props> = ({ order }) => {
+const formatDate = (value: string) => new Date(value).toLocaleString("ru-RU");
+
+export function OrderInfo({ order }: OrderInfoProps) {
   const { address, meetingDateTime, name, phoneNumber, startWorkDate } = order;
 
   return (
     <div className={st.orderInfo}>
       <p>
-        <strong>Адрес:</strong>
-        {`${address}`}
+        <strong>Адрес:</strong> {address}
       </p>
       <p>
-        <strong>Номер телефона:</strong>
-        {`${phoneNumber}`}
+        <strong>Номер телефона:</strong> {phoneNumber}
       </p>
       <p>
-        <strong>ФИО:</strong>
-        {`${name}`}
+        <strong>ФИО:</strong> {name}
       </p>
       <p>
-        <strong>Дата замера:</strong>
-        {`${new Date(meetingDateTime).toLocaleString('ru-RU')}`}
+        <strong>Дата замера:</strong> {formatDate(meetingDateTime)}
       </p>
       <p>
-        <strong>Дата начала:</strong>
-        {`${new Date(startWorkDate).toLocaleString('ru-RU')}`}
+        <strong>Дата начала:</strong> {formatDate(startWorkDate)}
       </p>
     </div>
   );
-};
+}

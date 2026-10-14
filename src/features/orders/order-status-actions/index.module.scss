@@ -1,0 +1,31 @@
+@use "../../../styles/abstract/variables" as vars;
+@use "../../../styles/abstract/mixins" as mix;
+
+.wrap {
+  @include mix.flex(
+    $direction: column,
+    $alignItems: center,
+    $gap: vars.$space-sm
+  );
+  margin-top: vars.$space-lg;
+}
+
+.actions {
+  @include mix.flex($justify: center, $gap: vars.$space-sm);
+  flex-wrap: wrap;
+
+  @include mix.media-mobile-l {
+    flex-direction: column;
+    width: 100%;
+
+    & > * {
+      width: 100%;
+    }
+  }
+}
+
+.error {
+  margin: 0;
+  font-size: vars.$fs-sm;
+  color: vars.$color-error;
+}

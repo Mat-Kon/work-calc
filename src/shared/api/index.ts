@@ -2,6 +2,7 @@ import {
   type ItemKind,
   type Order,
   type OrderInput,
+  type OrderStatus,
   type OrderSummary,
 } from "@/shared/types/calculate";
 
@@ -59,6 +60,11 @@ export const ordersApi = {
     request<Order>(`/api/orders/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),
+    }),
+  setStatus: (id: string, status: OrderStatus) =>
+    request<Order>(`/api/orders/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
     }),
   remove: (id: string) =>
     request<void>(`/api/orders/${id}`, { method: "DELETE" }),

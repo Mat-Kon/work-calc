@@ -76,6 +76,20 @@
   }
 }
 
+.checkboxLabel {
+  @include mix.flex($alignItems: center, $gap: vars.$space-xs);
+  font-size: vars.$p-size;
+  color: vars.$text-base;
+  cursor: pointer;
+
+  & input {
+    width: 18px;
+    height: 18px;
+    accent-color: vars.$accent;
+    cursor: pointer;
+  }
+}
+
 .errorText {
   margin: 0;
   font-size: vars.$fs-sm;

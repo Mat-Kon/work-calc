@@ -2,12 +2,17 @@
 @use "../../../styles/abstract/mixins" as mix;
 
 .orderInfo {
-  @include mix.flex($direction: column, $gap: 10px);
-  width: 90%;
-  margin: auto;
-  padding-top: 20px;
+  @include mix.flex($direction: column, $gap: vars.$space-xs);
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding-top: vars.$space-lg;
 
   & strong {
-    padding-right: 10px;
+    padding-right: vars.$space-xs;
+  }
+
+  @include mix.media-mobile-l {
+    padding-top: vars.$space-md;
   }
 }

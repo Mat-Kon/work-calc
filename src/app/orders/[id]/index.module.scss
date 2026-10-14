@@ -2,11 +2,15 @@
 @use "../../../styles/abstract/mixins" as mix;
 
 .actions {
-  @include mix.flex($justify: center, $gap: vars.$space-md);
+  @include mix.flex(
+    $direction: column,
+    $alignItems: center,
+    $gap: vars.$space-lg
+  );
   margin-top: vars.$space-xl;
 
   @include mix.media-mobile-l {
-    gap: vars.$space-sm;
+    gap: vars.$space-md;
     margin-top: vars.$space-lg;
   }
 }

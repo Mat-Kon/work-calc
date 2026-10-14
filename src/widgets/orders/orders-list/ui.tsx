@@ -1,38 +1,46 @@
-import { OrderListItem } from '@/features/orders';
-import { IOrder } from '@/shared/types/calculate';
-import { useState } from 'react';
-import st from './index.module.scss';
-import { PopupConfirmation } from '@/shared/popups';
-import { ordersApi } from '@/shared/api';
+"use client";
 
-interface Props {
-  orders: IOrder[];
+import { useState } from "react";
+
+import { OrderListItem } from "@/features/orders";
+import { ordersApi } from "@/shared/api";
+import { PopupConfirmation } from "@/shared/popups";
+import { type OrderSummary } from "@/shared/types/calculate";
+
+import st from "./index.module.scss";
+
+interface OrdersListProps {
+  orders: OrderSummary[];
   onDeleted: (id: string) => void;
 }
 
-export const OrdersList: React.FC<Props> = ({ orders, onDeleted }) => {
+export function OrdersList({ orders, onDeleted }: OrdersListProps) {
   const [isOpen, setOpen] = useState(false);
-  const [deleteOrderData, setOrderData] = useState<IOrder | null>(null);
+  const [deleteOrderData, setOrderData] = useState<OrderSummary | null>(null);
 
-  const onReject = () => {
+  const handleReject = () => {
     setOrderData(null);
     setOpen(false);
   };
 
-  const onConfirm = async () => {
-    if (deleteOrderData) {
-      try {
-        await ordersApi.remove(deleteOrderData.id);
-        onDeleted(deleteOrderData.id);
-      } catch {
-        alert('Не удалось удалить заказ');
-      }
+  const handleConfirm = async () => {
+    if (!deleteOrderData) {
+      setOpen(false);
+      return;
     }
-    setOrderData(null);
-    setOpen(false);
+
+    try {
+      await ordersApi.remove(deleteOrderData.id);
+      onDeleted(deleteOrderData.id);
+    } catch {
+      alert("Не удалось удалить заказ");
+    } finally {
+      setOrderData(null);
+      setOpen(false);
+    }
   };
 
-  const onDeleteOrder = (order: IOrder) => {
+  const handleDeleteOrder = (order: OrderSummary) => {
     setOrderData(order);
     setOpen(true);
   };
@@ -45,20 +53,20 @@ export const OrdersList: React.FC<Props> = ({ orders, onDeleted }) => {
             <OrderListItem
               order={order}
               orderNumber={index + 1}
-              onDelete={() => onDeleteOrder(order)}
+              onDelete={() => handleDeleteOrder(order)}
             />
           </li>
         ))}
       </ul>
 
-      {isOpen && (
+      {isOpen ? (
         <PopupConfirmation
-          text={`Удалить заказ ${deleteOrderData?.address} ?`}
+          text={`Удалить заказ ${deleteOrderData?.address ?? ""}?`}
           isOpen={isOpen}
-          confirm={onConfirm}
-          reject={onReject}
+          confirm={handleConfirm}
+          reject={handleReject}
         />
-      )}
+      ) : null}
     </div>
   );
-};
+}
