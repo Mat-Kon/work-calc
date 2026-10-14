@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { ItemKind } from '@prisma/client';
 import { prisma } from '@/shared/lib/prisma';
-import { getUserId } from '@/shared/lib/auth';
+import { getUserId } from '@/auth';
 
 const toDto = (i: { id: string; name: string; typeValue: string; costPerUnit: unknown }) => ({
   id: i.id,

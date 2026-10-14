@@ -1,4 +1,3 @@
-// Одноразовый перенос старых данных из localStorage на сервер.
 import { catalogApi, ordersApi, toIso } from '@/shared/api';
 import type { IOrder } from '@/shared/types/calculate';
 import type { IServiceItemData } from '@/shared/types/my-services';
@@ -23,13 +22,11 @@ export async function importAll() {
   const materials = read<IServiceItemData>(MATERIALS_KEY);
   const orders = read<IOrder>(ORDERS_KEY);
 
-  // 1. Справочники. Ключи чистим сразу после успеха, чтобы повторный запуск не создал дубли
   for (const s of services) await catalogApi.add('SERVICE', s);
   for (const m of materials) await catalogApi.add('MATERIAL', m);
   localStorage.removeItem(SERVICES_KEY);
   localStorage.removeItem(MATERIALS_KEY);
 
-  // 2. Заказы. В старых заказах не было признака «услуга/материал», определяем по названию
   const materialNames = new Set(materials.map((m) => m.name));
   const failed: IOrder[] = [];
 

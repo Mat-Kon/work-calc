@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/shared/lib/prisma';
-import { getUserId } from '@/shared/lib/auth';
+import { getUserId } from '@/auth';
 import { orderToDto, parseOrderBody } from '@/shared/lib/order-dto';
 
 type Ctx = { params: Promise<{ id: string }> };

@@ -1,3 +1,6 @@
+@use "../../../styles/abstract/variables" as vars;
+@use "../../../styles/abstract/mixins" as mix;
+
 .servicesTable {
   width: 90%;
   border-spacing: 0;

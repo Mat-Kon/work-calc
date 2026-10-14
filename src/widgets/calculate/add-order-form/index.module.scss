@@ -1,3 +1,6 @@
+@use "../../../styles/abstract/variables" as vars;
+@use "../../../styles/abstract/mixins" as mix;
+
 .orderForm {
   @include mix.flex($direction: column, $alignItems: flex-start, $gap: 10px);
   width: 90%

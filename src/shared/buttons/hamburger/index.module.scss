@@ -1,5 +1,5 @@
-
-@use '@/styles/abstract/variables' as var;
+@use "../../../styles/abstract/variables" as vars;
+@use "../../../styles/abstract/mixins" as mix;
 
 .hamburger {
   z-index: 10;
@@ -13,7 +13,7 @@
     display: inline-block;
     width: 100%;
     height: 3px;
-    background-color: var.$color-primer;
+    background-color: vars.$color-primer;
   }
 
   &.open {
