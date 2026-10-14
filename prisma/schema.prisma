@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // pooled-строка Neon
+  directUrl = env("DIRECT_URL")   // прямая строка Neon (для миграций)
+}
+
+enum ItemKind {
+  SERVICE
+  MATERIAL
+}
+
+model User {
+  id           String   @id @default(cuid())
+  login        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  catalogItems CatalogItem[]
+  orders       Order[]
+}
+
+// «Мои услуги» и «Мои материалы»: одна таблица, различаются полем kind.
+// typeValue оставлен как в текущем коде (м², шт, п.м.), чтобы не менять UI.
+model CatalogItem {
+  id          String   @id @default(cuid())
+  userId      String
+  kind        ItemKind
+  name        String
+  typeValue   String
+  costPerUnit Decimal  @db.Decimal(12, 2)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, kind])
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  userId        String
+  orderNumber   String?
+  name          String
+  address       String
+  phoneNumber   String
+  meetingDateTime DateTime
+  startWorkDate   DateTime
+  createdAt     DateTime @default(now())
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items OrderItem[]
+
+  @@index([userId])
+}
+
+// Снимок названия и цены на момент расчёта: смена прайса не меняет старые договоры.
+// Сумма (cost) не хранится, считается как count * costPerUnit.
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  kind        ItemKind
+  name        String
+  typeValue   String
+  costPerUnit Decimal  @db.Decimal(12, 2)
+  count       Decimal  @db.Decimal(12, 3)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
