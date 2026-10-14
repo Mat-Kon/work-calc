@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import type { IServiceItemData } from '@/shared/types/my-services';
 import { catalogApi, type CatalogKind } from './index';
 
-// Загружает список услуг или материалов. Перезагружается при смене refreshKey
-// (в таблицах это isOpen попапа: закрылся попап, значит данные могли измениться).
 export const useCatalog = (kind: CatalogKind, refreshKey?: unknown) => {
   const [items, setItems] = useState<IServiceItemData[]>([]);
   const [isLoading, setLoading] = useState(true);
