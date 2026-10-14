@@ -1,36 +1,32 @@
 import { OrderListItem } from '@/features/orders';
 import { IOrder } from '@/shared/types/calculate';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import st from './index.module.scss';
 import { PopupConfirmation } from '@/shared/popups';
-import { getOrdersList, removeOrderById } from '@/features/orders/model';
+import { ordersApi } from '@/shared/api';
 
 interface Props {
-  updatedOrders?: IOrder[] | null;
+  orders: IOrder[];
+  onDeleted: (id: string) => void;
 }
 
-export const OrdersList: React.FC<Props> = ({ updatedOrders }) => {
-  const [orders, setOrders] = useState<IOrder[]>([]);
+export const OrdersList: React.FC<Props> = ({ orders, onDeleted }) => {
   const [isOpen, setOpen] = useState(false);
-  const [DeleteOrderData, setOrderData] = useState<IOrder | null>(null);
-
-  useEffect(() => {
-    if (updatedOrders) {
-      setOrders(updatedOrders);
-    } else {
-      const savedOrders = getOrdersList();
-      setOrders(savedOrders ?? []);
-    }
-  }, [isOpen, updatedOrders]);
+  const [deleteOrderData, setOrderData] = useState<IOrder | null>(null);
 
   const onReject = () => {
     setOrderData(null);
     setOpen(false);
   };
 
-  const onConfirm = () => {
-    if (DeleteOrderData) {
-      removeOrderById(DeleteOrderData.id);
+  const onConfirm = async () => {
+    if (deleteOrderData) {
+      try {
+        await ordersApi.remove(deleteOrderData.id);
+        onDeleted(deleteOrderData.id);
+      } catch {
+        alert('Не удалось удалить заказ');
+      }
     }
     setOrderData(null);
     setOpen(false);
@@ -57,7 +53,7 @@ export const OrdersList: React.FC<Props> = ({ updatedOrders }) => {
 
       {isOpen && (
         <PopupConfirmation
-          text={`Удалить заказ ${DeleteOrderData?.address} ?`}
+          text={`Удалить заказ ${deleteOrderData?.address} ?`}
           isOpen={isOpen}
           confirm={onConfirm}
           reject={onReject}

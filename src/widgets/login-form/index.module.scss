@@ -31,7 +31,23 @@
     &:hover {
       background-color: vars.$color-primer;
     }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
   }
+}
+
+.switch {
+  box-shadow: none !important;
+  font-size: 0.9em;
+  text-decoration: underline;
+}
+
+.error {
+  text-align: center;
+  color: #c0392b;
 }
 
 .open_pas {
@@ -45,7 +61,7 @@
   &:hover {
     background-color: vars.$color-primer;
   }
-  
+
   &.active {
     background-color: vars.$color-primer;
   }

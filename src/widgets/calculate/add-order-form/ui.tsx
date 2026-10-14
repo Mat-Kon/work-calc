@@ -1,13 +1,13 @@
 import { TextInput } from '@/shared/inputs';
 import st from './index.module.scss';
-import { v4 as uuidv4 } from 'uuid';
 import { useForm } from 'react-hook-form';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { addOrder, FormDataAddOrder, schemaAddOrderForm, updateOrders } from './model';
+import { FormDataAddOrder, schemaAddOrderForm } from './model';
 import { IOrder } from '@/shared/types/calculate';
 import { useRouter } from 'next/navigation';
 import { getCalcList, removeCalcList } from '@/shared/helpers/functions';
+import { ordersApi, toInputValue, toIso, type OrderInput } from '@/shared/api';
 
 interface Props {
   order?: IOrder | null;
@@ -15,6 +15,8 @@ interface Props {
 
 export const AddOrderForm = forwardRef<HTMLFormElement, Props>(({ order }, ref) => {
   const { replace } = useRouter();
+  const [submitError, setSubmitError] = useState('');
+  const [isSaving, setSaving] = useState(false);
   const {
     formState: { errors },
     handleSubmit,
@@ -27,38 +29,54 @@ export const AddOrderForm = forwardRef<HTMLFormElement, Props>(({ order }, ref) 
   useEffect(() => {
     if (order) {
       const { id: _id, orderServices: _orderServices, ...orderData } = order;
-      const defaultData = {
+      reset({
         ...orderData,
-        startWorkDate: orderData.startWorkDate.toString().slice(0, 16),
-        meetingDateTime: orderData.meetingDateTime.toString().slice(0, 16),
-      };
-
-      reset(defaultData);
+        orderNumber: orderData.orderNumber ?? '',
+        // ISO из БД превращаем в локальное время для поля datetime-local
+        startWorkDate: toInputValue(orderData.startWorkDate),
+        meetingDateTime: toInputValue(orderData.meetingDateTime),
+      });
     }
   }, [order]);
 
-  const onSubmit = (orderData: FormDataAddOrder) => {
-    const orderServices = getCalcList();
-    const orderId = uuidv4();
+  const onSubmit = async (formData: FormDataAddOrder) => {
+    if (isSaving) return;
 
-    if (orderServices) {
-      if (order) {
-        const updateOrder = { ...orderData, id: order.id, orderServices: orderServices };
-        updateOrders(updateOrder);
-      } else {
-        const updateOrder = { ...orderData, id: orderId, orderServices: orderServices };
-        addOrder(updateOrder);
-      }
+    const orderServices = getCalcList() ?? [];
+    if (orderServices.length === 0) {
+      setSubmitError('Добавьте хотя бы одну позицию в расчёт');
+      return;
     }
-    replace(`/orders/${order?.id ?? orderId}`);
-    removeCalcList();
+
+    const payload: OrderInput = {
+      orderNumber: formData.orderNumber ?? '',
+      name: formData.name,
+      address: formData.address,
+      phoneNumber: formData.phoneNumber,
+      meetingDateTime: toIso(formData.meetingDateTime),
+      startWorkDate: toIso(formData.startWorkDate),
+      orderServices,
+    };
+
+    setSaving(true);
+    setSubmitError('');
+    try {
+      const saved = order
+        ? await ordersApi.update(order.id, payload)
+        : await ordersApi.create(payload);
+      removeCalcList();
+      replace(`/orders/${saved.id}`);
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : 'Не удалось сохранить заказ');
+      setSaving(false);
+    }
   };
 
   return (
     <form className={st.orderForm} onSubmit={handleSubmit(onSubmit)} ref={ref}>
       <TextInput
         placeholder="Номер договора"
-        className={`${st.textInput} ${errors.name && st.error}`}
+        className={`${st.textInput} ${errors.orderNumber && st.error}`}
         {...register('orderNumber')}
       />
       <TextInput
@@ -84,6 +102,9 @@ export const AddOrderForm = forwardRef<HTMLFormElement, Props>(({ order }, ref) 
         Начало работ на
         <TextInput type="datetime-local" {...register('startWorkDate')} />
       </label>
+      {submitError && <p role="alert">{submitError}</p>}
     </form>
   );
 });
+
+AddOrderForm.displayName = 'AddOrderForm';

@@ -1,23 +1,26 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { countLocalCatalog, importCatalog } from '@/shared/lib/import-local-data';
+import { countLocalData, importAll } from '@/shared/lib/import-local-data';
 
-// Показывается только если в этом браузере остались старые услуги/материалы
+// Показывается только если в этом браузере остались старые данные
 export const ImportLocalDataBtn: React.FC = () => {
   const [count, setCount] = useState(0);
   const [message, setMessage] = useState('');
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    setCount(countLocalCatalog());
+    setCount(countLocalData());
   }, []);
 
   const handleClick = async () => {
     setLoading(true);
     try {
-      const imported = await importCatalog();
-      setMessage(`Перенесено записей: ${imported}`);
-      setCount(0);
+      const { catalog, orders, failed } = await importAll();
+      setMessage(
+        `Перенесено: услуг и материалов ${catalog}, заказов ${orders}` +
+          (failed ? `. Не удалось перенести заказов: ${failed}` : '')
+      );
+      setCount(countLocalData());
     } catch (e) {
       setMessage(e instanceof Error ? `Ошибка: ${e.message}` : 'Не удалось перенести данные');
     } finally {
@@ -31,7 +34,7 @@ export const ImportLocalDataBtn: React.FC = () => {
     <div>
       {count > 0 && (
         <button type="button" onClick={handleClick} disabled={isLoading}>
-          {isLoading ? 'Переносим...' : `Перенести услуги и материалы из браузера (${count})`}
+          {isLoading ? 'Переносим...' : `Перенести данные из браузера (${count})`}
         </button>
       )}
       {message && <p>{message}</p>}

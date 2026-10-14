@@ -1,4 +1,4 @@
-import { HamburgerButton, LogoBtn } from '../buttons';
+import { HamburgerButton, LoginBtn, LogoBtn } from '../buttons';
 import { useState } from 'react';
 import { isMobileView } from '../helpers/functions';
 import { NavList } from './nav-list';
@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
       <div className={`${st.mobile__menu} ${!isHiddenMobileMenu ? st.active : ''}`}>
         <NavList />
 
-        {/* <LoginBtn /> */}
+        <LoginBtn />
       </div>
 
       <HamburgerButton isOpen={isOpenMenu} setOpen={setOpenMenu} />

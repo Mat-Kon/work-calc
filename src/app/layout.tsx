@@ -1,4 +1,5 @@
 import { AppLayout } from '@/shared/app-layout';
+import { Providers } from '@/shared/providers';
 import { type NextPage, type Metadata, type Viewport } from 'next';
 import localFont from 'next/font/local';
 import '../styles/main.scss';
@@ -14,22 +15,23 @@ interface Props {
 export const metadata: Metadata = {
   title: 'MKcalc',
   description:
-    'Приложение для мастеров по ремонту балконов. ИСпользуется для расчета стоимости ремонта и остекления балкона.',
+    'Приложение для мастеров по ремонту балконов. Используется для расчета стоимости ремонта и остекления балкона.',
 };
 
+// Масштабирование страницы больше не отключаем (доступность)
 export const viewport: Viewport = {
   themeColor: '#f9c385',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 const RootLayout: NextPage<Props> = ({ children }) => {
   return (
     <html lang="ru" className={globalFont.className}>
       <body>
-        <AppLayout>{children}</AppLayout>
+        <Providers>
+          <AppLayout>{children}</AppLayout>
+        </Providers>
       </body>
     </html>
   );

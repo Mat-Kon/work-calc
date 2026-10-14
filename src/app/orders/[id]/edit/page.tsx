@@ -7,15 +7,18 @@ import { type NextPage } from 'next';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import st from './index.module.scss';
-import { getOrdersList } from '@/features/orders/model';
+import { ordersApi } from '@/shared/api';
+import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
+import { removeCalcList } from '@/shared/helpers/functions';
 
 const OrderEditPage: NextPage = () => {
   const params = useParams();
-  const orderId = params?.id ?? null;
+  const orderId = typeof params?.id === 'string' ? params.id : null;
 
   const [isOpenPopup, setOpenPopup] = useState(false);
   const [serviceData, setServiceData] = useState<ICalcItem | null>(null);
   const [orderData, setOrderData] = useState<IOrder | null>(null);
+  const [error, setError] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleClickAddBtn = () => {
@@ -29,6 +32,7 @@ const OrderEditPage: NextPage = () => {
 
   const handleClickCloseBtn = () => {
     setOpenPopup(false);
+    setServiceData(null);
   };
 
   const handleClickSaveOrder = () => {
@@ -37,17 +41,40 @@ const OrderEditPage: NextPage = () => {
     }
   };
 
+  // Загружаем заказ с сервера и кладём его позиции в черновик расчёта.
+  // Страница рисуется только после этого, поэтому таблица сразу видит позиции,
+  // и редактирование работает даже при прямом открытии ссылки или обновлении страницы.
   useEffect(() => {
-    const localOrdersList = getOrdersList();
-    if (localOrdersList && orderId) {
-      const order = localOrdersList.find((order) => order.id === orderId);
-      setOrderData(order ?? null);
-    }
+    if (!orderId) return;
+    let cancelled = false;
+
+    ordersApi
+      .get(orderId)
+      .then((order) => {
+        if (cancelled) return;
+        localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(order.orderServices));
+        setOrderData(order);
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setError(e.message);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [orderId]);
+
+  // Уходим со страницы без сохранения: чистим черновик, чтобы он не попал в «Рассчитать»
+  useEffect(() => {
+    return () => removeCalcList();
+  }, []);
+
+  if (error) return <p role="alert">Заказ не найден</p>;
+  if (!orderData) return <p>Загрузка...</p>;
 
   return (
     <>
-      <PageHeading text={`Редактирование заказа ${orderData?.orderNumber ?? ''}`} hasButton />
+      <PageHeading text={`Редактирование заказа ${orderData.orderNumber ?? ''}`} hasButton />
       <div className={st.calc}>
         <AddOrderForm ref={formRef} order={orderData} />
 

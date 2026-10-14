@@ -15,38 +15,53 @@ const read = <T>(key: string): T[] => {
   }
 };
 
-export const countLocalCatalog = () => read(SERVICES_KEY).length + read(MATERIALS_KEY).length;
+export const countLocalData = () =>
+  read(SERVICES_KEY).length + read(MATERIALS_KEY).length + read(ORDERS_KEY).length;
 
-export async function importCatalog() {
+export async function importAll() {
   const services = read<IServiceItemData>(SERVICES_KEY);
   const materials = read<IServiceItemData>(MATERIALS_KEY);
+  const orders = read<IOrder>(ORDERS_KEY);
 
+  // 1. Справочники. Ключи чистим сразу после успеха, чтобы повторный запуск не создал дубли
   for (const s of services) await catalogApi.add('SERVICE', s);
   for (const m of materials) await catalogApi.add('MATERIAL', m);
-
-  // чистим только после успешной загрузки всего
   localStorage.removeItem(SERVICES_KEY);
   localStorage.removeItem(MATERIALS_KEY);
 
-  return services.length + materials.length;
-}
-
-// Заказы подключим на следующем шаге, когда страницы заказов перейдут на API
-export async function importOrders() {
-  const orders = read<IOrder>(ORDERS_KEY);
+  // 2. Заказы. В старых заказах не было признака «услуга/материал», определяем по названию
+  const materialNames = new Set(materials.map((m) => m.name));
+  const failed: IOrder[] = [];
 
   for (const o of orders) {
-    await ordersApi.create({
-      orderNumber: o.orderNumber ?? '',
-      name: o.name,
-      address: o.address,
-      phoneNumber: o.phoneNumber,
-      meetingDateTime: toIso(o.meetingDateTime),
-      startWorkDate: toIso(o.startWorkDate),
-      orderServices: o.orderServices ?? [],
-    });
+    try {
+      await ordersApi.create({
+        orderNumber: o.orderNumber ?? '',
+        name: o.name,
+        address: o.address,
+        phoneNumber: o.phoneNumber,
+        meetingDateTime: toIso(o.meetingDateTime),
+        startWorkDate: toIso(o.startWorkDate),
+        orderServices: (o.orderServices ?? []).map((s) => ({
+          ...s,
+          kind: materialNames.has(s.name) ? ('MATERIAL' as const) : ('SERVICE' as const),
+        })),
+      });
+    } catch {
+      failed.push(o);
+    }
   }
 
-  localStorage.removeItem(ORDERS_KEY);
-  return orders.length;
+  if (failed.length === 0) {
+    localStorage.removeItem(ORDERS_KEY);
+  } else {
+    // оставляем в браузере только те, что не перенеслись (например, с некорректной датой)
+    localStorage.setItem(ORDERS_KEY, JSON.stringify(failed));
+  }
+
+  return {
+    catalog: services.length + materials.length,
+    orders: orders.length - failed.length,
+    failed: failed.length,
+  };
 }
