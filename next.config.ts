@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     implementation: 'sass-embedded',
     includePaths: [path.join(__dirname, 'src/styles/abstract')],
     additionalData: `@use "variables" as vars; @use "mixins" as mix;`,
+    silenceDeprecations: ['legacy-js-api'],
   },
 };
 
