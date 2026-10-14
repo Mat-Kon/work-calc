@@ -3,15 +3,11 @@ import { PopupWrapper } from '@/shared/popups';
 import { BaseBtn } from '@/shared/buttons';
 import { TextInput } from '@/shared/inputs';
 import { SelectMeasure } from '@/shared/select-measure';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  addMaterialItem,
-  FormDataAddMaterial,
-  schemaAddMaterialForm,
-  updateMaterialItem,
-} from './model';
-import { v4 as uuidv4 } from 'uuid';
+import { FormDataAddMaterial, schemaAddMaterialForm } from './model';
+import { catalogApi } from '@/shared/api';
 import st from './index.module.scss';
 
 interface Props {
@@ -22,6 +18,7 @@ interface Props {
 
 export const AddMaterialForm: React.FC<Props> = ({ isOpen, materialItem, onClose }) => {
   const btnName = materialItem ? 'Изменить' : 'Добавить';
+  const [submitError, setSubmitError] = useState('');
 
   const {
     register,
@@ -35,16 +32,17 @@ export const AddMaterialForm: React.FC<Props> = ({ isOpen, materialItem, onClose
     },
   });
 
-  const onSubmit = (data: FormDataAddMaterial) => {
-    if (materialItem) {
-      const serviceData = { ...data, id: materialItem.id };
-      updateMaterialItem(serviceData);
-    } else {
-      const materilId = uuidv4();
-      const serviceData = { id: materilId, ...data };
-      addMaterialItem(serviceData);
+  const onSubmit = async (data: FormDataAddMaterial) => {
+    try {
+      if (materialItem) {
+        await catalogApi.update(materialItem.id, data);
+      } else {
+        await catalogApi.add('MATERIAL', data);
+      }
+      onClose();
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : 'Не удалось сохранить');
     }
-    onClose();
   };
 
   return (
@@ -54,10 +52,10 @@ export const AddMaterialForm: React.FC<Props> = ({ isOpen, materialItem, onClose
       </div>
       <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
         <TextInput
-          placeholder="Название услуги"
+          placeholder="Название материала"
           id="name"
           {...register('name')}
-          className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
+          className={`${st.serviceInput} ${!!errors.name ? st.error : ''}`}
         />
 
         <SelectMeasure id="typeValue" {...register('typeValue')} />
@@ -67,6 +65,7 @@ export const AddMaterialForm: React.FC<Props> = ({ isOpen, materialItem, onClose
           step="any"
           className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
         />
+        {submitError && <p role="alert">{submitError}</p>}
         <BaseBtn text={btnName} className={st.addService__btn} />
       </form>
     </PopupWrapper>

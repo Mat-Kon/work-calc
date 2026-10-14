@@ -1,8 +1,11 @@
 // Одноразовый перенос старых данных из localStorage на сервер.
-// Вызови из кнопки «Перенести данные из браузера» после входа.
 import { catalogApi, ordersApi, toIso } from '@/shared/api';
 import type { IOrder } from '@/shared/types/calculate';
 import type { IServiceItemData } from '@/shared/types/my-services';
+
+const SERVICES_KEY = 'myServicesDB';
+const MATERIALS_KEY = 'materialsDB';
+const ORDERS_KEY = 'ordersList';
 
 const read = <T>(key: string): T[] => {
   try {
@@ -12,13 +15,25 @@ const read = <T>(key: string): T[] => {
   }
 };
 
-export async function importLocalData() {
-  const services = read<IServiceItemData>('myServicesDB');
-  const materials = read<IServiceItemData>('materialsDB');
-  const orders = read<IOrder>('ordersList');
+export const countLocalCatalog = () => read(SERVICES_KEY).length + read(MATERIALS_KEY).length;
+
+export async function importCatalog() {
+  const services = read<IServiceItemData>(SERVICES_KEY);
+  const materials = read<IServiceItemData>(MATERIALS_KEY);
 
   for (const s of services) await catalogApi.add('SERVICE', s);
   for (const m of materials) await catalogApi.add('MATERIAL', m);
+
+  // чистим только после успешной загрузки всего
+  localStorage.removeItem(SERVICES_KEY);
+  localStorage.removeItem(MATERIALS_KEY);
+
+  return services.length + materials.length;
+}
+
+// Заказы подключим на следующем шаге, когда страницы заказов перейдут на API
+export async function importOrders() {
+  const orders = read<IOrder>(ORDERS_KEY);
 
   for (const o of orders) {
     await ordersApi.create({
@@ -32,5 +47,6 @@ export async function importLocalData() {
     });
   }
 
-  return { services: services.length, materials: materials.length, orders: orders.length };
+  localStorage.removeItem(ORDERS_KEY);
+  return orders.length;
 }

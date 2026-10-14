@@ -3,6 +3,7 @@ import { IServiceItemData } from './my-services';
 export interface ICalcItem extends IServiceItemData {
   count: number;
   cost: number;
+  kind?: 'SERVICE' | 'MATERIAL';
 }
 
 export interface IOrder {
@@ -13,7 +14,7 @@ export interface IOrder {
   meetingDateTime: Date | string;
   startWorkDate: Date | string;
   phoneNumber: string;
-  orderServices: IServiceItem[];
+  orderServices: ICalcItem[];
 }
 
 export interface ISortedOrder extends IOrder {

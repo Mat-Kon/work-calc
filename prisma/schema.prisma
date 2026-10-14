@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL") // pooled-строка Neon
-  directUrl = env("DIRECT_URL")   // прямая строка Neon (для миграций)
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum ItemKind {
@@ -23,8 +23,6 @@ model User {
   orders       Order[]
 }
 
-// «Мои услуги» и «Мои материалы»: одна таблица, различаются полем kind.
-// typeValue оставлен как в текущем коде (м², шт, п.м.), чтобы не менять UI.
 model CatalogItem {
   id          String   @id @default(cuid())
   userId      String
@@ -56,8 +54,6 @@ model Order {
   @@index([userId])
 }
 
-// Снимок названия и цены на момент расчёта: смена прайса не меняет старые договоры.
-// Сумма (cost) не хранится, считается как count * costPerUnit.
 model OrderItem {
   id          String   @id @default(cuid())
   orderId     String

@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
 import st from './index.module.scss';
-import { deleteMAterialItem } from './model';
 import { TableItem } from '@/features/my-services';
 import { IMaterialItemData } from '@/shared/types/materials';
-import { MATERIALS_LIST_NAME } from '@/shared/constants/material-page';
+import { catalogApi } from '@/shared/api';
+import { useCatalog } from '@/shared/api/use-catalog';
 
 interface Props {
   setMaterialsData: (MaterialsData: IMaterialItemData) => void;
@@ -11,30 +10,23 @@ interface Props {
 }
 
 export const TableMaterials: React.FC<Props> = ({ setMaterialsData, isOpen }) => {
-  const [materialsList, setMAterialsList] = useState<IMaterialItemData[]>([]);
+  const { items, setItems, isLoading, error } = useCatalog('MATERIAL', isOpen);
 
-  const handleClickDelete = (id: string) => {
-    deleteMAterialItem(id);
-    const updatedList = materialsList.filter((item) => item.id !== id);
-    setMAterialsList(() => updatedList);
-  };
-
-  const handleClickEdit = (materialsData: IMaterialItemData) => {
-    setMaterialsData(materialsData);
-  };
-
-  useEffect(() => {
-    const localList = localStorage.getItem(MATERIALS_LIST_NAME);
-    if (localList) {
-      const parseList: IMaterialItemData[] = JSON.parse(localList);
-      setMAterialsList(parseList);
+  const handleClickDelete = async (id: string) => {
+    try {
+      await catalogApi.remove(id);
+      setItems((prev) => prev.filter((item) => item.id !== id));
+    } catch {
+      alert('Не удалось удалить');
     }
-  }, [isOpen]);
-  console.log(materialsList);
+  };
 
-  return materialsList.length > 0 ? (
+  if (isLoading) return <p>Загрузка...</p>;
+  if (error) return <p role="alert">Ошибка: {error}</p>;
+
+  return items.length > 0 ? (
     <table className={st.servicesTable}>
-      <caption>Список услуг</caption>
+      <caption>Список материалов</caption>
       <thead className={st.servicesTable__head}>
         <tr>
           <th scope="col" className={st.servicesTable__headings}>
@@ -50,12 +42,12 @@ export const TableMaterials: React.FC<Props> = ({ setMaterialsData, isOpen }) =>
         </tr>
       </thead>
       <tbody>
-        {materialsList.map((item) => (
+        {items.map((item) => (
           <TableItem
             item={item}
             key={item.id}
             onDelete={() => handleClickDelete(item.id)}
-            onEdit={() => handleClickEdit(item)}
+            onEdit={() => setMaterialsData(item)}
           />
         ))}
       </tbody>

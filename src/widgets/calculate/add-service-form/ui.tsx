@@ -9,7 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
   addServiceItem,
   FormDataAddServiceCalc,
-  getMyServicesList,
   schemaAddServiceForm,
   updateServiceItem,
 } from './model';
@@ -17,8 +16,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { ICalcItem } from '@/shared/types/calculate';
 import { useEffect, useState } from 'react';
 import { IServiceItemData } from '@/shared/types/my-services';
-import { getMaterialsList } from '@/widgets/materials/model';
 import { IMaterialItemData } from '@/shared/types/materials';
+import { catalogApi } from '@/shared/api';
 
 interface Props {
   isOpen: boolean;
@@ -29,8 +28,8 @@ interface Props {
 export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
   const [services, setServices] = useState<IServiceItemData[]>([]);
   const [materials, setMaterials] = useState<IMaterialItemData[]>([]);
-  const [names, setName] = useState<string[]>([]);
 
+  const names = [...services, ...materials].map((item) => item.name);
   const btnName = serviceItem ? 'Обновить' : 'Добавить';
   const hasServices = services.length > 0;
 
@@ -47,34 +46,50 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
   });
 
   useEffect(() => {
-    const myServiceList = getMyServicesList();
-    const myMaterialsList = getMaterialsList();
-    if (myServiceList) {
-      const serviceNames = myServiceList.map((service) => service.name);
-      setServices(myServiceList);
-      setName(serviceNames);
-    }
+    let cancelled = false;
 
-    if (myMaterialsList) {
-      const materialNames = myMaterialsList.map((mat) => mat.name);
-      setMaterials(myMaterialsList);
-      setName((prev) => [...prev, ...materialNames]);
-    }
+    Promise.all([catalogApi.list('SERVICE'), catalogApi.list('MATERIAL')])
+      .then(([serviceList, materialList]) => {
+        if (cancelled) return;
+        setServices(serviceList);
+        setMaterials(materialList);
+      })
+      .catch(() => {
+        // ошибка загрузки: покажем подсказку «Добавьте хотя бы одну услугу»
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [isOpen]);
 
   const onSubmit = (data: FormDataAddServiceCalc) => {
-    const curItem =
-      services.find((service) => service.name === data.name) ??
-      materials.find((mat) => mat.name === data.name);
+    const service = services.find((item) => item.name === data.name);
+    const curItem = service ?? materials.find((item) => item.name === data.name);
+    const kind = service ? ('SERVICE' as const) : ('MATERIAL' as const);
     const costPerUnit = curItem?.costPerUnit ?? 0;
     const typeValue = curItem?.typeValue ?? '';
-    const totalCost = data.count * costPerUnit;
+    const totalCost = Math.round(data.count * costPerUnit * 100) / 100;
+
     if (serviceItem) {
-      const serviceData = { ...data, id: serviceItem.id, costPerUnit, cost: totalCost, typeValue };
+      const serviceData = {
+        ...data,
+        id: serviceItem.id,
+        costPerUnit,
+        cost: totalCost,
+        typeValue,
+        kind,
+      };
       updateServiceItem(serviceData);
     } else {
-      const serviceId = uuidv4();
-      const serviceData = { id: serviceId, ...data, costPerUnit, cost: totalCost, typeValue };
+      const serviceData = {
+        id: uuidv4(),
+        ...data,
+        costPerUnit,
+        cost: totalCost,
+        typeValue,
+        kind,
+      };
       addServiceItem(serviceData);
     }
     onClose();
@@ -87,7 +102,7 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
       </div>
       {hasServices ? (
         <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
-          <CalcSelect id="typeService" optionValues={names ?? []} {...register('name')} />
+          <CalcSelect id="typeService" optionValues={names} {...register('name')} />
 
           <TextInput
             {...register('count', { required: true })}

@@ -1,8 +1,6 @@
 import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
-import { MY_SERVICES_LIST_NAME } from '@/shared/constants/my-service-page';
 import { getCalcList } from '@/shared/helpers/functions';
 import { ICalcItem } from '@/shared/types/calculate';
-import { IServiceItemData } from '@/shared/types/my-services';
 import * as yup from 'yup';
 
 export const schemaAddServiceForm = yup.object({
@@ -15,14 +13,7 @@ export const schemaAddServiceForm = yup.object({
 
 export type FormDataAddServiceCalc = yup.InferType<typeof schemaAddServiceForm>;
 
-export const getMyServicesList = () => {
-  const storageServiceList = localStorage.getItem(MY_SERVICES_LIST_NAME);
-  if (storageServiceList) {
-    const myServicesList: IServiceItemData[] = JSON.parse(storageServiceList);
-    return myServicesList;
-  }
-};
-
+// Черновик расчёта пока остаётся в localStorage: это временные данные до сохранения заказа
 export const addServiceItem = (data: ICalcItem) => {
   const localList = getCalcList();
   if (localList) {

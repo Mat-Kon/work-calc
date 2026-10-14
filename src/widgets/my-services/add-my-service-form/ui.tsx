@@ -2,17 +2,13 @@ import { BaseBtn } from '@/shared/buttons/base';
 import { TextInput } from '@/shared/inputs';
 import { PopupWrapper } from '@/shared/popups';
 import st from './index.module.scss';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  addServiceItem,
-  FormDataAddMyServiceForm,
-  schemaAddServiceForm,
-  updateServiceItem,
-} from './model';
-import { v4 as uuidv4 } from 'uuid';
+import { FormDataAddMyServiceForm, schemaAddServiceForm } from './model';
 import { IServiceItemData } from '@/shared/types/my-services';
 import { SelectMeasure } from '@/shared/select-measure';
+import { catalogApi } from '@/shared/api';
 
 interface Props {
   isOpen: boolean;
@@ -22,6 +18,7 @@ interface Props {
 
 export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
   const btnName = serviceItem ? 'Изменить' : 'Добавить';
+  const [submitError, setSubmitError] = useState('');
 
   const {
     register,
@@ -35,16 +32,17 @@ export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem
     },
   });
 
-  const onSubmit = (data: FormDataAddMyServiceForm) => {
-    if (serviceItem) {
-      const serviceData = { ...data, id: serviceItem.id };
-      updateServiceItem(serviceData);
-    } else {
-      const serviceId = uuidv4();
-      const serviceData = { id: serviceId, ...data };
-      addServiceItem(serviceData);
+  const onSubmit = async (data: FormDataAddMyServiceForm) => {
+    try {
+      if (serviceItem) {
+        await catalogApi.update(serviceItem.id, data);
+      } else {
+        await catalogApi.add('SERVICE', data);
+      }
+      onClose();
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : 'Не удалось сохранить');
     }
-    onClose();
   };
 
   return (
@@ -57,7 +55,7 @@ export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem
           placeholder="Название услуги"
           id="nameService"
           {...register('name')}
-          className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
+          className={`${st.serviceInput} ${!!errors.name ? st.error : ''}`}
         />
 
         <SelectMeasure id="typeValue" {...register('typeValue')} />
@@ -67,6 +65,7 @@ export const AddMyServiceForm: React.FC<Props> = ({ isOpen, onClose, serviceItem
           step="any"
           className={`${st.serviceInput} ${!!errors.costPerUnit ? st.error : ''}`}
         />
+        {submitError && <p role="alert">{submitError}</p>}
         <BaseBtn text={btnName} className={st.addService__btn} />
       </form>
     </PopupWrapper>
