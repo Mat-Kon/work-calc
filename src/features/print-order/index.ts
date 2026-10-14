@@ -1,1 +1,1 @@
-export { PrintOrderButton } from './ui.tsx';
+export { PrintOrderButton } from './ui';
