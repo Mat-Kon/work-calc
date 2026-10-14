@@ -1,14 +1,12 @@
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
 interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
   optionValues: string[];
   hasDisable: boolean;
 }
 
-type Ref = HTMLSelectElement;
-
-export const CustomSelect: React.FC<Props> = forwardRef<Ref, Props>(
-  ({ name, id, optionValues, hasDisable, ...props }, ref) => {
+export const CustomSelect = forwardRef<HTMLSelectElement, Props>(
+  function CustomSelect({ name, id, optionValues, hasDisable, ...props }, ref) {
     return (
       <select name={name} id={id} {...props} ref={ref}>
         {optionValues.map((value, index) => {
@@ -27,5 +25,5 @@ export const CustomSelect: React.FC<Props> = forwardRef<Ref, Props>(
         })}
       </select>
     );
-  }
+  },
 );

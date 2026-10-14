@@ -1,9 +1,14 @@
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
 }
 
-export const TextInput = forwardRef<HTMLInputElement, Props>(({ placeholder, ...props }, ref) => {
-  return <input type="text" placeholder={placeholder ?? ''} {...props} ref={ref} />;
+export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
+  { placeholder, ...props },
+  ref,
+) {
+  return (
+    <input type="text" placeholder={placeholder ?? ""} {...props} ref={ref} />
+  );
 });

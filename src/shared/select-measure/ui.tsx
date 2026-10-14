@@ -1,18 +1,22 @@
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
 interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
   name: string;
   id: string;
 }
 
-type Ref = HTMLSelectElement;
+const MEASURES = ["м2", "пог.м", "за услугу", "за штуку"];
 
-const MEASURES = ['м2', 'пог.м', 'за услугу', 'за штуку'];
-
-export const SelectMeasure: React.FC<Props> = forwardRef<Ref, Props>(
-  ({ name, id, ...props }, ref) => {
+export const SelectMeasure = forwardRef<HTMLSelectElement, Props>(
+  function SelectMeasure({ name, id, ...props }, ref) {
     return (
-      <select name={name} id={id} {...props} ref={ref} defaultValue={MEASURES[0]}>
+      <select
+        name={name}
+        id={id}
+        {...props}
+        ref={ref}
+        defaultValue={MEASURES[0]}
+      >
         {MEASURES.map((value, index) => (
           <option key={index} value={value}>
             {value}
@@ -20,5 +24,5 @@ export const SelectMeasure: React.FC<Props> = forwardRef<Ref, Props>(
         ))}
       </select>
     );
-  }
+  },
 );
