@@ -1,21 +1,27 @@
 "use client";
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { HamburgerButton, LoginBtn, LogoBtn } from "../buttons";
-import { NavList } from "./nav-list";
-import { MenuProvider, useMenu } from "./model/menu-context";
-import st from "./index.module.scss";
 
-const HeaderContent: React.FC = () => {
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+
+import { HamburgerButton, LoginBtn, LogoBtn } from "../buttons";
+import st from "./index.module.scss";
+import { MenuProvider, useMenu } from "./model/menu-context";
+import { NavList } from "./nav-list";
+
+function HeaderContent() {
   const { isOpen, close } = useMenu();
   const pathname = usePathname();
 
+  // Закрываем меню при смене маршрута
   useEffect(() => {
     close();
   }, [pathname, close]);
 
+  // Escape + блокировка скролла, пока меню открыто
   useEffect(() => {
     if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
 
     const onEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
@@ -25,7 +31,7 @@ const HeaderContent: React.FC = () => {
     window.addEventListener("keydown", onEscape);
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onEscape);
     };
   }, [isOpen, close]);
@@ -34,11 +40,7 @@ const HeaderContent: React.FC = () => {
     <header className={st.header}>
       <LogoBtn />
 
-      <div
-        id="mobile-menu"
-        className={`${st.mobile__menu} ${isOpen ? st.active : ""}`}
-        aria-hidden={!isOpen}
-      >
+      <div id="mobile-menu" className={`${st.menu} ${isOpen ? st.active : ""}`}>
         <NavList />
         <LoginBtn />
       </div>
@@ -46,10 +48,12 @@ const HeaderContent: React.FC = () => {
       <HamburgerButton />
     </header>
   );
-};
+}
 
-export const Header: React.FC = () => (
-  <MenuProvider>
-    <HeaderContent />
-  </MenuProvider>
-);
+export function Header() {
+  return (
+    <MenuProvider>
+      <HeaderContent />
+    </MenuProvider>
+  );
+}

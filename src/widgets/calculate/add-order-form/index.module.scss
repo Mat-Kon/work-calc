@@ -2,31 +2,82 @@
 @use "../../../styles/abstract/mixins" as mix;
 
 .orderForm {
-  @include mix.flex($direction: column, $alignItems: flex-start, $gap: 10px);
-  width: 90%
+  @include mix.flex(
+    $direction: column,
+    $alignItems: flex-start,
+    $gap: vars.$space-xs
+  );
+  width: 100%;
+  max-width: 640px;
+  padding-inline: vars.$space-md;
+
+  @include mix.media-mobile-l {
+    padding-inline: vars.$space-sm;
+  }
 }
 
 .textInput {
-  width: 50%;
-  padding: 5px 10px;
-  border-radius: 5px;
+  width: 100%;
+  padding: vars.$space-xs vars.$space-sm;
+  border: 1px solid vars.$border-base;
+  border-radius: vars.$radius-md;
   font-size: vars.$p-size;
-  border: 1px solid vars.$color-grey-light;
-  
-  &.error {
+  color: vars.$text-base;
+  background-color: vars.$bg-surface;
+  @include mix.transition(
+    (border-color, box-shadow),
+    vars.$duration-fast,
+    vars.$ease-out
+  );
+
+  &::placeholder {
+    color: vars.$text-muted;
+  }
+
+  &:focus {
     outline: none;
-    border: 1px solid vars.$color-error;
+    border-color: vars.$accent;
+  }
+
+  &.error {
+    border-color: vars.$color-error;
   }
 }
 
 .dateLabel {
-  @include mix.flex($alignItems: center, $gap: 30px);
+  @include mix.flex($alignItems: center, $gap: vars.$space-md);
+  width: 100%;
   font-size: vars.$p-size;
-  
+  color: vars.$text-base;
+
   & input {
-    padding: 5px;
+    padding: vars.$space-xs vars.$space-sm;
+    border: 1px solid vars.$border-base;
+    border-radius: vars.$radius-md;
     font-size: vars.$p-size;
-    border: 1px solid vars.$color-grey-light;
-    border-radius: 5px;
+    color: vars.$text-base;
+    background-color: vars.$bg-surface;
+    @include mix.transition(border-color, vars.$duration-fast, vars.$ease-out);
+
+    &:focus {
+      outline: none;
+      border-color: vars.$accent;
+    }
   }
+
+  @include mix.media-mobile-l {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: vars.$space-2xs;
+
+    & input {
+      width: 100%;
+    }
+  }
+}
+
+.errorText {
+  margin: 0;
+  font-size: vars.$fs-sm;
+  color: vars.$color-error;
 }

@@ -2,16 +2,42 @@
 @use "../../../../styles/abstract/mixins" as mix;
 
 .calc {
-  @include mix.flex($direction: column, $alignItems: center, $gap: 20px);
+  @include mix.flex(
+    $direction: column,
+    $alignItems: center,
+    $gap: vars.$space-lg
+  );
   width: 100%;
-  padding-top: 20px;
+  padding-top: vars.$space-lg;
+
+  @include mix.media-mobile-l {
+    gap: vars.$space-md;
+    padding-top: vars.$space-md;
+  }
 }
 
-.calc__toolbar {
+.toolbar {
   @include mix.flex($justify: center);
   width: 100%;
 }
 
-.calc__add {
-  @include mix.add-btn();
+.actions {
+  @include mix.flex($justify: center, $gap: vars.$space-md);
+  margin-top: vars.$space-md;
+
+  @include mix.media-mobile-l {
+    flex-direction: column;
+    gap: vars.$space-sm;
+
+    & > * {
+      width: 100%;
+    }
+  }
+}
+
+.state {
+  margin: 0;
+  padding: vars.$space-lg;
+  color: vars.$text-muted;
+  text-align: center;
 }

@@ -1,0 +1,65 @@
+@use "../styles/abstract/variables" as vars;
+@use "../styles/abstract/mixins" as mix;
+
+.wrap {
+  @include mix.flex(
+    $direction: column,
+    $alignItems: center,
+    $justify: center,
+    $gap: vars.$space-md
+  );
+  min-height: 60dvh;
+  padding: vars.$space-xl vars.$space-lg;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: vars.$fs-xl;
+  color: vars.$text-base;
+}
+
+.text {
+  margin: 0;
+  max-width: 48ch;
+  color: vars.$text-muted;
+}
+
+.digest {
+  margin: 0;
+  font-family: vars.$font-family-base;
+  font-size: vars.$fs-xs;
+  color: vars.$text-muted;
+  opacity: 0.7;
+}
+
+.btn {
+  min-height: 44px;
+  padding: vars.$space-sm vars.$space-lg;
+  border-radius: vars.$radius-md;
+  background: vars.$grad-accent;
+  color: vars.$text-invert;
+  font-size: vars.$fs-md;
+  font-weight: 600;
+  box-shadow: vars.$shadow-sm;
+  @include mix.transition(
+    (box-shadow, transform),
+    vars.$duration-fast,
+    vars.$ease-out
+  );
+
+  @include mix.hover {
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: vars.$shadow-md;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    @include mix.focus-ring;
+  }
+}

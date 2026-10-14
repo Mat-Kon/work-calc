@@ -1,22 +1,62 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-
-
-
-.popupWrapper {
-  z-index: 10;
-  display: none;
+.overlay {
   position: fixed;
-  top: 100px;
-  padding: 10px 20px;
-  margin: 0 auto;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px 0px vars.$color-primer;
-  background-color: vars.$color-white;
+  inset: 0;
+  z-index: vars.$z-modal;
+  @include mix.flex($alignItems: center, $justify: center);
+  padding: vars.$space-md;
+  background-color: hsl(0 0% 0% / 0.4);
+  animation: fadeIn vars.$duration-base vars.$ease-out;
 
-  &.open {
-    display: block;
+  @include mix.media-mobile-l {
+    padding: vars.$space-sm;
+    align-items: flex-end;
+  }
+}
+
+.popup {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: vars.$space-lg;
+  border-radius: vars.$radius-lg;
+  background-color: vars.$bg-surface;
+  box-shadow: vars.$shadow-xl;
+  animation: slideUp vars.$duration-base vars.$ease-out;
+
+  @include mix.media-mobile-l {
+    max-width: none;
+    border-radius: vars.$radius-xl vars.$radius-xl 0 0;
+    padding: vars.$space-md;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@include mix.reduce-motion {
+  .overlay,
+  .popup {
+    animation: none;
   }
 }

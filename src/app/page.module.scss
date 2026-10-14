@@ -1,0 +1,47 @@
+@use "../styles/abstract/variables" as vars;
+@use "../styles/abstract/mixins" as mix;
+
+.wrap {
+  @include mix.flex($direction: column, $gap: vars.$space-lg);
+  padding-block: vars.$space-lg;
+}
+
+.head {
+  @include mix.flex(
+    $justify: space-between,
+    $alignItems: baseline,
+    $gap: vars.$space-sm
+  );
+
+  @include mix.media-mobile-l {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: vars.$space-2xs;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: vars.$fs-2xl;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: vars.$fs-sm;
+  color: vars.$text-muted;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: vars.$space-lg;
+  align-items: start;
+
+  @include mix.media-laptop {
+    gap: vars.$space-md;
+  }
+
+  @include mix.media-tablet {
+    grid-template-columns: 1fr;
+  }
+}

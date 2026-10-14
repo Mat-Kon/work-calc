@@ -1,0 +1,19 @@
+@use "../../../styles/abstract/variables" as vars;
+@use "../../../styles/abstract/mixins" as mix;
+
+.actions {
+  @include mix.flex($justify: center, $gap: vars.$space-md);
+  margin-top: vars.$space-xl;
+
+  @include mix.media-mobile-l {
+    gap: vars.$space-sm;
+    margin-top: vars.$space-lg;
+  }
+}
+
+.state {
+  margin: 0;
+  padding: vars.$space-lg;
+  color: vars.$text-muted;
+  text-align: center;
+}

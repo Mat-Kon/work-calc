@@ -1,0 +1,32 @@
+@use "../../../styles/abstract/variables" as vars;
+@use "../../../styles/abstract/mixins" as mix;
+
+.input {
+  width: 100%;
+  padding: vars.$space-xs vars.$space-sm;
+  border: 1px solid vars.$border-base;
+  border-radius: vars.$radius-md;
+  font-size: vars.$p-size;
+  color: vars.$text-base;
+  background-color: vars.$bg-surface;
+  @include mix.transition(
+    (border-color, box-shadow),
+    vars.$duration-fast,
+    vars.$ease-out
+  );
+
+  &::placeholder {
+    color: vars.$text-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: vars.$accent;
+    box-shadow: 0 0 0 3px vars.$accent-soft;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

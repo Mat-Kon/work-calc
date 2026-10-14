@@ -1,0 +1,69 @@
+@use "../../../styles/abstract/variables" as vars;
+@use "../../../styles/abstract/mixins" as mix;
+
+.baseBtn {
+  @include mix.flex(
+    $alignItems: center,
+    $justify: center,
+    $gap: vars.$space-2xs
+  );
+  min-height: 44px;
+  padding: vars.$space-sm vars.$space-lg;
+  border-radius: vars.$radius-md;
+  font-size: vars.$fs-md;
+  font-weight: 600;
+  @include mix.transition(
+    (background-color, color, box-shadow, transform, border-color),
+    vars.$duration-fast,
+    vars.$ease-out
+  );
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  &:focus-visible {
+    @include mix.focus-ring;
+  }
+
+  @include mix.media-mobile-l {
+    padding: vars.$space-xs vars.$space-md;
+  }
+}
+
+.primary {
+  background: vars.$grad-accent;
+  color: vars.$text-invert;
+  box-shadow: vars.$shadow-sm;
+
+  @include mix.hover {
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: vars.$shadow-md;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: vars.$shadow-xs;
+  }
+}
+
+.ghost {
+  background-color: transparent;
+  color: vars.$text-base;
+  border: 1px solid vars.$border-base;
+
+  @include mix.hover {
+    &:hover:not(:disabled) {
+      background-color: vars.$bg-surface-2;
+      border-color: vars.$border-strong;
+    }
+  }
+
+  &:active:not(:disabled) {
+    background-color: vars.$bg-surface-2;
+  }
+}

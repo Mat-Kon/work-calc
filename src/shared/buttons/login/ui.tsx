@@ -1,27 +1,39 @@
-'use client';
-import Link from 'next/link';
-import st from './index.module.scss';
-import { LoginIcon } from '@/shared/icons';
-import { signOut, useSession } from 'next-auth/react';
+"use client";
 
-export const LoginBtn = () => {
+import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+
+import { LoginIcon } from "@/shared/icons";
+
+import st from "./index.module.scss";
+
+export function LoginBtn() {
   const { data: session, status } = useSession();
 
-  if (status === 'loading') return null;
+  if (status === "loading") {
+    return <span className={st.placeholder} aria-hidden />;
+  }
 
   if (session?.user) {
+    const displayName = session.user.name ?? session.user.email ?? "Профиль";
+
     return (
-      <button type="button" className={st.login} onClick={() => signOut({ callbackUrl: '/login' })}>
+      <button
+        type="button"
+        className={st.login}
+        onClick={() => signOut({ callbackUrl: "/login" })}
+        aria-label={`Выйти (${displayName})`}
+      >
         <LoginIcon />
-        {session.user.name} · Выйти
+        <span className={st.text}>{displayName} · Выйти</span>
       </button>
     );
   }
 
   return (
-    <Link className={st.login} href="/login">
+    <Link href="/login" className={st.login}>
       <LoginIcon />
-      Войти
+      <span className={st.text}>Войти</span>
     </Link>
   );
-};
+}

@@ -6,23 +6,51 @@
 
   @include mix.media-tablet {
     justify-content: center;
+    width: 100%;
   }
 }
 
 .nav__list {
-  @include mix.flex($gap: 20px);
+  @include mix.flex($gap: vars.$space-md);
 
   @include mix.media-tablet {
     flex-direction: column;
     align-items: center;
+    gap: vars.$space-lg;
+    width: 100%;
+  }
+
+  @include mix.media-mobile-l {
+    gap: vars.$space-md;
   }
 }
 
 .nav__item {
+  color: vars.$text-base;
   border-bottom: 2px solid transparent;
-  transition: border-color 0.3s;
+  @include mix.transition(
+    (color, border-color),
+    vars.$duration-base,
+    vars.$ease-out
+  );
+
+  @include mix.hover {
+    &:hover {
+      color: vars.$accent-hover;
+    }
+  }
 
   &.active {
-    border-bottom: 2px solid vars.$color-primer;
+    color: vars.$accent;
+    border-bottom-color: vars.$accent;
+  }
+
+  @include mix.media-tablet {
+    font-size: vars.$fs-lg;
+    padding: vars.$space-xs 0;
+  }
+
+  @include mix.media-mobile-l {
+    font-size: vars.$fs-md;
   }
 }

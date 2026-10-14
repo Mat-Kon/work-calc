@@ -1,14 +1,16 @@
-import { LogoIcon } from '@/shared/icons';
-import Link from 'next/link';
-import st from './index.module.scss';
+import Link from "next/link";
 
-export const LogoBtn = () => {
+import { LogoIcon } from "@/shared/icons";
+
+import st from "./index.module.scss";
+
+export function LogoBtn() {
   return (
-    <Link href={'/'} className={st.logoBtn}>
-      <span>
+    <Link href="/" className={st.logoBtn} aria-label="MKcalc — на главную">
+      <span className={st.iconWrap}>
         <LogoIcon />
       </span>
-      BC
+      <span className={st.text}>BC</span>
     </Link>
   );
-};
+}

@@ -1,24 +1,25 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-
-
-
 .servicesTable {
   width: 98%;
+  table-layout: fixed;
   border-spacing: 0;
+  margin-bottom: 50px;
   font-size: vars.$p-size;
   border: 1px solid vars.$color-grey-light;
-  
+
   & caption {
     font-size: vars.$h3-size;
     padding-bottom: 20px;
   }
-  
-  & th, td {
+
+  & th,
+  td {
     border-bottom: 1px solid vars.$color-grey-light;
     border-right: 1px solid vars.$color-grey-light;
     padding: 5px;
+    word-break: break-word;
 
     &:last-child {
       border-right: none;
@@ -35,7 +36,8 @@
 }
 
 .servicesTable__footer {
-  & th, td {
+  & th,
+  td {
     border-right: 1px solid vars.$color-grey-light;
     padding: 5px;
     border-bottom: none;

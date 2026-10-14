@@ -1,0 +1,86 @@
+@page {
+  size: A4;
+  margin: 15mm;
+}
+
+@media print {
+  // Скрываем явно помеченное
+  .no-print,
+  [data-print="hide"],
+  header,
+  footer,
+  nav {
+    display: none !important;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  .print-area {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  // Убираем тени и фоновые градиенты — экономим тонер
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-image: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  // Таблицы
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: auto;
+  }
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tfoot {
+    display: table-footer-group;
+  }
+
+  // Типографика — без переносов-сирот
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  // Ссылки: показываем URL, если это контент (не навигация)
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #444;
+  }
+}

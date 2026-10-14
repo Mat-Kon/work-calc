@@ -1,13 +1,56 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-
-
 .login {
-  @include mix.flex($alignItems: center, $gap: 5px);
+  @include mix.flex($alignItems: center, $gap: vars.$space-2xs);
+  min-height: 44px;
+  padding: vars.$space-xs vars.$space-sm;
+  border-radius: vars.$radius-md;
+  color: vars.$text-base;
+  font-size: vars.$fs-md;
+  @include mix.transition(
+    (background-color, color),
+    vars.$duration-fast,
+    vars.$ease-out
+  );
+
+  @include mix.hover {
+    &:hover {
+      background-color: vars.$accent-soft;
+      color: vars.$accent-hover;
+    }
+  }
+
+  &:focus-visible {
+    @include mix.focus-ring;
+  }
 
   @include mix.media-tablet {
     justify-content: center;
+    padding: vars.$space-sm vars.$space-lg;
+    font-size: vars.$fs-lg;
     font-weight: 500;
   }
+
+  @include mix.media-mobile-l {
+    font-size: vars.$fs-md;
+    padding: vars.$space-xs vars.$space-md;
+  }
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+
+  @include mix.media-mobile-l {
+    max-width: 140px;
+  }
+}
+
+.placeholder {
+  display: inline-block;
+  width: 80px;
+  height: 44px;
 }

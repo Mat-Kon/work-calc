@@ -1,45 +1,47 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-
-
-
 .addService {
-  @include mix.flex($justify: center, $gap: 20px);
+  @include mix.flex($justify: center, $gap: vars.$space-md);
   flex-wrap: wrap;
 
   & select {
-    border-radius: vars.$br-radius;
-    padding: 10px;
-    border: 1px solid vars.$color-primer;
+    padding: vars.$space-xs vars.$space-sm;
+    border: 1px solid vars.$border-base;
+    border-radius: vars.$radius-md;
+    font-size: vars.$p-size;
+    color: vars.$text-base;
+    background-color: vars.$bg-surface;
+    @include mix.transition(border-color, vars.$duration-fast, vars.$ease-out);
+
+    &:focus {
+      outline: none;
+      border-color: vars.$accent;
+    }
   }
 }
 
-.addService__btn {
-  @include mix.add-btn();
-  flex: 0 0 100%;
-}
-
 .serviceValue {
-  border-radius: vars.$br-radius;
-  padding: 10px;
-  border: 1px solid vars.$color-primer;
+  padding: vars.$space-xs vars.$space-sm;
+  border: 1px solid vars.$border-base;
+  border-radius: vars.$radius-md;
+  font-size: vars.$p-size;
+  color: vars.$text-base;
+  background-color: vars.$bg-surface;
   outline: none;
+  @include mix.transition(border-color, vars.$duration-fast, vars.$ease-out);
+
+  &:focus {
+    border-color: vars.$accent;
+  }
 
   &.error {
-    border: 1px solid vars.$color-error;
+    border-color: vars.$color-error;
   }
 }
 
 .wrapCloseBtn {
   @include mix.flex($justify: flex-end);
   width: 100%;
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.closeBtn {
-  padding: 5px 10px;
-  border: 1px solid vars.$color-primer;
-  border-radius: vars.$br-radius;
+  margin-bottom: vars.$space-md;
 }

@@ -1,31 +1,52 @@
 @use "../../styles/abstract/variables" as vars;
 @use "../../styles/abstract/mixins" as mix;
 
-.pageHeading {
-  position: relative;
-  @include mix.flex($alignItems: center);
+.wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: vars.$space-sm;
   width: 100%;
-  border-bottom: 1px solid vars.$color-primer;
+  min-height: 64px;
+  padding: vars.$space-sm vars.$space-md;
+  border-bottom: 1px solid vars.$border-base;
 
-  & h1 {
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
-    font-size: vars.$h2-size;
-    font-weight: 500;
-
-    &.hasButton {
-      padding-left: 20px;
-    }
+  @include mix.media-mobile-l {
+    grid-template-columns: auto 1fr;
+    padding: vars.$space-xs vars.$space-sm;
+    min-height: 56px;
   }
+}
 
-  & button {
-    position: absolute;
-    right: 20px;
-    top: calc(50% - 12px);
-    padding-bottom: 2px;
-    border-bottom: 2px solid  vars.$color-primer;
-    font-weight: 600;
-    height: fit-content;
+.back {
+  justify-self: start;
+
+  @include mix.media-mobile-l {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  font-size: vars.$fs-xl;
+  font-weight: 600;
+  color: vars.$text-base;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @include mix.media-mobile-l {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: right;
+    font-size: vars.$fs-lg;
+  }
+}
+
+.spacer {
+  @include mix.media-mobile-l {
+    display: none;
   }
 }

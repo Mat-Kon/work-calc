@@ -2,9 +2,13 @@
 @use "../../styles/abstract/mixins" as mix;
 
 .calc {
-  @include mix.flex($direction: column, $alignItems: center, $gap: 20px);
+  @include mix.flex(
+    $direction: column,
+    $alignItems: center,
+    $gap: vars.$space-lg
+  );
   width: 100%;
-  padding-top: 20px;
+  padding-top: vars.$space-lg;
 }
 
 .calc__toolbar {
@@ -12,16 +16,16 @@
   width: 100%;
 }
 
-.calc__add {
-  @include mix.add-btn();
-}
-
 .calc__actions {
-  @include mix.flex($gap: 30px);
-  padding-bottom: 30px;
+  @include mix.flex($gap: vars.$space-lg);
+  padding-bottom: vars.$space-lg;
+
+  @include mix.media-mobile-l {
+    gap: vars.$space-md;
+  }
 }
 
 .printArea {
-  display: flex;
-  justify-content: center;
+  @include mix.flex($justify: center);
+  width: 100%;
 }

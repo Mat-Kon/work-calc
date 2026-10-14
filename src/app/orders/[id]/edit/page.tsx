@@ -1,58 +1,62 @@
-'use client';
-import { BaseBtn } from '@/shared/buttons';
-import { PageHeading } from '@/shared/page-heading';
-import { IOrder, ICalcItem } from '@/shared/types/calculate';
-import { AddOrderForm, AddServicePopup, ServiceTable } from '@/widgets/calculate';
-import { type NextPage } from 'next';
-import { useParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import st from './index.module.scss';
-import { ordersApi } from '@/shared/api';
-import { LOCAL_LIST_NAME } from '@/shared/constants/calculate-page';
-import { removeCalcList } from '@/shared/helpers/functions';
+"use client";
+
+import { type NextPage } from "next";
+import { useParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+
+import { PrintOrderButton } from "@/features/print-order";
+import { ordersApi } from "@/shared/api";
+import { BaseBtn } from "@/shared/buttons/base";
+import { LOCAL_LIST_NAME } from "@/shared/constants/calculate-page";
+import { removeCalcList } from "@/shared/helpers/functions";
+import { PageHeading } from "@/shared/page-heading";
+import { type CalcItem, type Order } from "@/shared/types/calculate";
+import {
+  AddOrderForm,
+  AddServicePopup,
+  ServiceTable,
+} from "@/widgets/calculate";
+
+import st from "./index.module.scss";
 
 const OrderEditPage: NextPage = () => {
   const params = useParams();
-  const orderId = typeof params?.id === 'string' ? params.id : null;
+  const orderId = typeof params?.id === "string" ? params.id : null;
 
   const [isOpenPopup, setOpenPopup] = useState(false);
-  const [serviceData, setServiceData] = useState<ICalcItem | null>(null);
-  const [orderData, setOrderData] = useState<IOrder | null>(null);
-  const [error, setError] = useState('');
+  const [serviceData, setServiceData] = useState<CalcItem | null>(null);
+  const [orderData, setOrderData] = useState<Order | null>(null);
+  const [error, setError] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleClickAddBtn = () => {
+  const handleClickAdd = () => setOpenPopup(true);
+
+  const handleClickEdit = (item: CalcItem) => {
     setOpenPopup(true);
+    setServiceData(item);
   };
 
-  const handleClickEdit = (serviceData: ICalcItem) => {
-    setOpenPopup(true);
-    setServiceData(serviceData);
-  };
-
-  const handleClickCloseBtn = () => {
+  const handleClickClose = () => {
     setOpenPopup(false);
     setServiceData(null);
   };
 
-  const handleClickSaveOrder = () => {
+  const handleClickSave = () => {
     if (formRef.current) {
-      formRef.current.dispatchEvent(new Event('submit', { bubbles: true }));
+      formRef.current.dispatchEvent(new Event("submit", { bubbles: true }));
     }
   };
 
-  // Загружаем заказ с сервера и кладём его позиции в черновик расчёта.
-  // Страница рисуется только после этого, поэтому таблица сразу видит позиции,
-  // и редактирование работает даже при прямом открытии ссылки или обновлении страницы.
   useEffect(() => {
     if (!orderId) return;
+
     let cancelled = false;
 
     ordersApi
       .get(orderId)
       .then((order) => {
         if (cancelled) return;
-        localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(order.orderServices));
+        localStorage.setItem(LOCAL_LIST_NAME, JSON.stringify(order.items));
         setOrderData(order);
       })
       .catch((e: Error) => {
@@ -64,37 +68,53 @@ const OrderEditPage: NextPage = () => {
     };
   }, [orderId]);
 
-  // Уходим со страницы без сохранения: чистим черновик, чтобы он не попал в «Рассчитать»
   useEffect(() => {
     return () => removeCalcList();
   }, []);
 
-  if (error) return <p role="alert">Заказ не найден</p>;
-  if (!orderData) return <p>Загрузка...</p>;
+  if (error) {
+    return (
+      <p className={st.state} role="alert">
+        Заказ не найден
+      </p>
+    );
+  }
+
+  if (!orderData) {
+    return <p className={st.state}>Загрузка...</p>;
+  }
+
+  const heading = orderData.orderNumber
+    ? `Редактирование заказа ${orderData.orderNumber}`
+    : "Редактирование заказа";
 
   return (
     <>
-      <PageHeading text={`Редактирование заказа ${orderData.orderNumber ?? ''}`} hasButton />
+      <PageHeading text={heading} hasButton />
+
       <div className={st.calc}>
-        <AddOrderForm ref={formRef} order={orderData} />
+        <div className="print-area">
+          <AddOrderForm ref={formRef} order={orderData} />
 
-        <nav className={st.calc__toolbar}>
-          <button className={st.calc__add} onClick={handleClickAddBtn}>
-            Добавить услугу
-          </button>
-        </nav>
+          <nav className={`${st.toolbar} no-print`}>
+            <BaseBtn text="Добавить услугу" onClick={handleClickAdd} />
+          </nav>
 
-        <ServiceTable setServiceData={handleClickEdit} isOpen={isOpenPopup} />
+          <ServiceTable setServiceData={handleClickEdit} isOpen={isOpenPopup} />
+        </div>
 
-        <BaseBtn text="Сохранить" className={st.calc__add} onClick={handleClickSaveOrder} />
+        <div className={`${st.actions} no-print`}>
+          <PrintOrderButton />
+          <BaseBtn text="Сохранить" onClick={handleClickSave} />
+        </div>
 
-        {isOpenPopup && (
+        {isOpenPopup ? (
           <AddServicePopup
             isOpen={isOpenPopup}
-            onClose={handleClickCloseBtn}
+            onClose={handleClickClose}
             serviceItem={serviceData}
           />
-        )}
+        ) : null}
       </div>
     </>
   );

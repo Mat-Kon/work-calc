@@ -1,31 +1,48 @@
-'use client';
-import { useEffect, useMemo, useState } from 'react';
-import { PageHeading } from '@/shared/page-heading';
-import { IOrder } from '@/shared/types/calculate';
-import { OrdersList, SearchOrder, SelectSort } from '@/widgets/orders';
-import { searchOrdersByAddress, sortOrders } from '@/features/orders/model';
-import { ordersApi } from '@/shared/api';
-import st from './index.module.scss';
+"use client";
 
-export default function History() {
-  const [orders, setOrders] = useState<IOrder[]>([]);
+import { useEffect, useMemo, useState } from "react";
+
+import { searchOrdersByAddress, sortOrders } from "@/features/orders/model";
+import { ordersApi } from "@/shared/api";
+import { PageHeading } from "@/shared/page-heading";
+import { type OrderSummary } from "@/shared/types/calculate";
+import { OrdersList, SearchOrder, SelectSort } from "@/widgets/orders";
+
+import st from "./index.module.scss";
+
+export default function OrdersPage() {
+  const [orders, setOrders] = useState<OrderSummary[]>([]);
   const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
-  const [sortValue, setSortValue] = useState('');
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [sortValue, setSortValue] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+
     ordersApi
       .list()
-      .then(setOrders)
-      .catch((e: Error) => setError(e.message))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        if (cancelled) return;
+        setOrders(data);
+        setError("");
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setError(e.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // Поиск и сортировка считаются из одного списка, без отдельных состояний на каждый случай
   const visibleOrders = useMemo(
     () => sortOrders(searchOrdersByAddress(orders, search), sortValue),
-    [orders, search, sortValue]
+    [orders, search, sortValue],
   );
 
   const handleDeleted = (id: string) => {
@@ -35,15 +52,24 @@ export default function History() {
   return (
     <>
       <PageHeading text="Созданные заказы" />
+
       <nav className={st.navbar}>
         <SelectSort onChange={setSortValue} />
         <SearchOrder value={search} onChange={setSearch} />
       </nav>
 
-      {isLoading && <p>Загрузка...</p>}
-      {error && <p role="alert">Ошибка: {error}</p>}
-      {!isLoading && !error && orders.length === 0 && <p>Заказов пока нет</p>}
-      {!isLoading && orders.length > 0 && visibleOrders.length === 0 && <p>Ничего не найдено</p>}
+      {isLoading ? <p className={st.state}>Загрузка...</p> : null}
+      {error ? (
+        <p className={st.state} role="alert">
+          Ошибка: {error}
+        </p>
+      ) : null}
+      {!isLoading && !error && orders.length === 0 ? (
+        <p className={st.state}>Заказов пока нет</p>
+      ) : null}
+      {!isLoading && orders.length > 0 && visibleOrders.length === 0 ? (
+        <p className={st.state}>Ничего не найдено</p>
+      ) : null}
 
       <OrdersList orders={visibleOrders} onDeleted={handleDeleted} />
     </>

@@ -1,6 +1,8 @@
 "use client";
+
 import {
   createContext,
+  type ReactNode,
   useCallback,
   useContext,
   useMemo,
@@ -16,13 +18,17 @@ interface MenuContextValue {
 
 const MenuContext = createContext<MenuContextValue | null>(null);
 
-export const useMenu = () => {
+export function useMenu() {
   const ctx = useContext(MenuContext);
   if (!ctx) throw new Error("useMenu must be used within MenuProvider");
   return ctx;
-};
+}
 
-export const MenuProvider = ({ children }: { children: React.ReactNode }) => {
+interface MenuProviderProps {
+  children: ReactNode;
+}
+
+export function MenuProvider({ children }: MenuProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const open = useCallback(() => setIsOpen(true), []);
@@ -35,4 +41,4 @@ export const MenuProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
-};
+}

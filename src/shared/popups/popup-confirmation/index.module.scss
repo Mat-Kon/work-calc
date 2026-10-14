@@ -1,27 +1,35 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
+.content {
+  @include mix.flex(
+    $direction: column,
+    $alignItems: center,
+    $gap: vars.$space-lg
+  );
+}
 
-
-
-.contentWrapper {
-  @include mix.flex($direction: column, $alignItems: center, $gap: 30px);
+.text {
+  margin: 0;
+  font-size: vars.$fs-md;
+  color: vars.$text-base;
+  text-align: center;
 }
 
 .btns {
-  @include mix.flex($justify: space-between);
+  @include mix.flex($justify: space-between, $gap: vars.$space-md);
   width: 100%;
   flex-wrap: wrap;
 
-  & button {
-    font-weight: 500;
-    padding: 5px 10px;
-    border-radius: vars.$br-radius;
-    &:first-child {
-      background-color: vars.$color-warning ;
-    }
-    &:last-child {
-      background-color: vars.$color-green-btn;
+  & > * {
+    flex: 1 1 auto;
+  }
+
+  @include mix.media-mobile-l {
+    flex-direction: column-reverse;
+
+    & > * {
+      width: 100%;
     }
   }
 }

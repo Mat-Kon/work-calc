@@ -1,51 +1,48 @@
-import { ServiceItem } from '@/features/calculate';
-import { ICalcItem } from '@/shared/types/calculate';
-import st from './index.module.scss';
+import { type CalcItem } from "@/shared/types/calculate";
 
-interface Props {
-  servicesList: ICalcItem[];
+import st from "./index.module.scss";
+
+interface ServiceViewTableProps {
+  items: CalcItem[];
 }
 
-export const ServiceViewTable: React.FC<Props> = ({ servicesList }) => {
-  const totalCost = servicesList.reduce((acc, item) => acc + item.cost, 0);
+const formatPrice = (value: number) =>
+  value.toLocaleString("ru-RU", { style: "currency", currency: "RUB" });
+
+export function ServiceViewTable({ items }: ServiceViewTableProps) {
+  if (items.length === 0) return null;
+
+  const totalCost = items.reduce((acc, item) => acc + item.cost, 0);
+
   return (
     <table className={st.servicesTable}>
       <caption>Необходимые работы</caption>
-      <thead className={st.servicesTable__head}>
+      <thead>
         <tr>
-          <th scope="col" className={st.servicesTable__headings}>
-            Вид работы
-          </th>
-          <th scope="col" className={st.servicesTable__headings}>
-            Ед. измерения
-          </th>
-          <th scope="col" className={st.servicesTable__headings}>
-            Колличество
-          </th>
-          <th scope="col" className={st.servicesTable__headings}>
-            Стоимость
-          </th>
+          <th scope="col">Вид работы</th>
+          <th scope="col">Ед. измерения</th>
+          <th scope="col">Количество</th>
+          <th scope="col">Стоимость</th>
         </tr>
       </thead>
       <tbody>
-        {servicesList.map((item) => (
-          <ServiceItem
-            item={item}
-            key={item.id}
-            onDelete={() => {}}
-            onEdit={() => {}}
-            isEditPage={false}
-          />
+        {items.map((item) => (
+          <tr key={item.id}>
+            <th scope="row">{item.name}</th>
+            <td>{item.typeValue}</td>
+            <td>{item.count}</td>
+            <td>{formatPrice(item.cost)}</td>
+          </tr>
         ))}
       </tbody>
-      <tfoot className={st.servicesTable__footer}>
+      <tfoot>
         <tr>
-          <th scope="row" colSpan={3} className={st.headings}>
+          <th scope="row" colSpan={3}>
             Итого
           </th>
-          <td>{totalCost.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</td>
+          <td>{formatPrice(totalCost)}</td>
         </tr>
       </tfoot>
     </table>
   );
-};
+}

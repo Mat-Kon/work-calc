@@ -1,52 +1,49 @@
-import { IconBtn } from "@/shared/buttons";
+import { IconBtn } from "@/shared/buttons/icon-btn";
 import { EditIcon, TrashIcon } from "@/shared/icons";
-import { ICalcItem } from "@/shared/types/calculate";
+import { type CalcItem } from "@/shared/types/calculate";
+
 import st from "./index.module.scss";
 
-interface Props {
-  item: ICalcItem;
+interface ServiceItemProps {
+  item: CalcItem;
   onDelete: () => void;
   onEdit: () => void;
   isEditPage: boolean;
 }
 
-export const ServiceItem: React.FC<Props> = ({
+const formatPrice = (value: number) =>
+  value.toLocaleString("ru-RU", { style: "currency", currency: "RUB" });
+
+export function ServiceItem({
   item,
   onDelete,
   onEdit,
   isEditPage,
-}) => {
+}: ServiceItemProps) {
   const { name, typeValue, count, cost } = item;
 
   return (
     <tr>
-      <th scope="row" className={st.headings}>
+      <th scope="row" className={st.heading}>
         {name}
       </th>
       <td>{typeValue}</td>
       <td>{count}</td>
-      <td>
-        {cost.toLocaleString("ru-RU", { style: "currency", currency: "RUB" })}
-      </td>
-      {isEditPage && (
-        <td className={`${st.item__btns} ${st.noPrint}`}>
+      <td>{formatPrice(cost)}</td>
+      {isEditPage ? (
+        <td className={`${st.actions} ${st.noPrint}`}>
           <IconBtn
-            className={st.item__editBtn}
+            className={st.editBtn}
             title="Редактировать"
             onClick={onEdit}
           >
             <EditIcon />
           </IconBtn>
-
-          <IconBtn
-            className={st.item__deleteBtn}
-            title="Удалить"
-            onClick={onDelete}
-          >
+          <IconBtn className={st.deleteBtn} title="Удалить" onClick={onDelete}>
             <TrashIcon />
           </IconBtn>
         </td>
-      )}
+      ) : null}
     </tr>
   );
-};
+}

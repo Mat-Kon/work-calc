@@ -1,16 +1,41 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-
-
-
 .logoBtn {
-  @include mix.flex($alignItems: center, $gap: 5px);
-  
-  & span {
-    @include mix.flex($alignItems: center);
-    padding: 5px;
-    background-color: vars.$color-primer;
-    border-radius: 50%;
+  @include mix.flex($alignItems: center, $gap: vars.$space-2xs);
+  min-height: 44px;
+  color: vars.$text-base;
+  font-weight: 600;
+  @include mix.transition(color, vars.$duration-fast, vars.$ease-out);
+
+  @include mix.hover {
+    &:hover {
+      color: vars.$accent-hover;
+    }
+  }
+
+  &:focus-visible {
+    @include mix.focus-ring;
+    border-radius: vars.$radius-md;
+  }
+}
+
+.iconWrap {
+  @include mix.flex($alignItems: center, $justify: center);
+  width: 32px;
+  height: 32px;
+  border-radius: vars.$radius-pill;
+  background-color: vars.$color-primer;
+  color: vars.$text-base;
+
+  @include mix.media-mobile-l {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.text {
+  @include mix.media-mobile-s {
+    display: none;
   }
 }

@@ -3,40 +3,56 @@
 
 .header {
   @include mix.flex($justify: space-between, $alignItems: center);
-  border-bottom: 1px solid vars.$color-primer;
+  padding: vars.$space-sm vars.$space-lg;
   border-top: 1px solid vars.$color-primer;
-  padding: 10px 30px;
+  border-bottom: 1px solid vars.$color-primer;
+  color: vars.$text-base;
+
+  @include mix.media-tablet {
+    padding: vars.$space-sm vars.$space-md;
+  }
+
+  @include mix.media-mobile-l {
+    padding: vars.$space-xs vars.$space-sm;
+  }
 }
 
-.mobile__menu {
-  z-index: 10;
+.menu {
+  z-index: vars.$z-overlay;
   @include mix.flex($justify: space-between, $alignItems: center);
 
   @include mix.media-tablet {
     position: fixed;
     inset: 0;
-    width: 100%;
-    gap: 50px;
     flex-direction: column-reverse;
     justify-content: flex-end;
-    background-color: bisque;
-    padding: 30px 0;
+    gap: vars.$space-2xl;
+    width: 100%;
+    padding: vars.$space-xl 0;
+    background-color: vars.$bg-surface;
 
     visibility: hidden;
     opacity: 0;
     transform: translateX(100%);
     transition:
-      transform 0.3s ease,
-      opacity 0.3s ease,
-      visibility 0.3s;
-
-    pointer-events: none;
+      transform vars.$duration-slow vars.$ease-out,
+      opacity vars.$duration-slow vars.$ease-out,
+      visibility vars.$duration-slow;
 
     &.active {
       visibility: visible;
       opacity: 1;
       transform: translateX(0);
-      pointer-events: auto;
     }
+  }
+
+  @include mix.media-mobile-l {
+    gap: vars.$space-xl;
+    padding: vars.$space-lg 0;
+  }
+
+  @include mix.media-mobile-s {
+    gap: vars.$space-lg;
+    padding: vars.$space-md 0;
   }
 }

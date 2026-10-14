@@ -1,21 +1,28 @@
-'use client';
-import { OrderInfo, ServiceViewTable } from '@/features/orders';
-import { ordersApi } from '@/shared/api';
-import { PageHeading } from '@/shared/page-heading';
-import { IOrder } from '@/shared/types/calculate';
-import { type NextPage } from 'next';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+"use client";
+
+import { type NextPage } from "next";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { OrderInfo, ServiceViewTable } from "@/features/orders";
+import { PrintOrderButton } from "@/features/print-order";
+import { ordersApi } from "@/shared/api";
+import { PageHeading } from "@/shared/page-heading";
+import { type Order } from "@/shared/types/calculate";
+
+import st from "./index.module.scss";
 
 const OrderPage: NextPage = () => {
   const params = useParams();
-  const orderId = typeof params?.id === 'string' ? params.id : null;
-  const [order, setOrder] = useState<IOrder | null>(null);
+  const orderId = typeof params?.id === "string" ? params.id : null;
+
+  const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!orderId) return;
+
     let cancelled = false;
 
     ordersApi
@@ -35,14 +42,31 @@ const OrderPage: NextPage = () => {
     };
   }, [orderId]);
 
-  if (isLoading) return <p>Загрузка...</p>;
-  if (error || !order) return <p role="alert">Заказ не найден</p>;
+  if (isLoading) return <p className={st.state}>Загрузка...</p>;
+  if (error || !order) {
+    return (
+      <p className={st.state} role="alert">
+        Заказ не найден
+      </p>
+    );
+  }
+
+  const heading = order.orderNumber
+    ? `Номер договора ${order.orderNumber}`
+    : "Заказ";
 
   return (
     <>
-      <PageHeading text={`Номер договора ${order.orderNumber ?? ''}`} hasButton />
-      <OrderInfo order={order} />
-      <ServiceViewTable servicesList={order.orderServices} />
+      <PageHeading text={heading} hasButton />
+
+      <div className="print-area">
+        <OrderInfo order={order} />
+        <ServiceViewTable items={order.items} />
+      </div>
+
+      <div className={`${st.actions} no-print`}>
+        <PrintOrderButton />
+      </div>
     </>
   );
 };

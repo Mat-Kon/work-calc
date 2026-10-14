@@ -1,12 +1,13 @@
-'use client';
-import { useEffect, useState } from 'react';
-import type { IServiceItemData } from '@/shared/types/my-services';
-import { catalogApi, type CatalogKind } from './index';
+"use client";
 
-export const useCatalog = (kind: CatalogKind, refreshKey?: unknown) => {
-  const [items, setItems] = useState<IServiceItemData[]>([]);
+import { useEffect, useState } from "react";
+
+import { catalogApi, type CatalogItem, type CatalogKind } from "./index";
+
+export function useCatalog(kind: CatalogKind, refreshKey?: unknown) {
+  const [items, setItems] = useState<CatalogItem[]>([]);
   const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -17,7 +18,7 @@ export const useCatalog = (kind: CatalogKind, refreshKey?: unknown) => {
       .then((data) => {
         if (cancelled) return;
         setItems(data);
-        setError('');
+        setError("");
       })
       .catch((e: Error) => {
         if (!cancelled) setError(e.message);
@@ -32,4 +33,4 @@ export const useCatalog = (kind: CatalogKind, refreshKey?: unknown) => {
   }, [kind, refreshKey]);
 
   return { items, setItems, isLoading, error };
-};
+}

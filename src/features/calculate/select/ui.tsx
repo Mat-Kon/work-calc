@@ -1,17 +1,23 @@
-import { forwardRef } from "react";
+import { forwardRef, type SelectHTMLAttributes } from 'react';
 
-interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  name: string;
+import st from './index.module.scss';
+
+interface CalcSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   id: string;
   optionValues: string[];
 }
 
-export const CalcSelect = forwardRef<HTMLSelectElement, Props>(
-  function CalcSelect({ name, id, optionValues, ...props }, ref) {
+export const CalcSelect = forwardRef<HTMLSelectElement, CalcSelectProps>(
+  function CalcSelect({ id, optionValues, className, ...props }, ref) {
     return (
-      <select name={name} id={id} {...props} ref={ref}>
-        {optionValues.map((value, index) => (
-          <option key={index} value={value}>
+      <select
+        ref={ref}
+        id={id}
+        className={[st.select, className].filter(Boolean).join(' ')}
+        {...props}
+      >
+        {optionValues.map((value) => (
+          <option key={value} value={value}>
             {value}
           </option>
         ))}
@@ -19,3 +25,5 @@ export const CalcSelect = forwardRef<HTMLSelectElement, Props>(
     );
   },
 );
+
+CalcSelect.displayName = 'CalcSelect';

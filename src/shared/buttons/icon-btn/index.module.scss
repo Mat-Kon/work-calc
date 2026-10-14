@@ -1,10 +1,32 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-
-
 .iconBtn {
   @include mix.flex($justify: center, $alignItems: center);
-  padding: 5px;
-  border-radius: 50%;
+  min-width: 44px;
+  min-height: 44px;
+  padding: vars.$space-xs;
+  border-radius: vars.$radius-pill;
+  color: vars.$text-base;
+  @include mix.transition(
+    (background-color, color),
+    vars.$duration-fast,
+    vars.$ease-out
+  );
+
+  @include mix.hover {
+    &:hover {
+      background-color: vars.$accent-soft;
+      color: vars.$accent-hover;
+    }
+  }
+
+  &:focus-visible {
+    @include mix.focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }

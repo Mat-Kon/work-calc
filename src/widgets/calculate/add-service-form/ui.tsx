@@ -1,36 +1,45 @@
-'use client';
-import { CalcSelect } from '@/features/calculate';
-import { BaseBtn } from '@/shared/buttons/base';
-import { TextInput } from '@/shared/inputs';
-import { PopupWrapper } from '@/shared/popups';
-import st from './index.module.scss';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+"use client";
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
+
+import { CalcSelect } from "@/features/calculate";
+import { catalogApi } from "@/shared/api";
+import { BaseBtn } from "@/shared/buttons/base";
+import { TextInput } from "@/shared/inputs";
+import { PopupWrapper } from "@/shared/popups";
+import {
+  type CalcItem,
+  type ItemKind,
+  type ItemData,
+} from "@/shared/types/calculate";
+
+import st from "./index.module.scss";
 import {
   addServiceItem,
-  FormDataAddServiceCalc,
+  type FormDataAddServiceCalc,
   schemaAddServiceForm,
   updateServiceItem,
-} from './model';
-import { v4 as uuidv4 } from 'uuid';
-import { ICalcItem } from '@/shared/types/calculate';
-import { useEffect, useState } from 'react';
-import { IServiceItemData } from '@/shared/types/my-services';
-import { IMaterialItemData } from '@/shared/types/materials';
-import { catalogApi } from '@/shared/api';
+} from "./model";
 
-interface Props {
+interface AddServicePopupProps {
   isOpen: boolean;
   onClose: () => void;
-  serviceItem: ICalcItem | null;
+  serviceItem: CalcItem | null;
 }
 
-export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem }) => {
-  const [services, setServices] = useState<IServiceItemData[]>([]);
-  const [materials, setMaterials] = useState<IMaterialItemData[]>([]);
+export function AddServicePopup({
+  isOpen,
+  onClose,
+  serviceItem,
+}: AddServicePopupProps) {
+  const [services, setServices] = useState<ItemData[]>([]);
+  const [materials, setMaterials] = useState<ItemData[]>([]);
 
   const names = [...services, ...materials].map((item) => item.name);
-  const btnName = serviceItem ? 'Обновить' : 'Добавить';
+  const btnName = serviceItem ? "Обновить" : "Добавить";
   const hasServices = services.length > 0;
 
   const {
@@ -41,22 +50,20 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
     resolver: yupResolver(schemaAddServiceForm),
     defaultValues: {
       count: serviceItem?.count ?? 0,
-      name: serviceItem?.name ?? '',
+      name: serviceItem?.name ?? "",
     },
   });
 
   useEffect(() => {
     let cancelled = false;
 
-    Promise.all([catalogApi.list('SERVICE'), catalogApi.list('MATERIAL')])
+    Promise.all([catalogApi.list("SERVICE"), catalogApi.list("MATERIAL")])
       .then(([serviceList, materialList]) => {
         if (cancelled) return;
         setServices(serviceList);
         setMaterials(materialList);
       })
-      .catch(() => {
-        // ошибка загрузки: покажем подсказку «Добавьте хотя бы одну услугу»
-      });
+      .catch(() => {});
 
     return () => {
       cancelled = true;
@@ -65,56 +72,57 @@ export const AddServicePopup: React.FC<Props> = ({ isOpen, onClose, serviceItem 
 
   const onSubmit = (data: FormDataAddServiceCalc) => {
     const service = services.find((item) => item.name === data.name);
-    const curItem = service ?? materials.find((item) => item.name === data.name);
-    const kind = service ? ('SERVICE' as const) : ('MATERIAL' as const);
-    const costPerUnit = curItem?.costPerUnit ?? 0;
-    const typeValue = curItem?.typeValue ?? '';
-    const totalCost = Math.round(data.count * costPerUnit * 100) / 100;
+    const material = materials.find((item) => item.name === data.name);
+    const source = service ?? material;
+    const kind: ItemKind = service ? "SERVICE" : "MATERIAL";
+    const costPerUnit = source?.costPerUnit ?? 0;
+    const typeValue = source?.typeValue ?? "";
+    const cost = Math.round(data.count * costPerUnit * 100) / 100;
+
+    const payload: CalcItem = {
+      ...data,
+      id: serviceItem?.id ?? uuidv4(),
+      costPerUnit,
+      cost,
+      typeValue,
+      kind,
+    };
 
     if (serviceItem) {
-      const serviceData = {
-        ...data,
-        id: serviceItem.id,
-        costPerUnit,
-        cost: totalCost,
-        typeValue,
-        kind,
-      };
-      updateServiceItem(serviceData);
+      updateServiceItem(payload);
     } else {
-      const serviceData = {
-        id: uuidv4(),
-        ...data,
-        costPerUnit,
-        cost: totalCost,
-        typeValue,
-        kind,
-      };
-      addServiceItem(serviceData);
+      addServiceItem(payload);
     }
+
     onClose();
   };
 
   return (
     <PopupWrapper isOpen={isOpen}>
       <div className={st.wrapCloseBtn}>
-        <BaseBtn text="Закрыть" className={st.closeBtn} onClick={onClose} />
+        <BaseBtn text="Закрыть" onClick={onClose} />
       </div>
+
       {hasServices ? (
         <form className={st.addService} onSubmit={handleSubmit(onSubmit)}>
-          <CalcSelect id="typeService" optionValues={names} {...register('name')} />
+          <CalcSelect
+            id="typeService"
+            optionValues={names}
+            {...register("name")}
+          />
 
           <TextInput
-            {...register('count', { required: true })}
             type="number"
             step="any"
-            className={`${st.serviceValue} ${!!errors.count ? st.error : ''}`}
+            className={`${st.serviceValue} ${errors.count ? st.error : ""}`}
+            {...register("count", { required: true })}
           />
-          <BaseBtn text={btnName} className={st.addService__btn} />
+
+          <BaseBtn text={btnName} type="submit" />
         </form>
       ) : (
         <p>Добавьте хотя бы одну услугу в &quot;Мои услуги&quot;</p>
       )}
     </PopupWrapper>
   );
-};
+}

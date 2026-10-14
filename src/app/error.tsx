@@ -1,29 +1,31 @@
-'use client'; // Error boundaries must be Client Components
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-export default function Error({
-  error,
-  reset,
-}: {
+import st from "./error.module.scss";
+
+interface ErrorPageProps {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
+}
+
+export default function ErrorPage({ error, reset }: ErrorPageProps) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error(error);
   }, [error]);
 
   return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
+    <div className={st.wrap} role="alert" aria-live="assertive">
+      <h2 className={st.title}>Что-то пошло не так</h2>
+      <p className={st.text}>
+        Попробуйте перезагрузить страницу. Если ошибка повторяется — свяжитесь с
+        поддержкой.
+      </p>
+      {error.digest ? (
+        <p className={st.digest}>Код ошибки: {error.digest}</p>
+      ) : null}
+      <button type="button" className={st.btn} onClick={reset}>
+        Попробовать снова
       </button>
     </div>
   );

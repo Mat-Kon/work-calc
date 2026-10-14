@@ -1,0 +1,76 @@
+@use "../../../../styles/abstract/variables" as vars;
+@use "../../../../styles/abstract/mixins" as mix;
+
+.card {
+  @include mix.flex($direction: column, $gap: vars.$space-xs);
+  padding: vars.$space-md;
+  border: 1px solid vars.$border-base;
+  border-radius: vars.$radius-lg;
+  background-color: vars.$bg-surface;
+  color: vars.$text-base;
+  box-shadow: vars.$shadow-xs;
+  @include mix.transition(
+    (box-shadow, transform, border-color),
+    vars.$duration-fast,
+    vars.$ease-out
+  );
+
+  @include mix.hover {
+    &:hover {
+      color: vars.$text-base;
+      border-color: vars.$accent;
+      transform: translateY(-2px);
+      box-shadow: vars.$shadow-md;
+    }
+  }
+
+  &:focus-visible {
+    @include mix.focus-ring;
+  }
+
+  @include mix.media-mobile-l {
+    padding: vars.$space-sm;
+  }
+}
+
+.head {
+  @include mix.flex(
+    $justify: space-between,
+    $alignItems: center,
+    $gap: vars.$space-xs
+  );
+}
+
+.number {
+  font-size: vars.$fs-xs;
+  color: vars.$text-muted;
+}
+
+.name {
+  margin: 0;
+  font-size: vars.$fs-md;
+  font-weight: 600;
+  @include mix.truncate;
+}
+
+.address {
+  margin: 0;
+  font-size: vars.$fs-sm;
+  color: vars.$text-muted;
+  @include mix.line-clamp(2);
+}
+
+.footer {
+  @include mix.flex($justify: space-between, $alignItems: center);
+  margin-top: vars.$space-2xs;
+}
+
+.cost {
+  font-size: vars.$fs-md;
+  font-weight: 700;
+}
+
+.date {
+  font-size: vars.$fs-xs;
+  color: vars.$text-muted;
+}

@@ -1,32 +1,32 @@
-import { PopupWrapper } from '../popup-wrapper';
-import { BaseBtn } from '@/shared/buttons';
-import st from './index.module.scss';
+"use client";
 
-interface Props {
+import { BaseBtn } from "@/shared/buttons/base";
+
+import { PopupWrapper } from "../popup-wrapper";
+import st from "./index.module.scss";
+
+interface PopupConfirmationProps {
   isOpen: boolean;
   text: string;
   confirm: () => void;
   reject: () => void;
 }
 
-export const PopupConfirmation: React.FC<Props> = ({ text, confirm, reject, isOpen }) => {
-  const onConfirm = () => {
-    confirm();
-  };
-
-  const onReject = () => {
-    reject();
-  };
-
+export function PopupConfirmation({
+  isOpen,
+  text,
+  confirm,
+  reject,
+}: PopupConfirmationProps) {
   return (
-    <PopupWrapper isOpen={isOpen}>
-      <div className={st.contentWrapper}>
-        <p>{text}</p>
+    <PopupWrapper isOpen={isOpen} onClose={reject}>
+      <div className={st.content}>
+        <p className={st.text}>{text}</p>
         <div className={st.btns}>
-          <BaseBtn text="Нет" onClick={onReject} />
-          <BaseBtn text="Да" onClick={onConfirm} />
+          <BaseBtn text="Нет" variant="ghost" onClick={reject} />
+          <BaseBtn text="Да" onClick={confirm} />
         </div>
       </div>
     </PopupWrapper>
   );
-};
+}

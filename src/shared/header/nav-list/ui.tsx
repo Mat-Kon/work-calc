@@ -1,32 +1,43 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { linksMap } from "../../constants/header";
+
+import { linksMap } from "@/shared/constants/header";
+
 import { useMenu } from "../model/menu-context";
 import st from "./index.module.scss";
 
-export const NavList: React.FC = () => {
+export function NavList() {
   const pathname = usePathname();
   const { close } = useMenu();
 
-  const isActive = (link: string) => pathname?.includes(link);
+  const isActive = (link: string) => {
+    if (link === "/") return pathname === "/";
+    return pathname === link || pathname?.startsWith(`${link}/`) === true;
+  };
 
   return (
     <nav className={st.nav}>
       <ul className={st.nav__list}>
-        {linksMap.map((linkData) => (
-          <li key={linkData.link}>
-            <Link
-              href={linkData.link}
-              className={`${st.nav__item} ${isActive(linkData.link) ? st.active : ""}`}
-              data-testid="navLink"
-              onClick={close}
-            >
-              {linkData.verbName}
-            </Link>
-          </li>
-        ))}
+        {linksMap.map(({ link, label }) => {
+          const active = isActive(link);
+
+          return (
+            <li key={link}>
+              <Link
+                href={link}
+                className={`${st.nav__item} ${active ? st.active : ""}`}
+                data-testid="navLink"
+                aria-current={active ? "page" : undefined}
+                onClick={close}
+              >
+                {label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );
-};
+}

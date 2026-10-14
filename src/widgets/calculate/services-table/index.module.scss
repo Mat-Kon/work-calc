@@ -1,23 +1,21 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-.servicesTable {
-  width: 90%;
+.table {
+  width: 100%;
+  max-width: 960px;
   table-layout: fixed;
   border-spacing: 0;
   font-size: vars.$p-size;
-  border: 1px solid vars.$color-grey-light;
-
-  & caption {
-    font-size: vars.$h3-size;
-    padding-bottom: 20px;
-  }
+  border: 1px solid vars.$border-base;
+  border-radius: vars.$radius-md;
+  overflow: hidden;
 
   & th,
   td {
-    border-bottom: 1px solid vars.$color-grey-light;
-    border-right: 1px solid vars.$color-grey-light;
-    padding: 5px;
+    padding: vars.$space-xs vars.$space-sm;
+    border-bottom: 1px solid vars.$border-base;
+    border-right: 1px solid vars.$border-base;
     word-break: break-word;
 
     &:last-child {
@@ -25,25 +23,46 @@
     }
   }
 
+  & tbody tr:last-child th,
+  & tbody tr:last-child td {
+    border-bottom: none;
+  }
+
   @include mix.media-mobile-l {
-    font-size: 1rem;
+    font-size: vars.$fs-sm;
   }
 }
 
-.servicesTable__headings {
+.caption {
+  caption-side: top;
+  padding: vars.$space-sm 0;
+  font-size: vars.$fs-lg;
+  font-weight: 600;
+  text-align: left;
+  color: vars.$text-base;
+}
+
+.heading {
   text-align: left;
 }
 
-.servicesTable__footer {
+.footer {
   & th,
   td {
-    border-right: 1px solid vars.$color-grey-light;
-    padding: 5px;
+    padding: vars.$space-xs vars.$space-sm;
+    border-top: 1px solid vars.$border-base;
+    border-right: 1px solid vars.$border-base;
     border-bottom: none;
+    font-weight: 700;
   }
 
   & th {
     text-align: left;
+  }
+
+  & th:last-child,
+  td:last-child {
+    border-right: none;
   }
 }
 
@@ -54,30 +73,32 @@
 }
 
 @media print {
-  .servicesTable {
+  .table {
     width: 100%;
-    border: 1px solid black;
+    max-width: none;
+    border: 1px solid #000;
+    border-radius: 0;
     font-size: 11pt;
-
-    & caption {
-      font-size: 14pt;
-      text-align: left;
-      padding-bottom: 10px;
-    }
 
     & th,
     td {
-      border: 1px solid black;
+      border: 1px solid #000;
       padding: 6px 8px;
     }
   }
 
-  .servicesTable__footer {
+  .caption {
+    font-size: 14pt;
+    text-align: left;
+    padding-bottom: 10px;
+  }
+
+  .footer {
     font-weight: bold;
 
     & th,
     td {
-      border: 1px solid black;
+      border: 1px solid #000;
     }
   }
 }

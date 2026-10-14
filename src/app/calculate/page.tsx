@@ -1,27 +1,30 @@
 "use client";
-import { AddServicePopup } from "@/widgets/calculate/add-service-form";
-import st from "./index.module.scss";
+
 import { type NextPage } from "next";
 import { useRef, useState } from "react";
-import { ServiceTable } from "@/widgets/calculate/services-table";
-import { ICalcItem } from "@/shared/types/calculate";
-import { BaseBtn } from "@/shared/buttons/base";
-import { AddOrderForm } from "@/widgets/calculate";
-import { PageHeading } from "@/shared/page-heading";
+
 import { PrintOrderButton } from "@/features/print-order";
+import { BaseBtn } from "@/shared/buttons/base";
+import { PageHeading } from "@/shared/page-heading";
+import { type CalcItem } from "@/shared/types/calculate";
+import { AddOrderForm } from "@/widgets/calculate";
+import { AddServicePopup } from "@/widgets/calculate/add-service-form";
+import { ServiceTable } from "@/widgets/calculate/services-table";
+
+import st from "./index.module.scss";
 
 const Calculate: NextPage = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
-  const [serviceData, setServiceData] = useState<ICalcItem | null>(null);
+  const [serviceData, setServiceData] = useState<CalcItem | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleClickAddBtn = () => {
     setOpenPopup(true);
   };
 
-  const handleClickEdit = (serviceData: ICalcItem) => {
+  const handleClickEdit = (item: CalcItem) => {
     setOpenPopup(true);
-    setServiceData(serviceData);
+    setServiceData(item);
   };
 
   const handleClickCloseBtn = () => {
@@ -42,9 +45,7 @@ const Calculate: NextPage = () => {
         <AddOrderForm ref={formRef} />
 
         <nav className={`${st.calc__toolbar} no-print`}>
-          <button className={st.calc__add} onClick={handleClickAddBtn}>
-            Добавить
-          </button>
+          <BaseBtn text="Добавить" onClick={handleClickAddBtn} />
         </nav>
 
         <div className={st.printArea}>
@@ -53,11 +54,7 @@ const Calculate: NextPage = () => {
 
         <div className={`${st.calc__actions} no-print`}>
           <PrintOrderButton />
-          <BaseBtn
-            text="Сохранить"
-            className={st.calc__add}
-            onClick={handleClickSaveOrder}
-          />
+          <BaseBtn text="Сохранить" onClick={handleClickSaveOrder} />
         </div>
 
         {isOpenPopup && (

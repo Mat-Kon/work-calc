@@ -1,25 +1,84 @@
-@use './variables' as vars;
+@use "./variables" as vars;
+@use "./mixins" as mx;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 html {
   font-size: vars.$global-size;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  @include mx.media-mobile-l {
+    font-size: 9px;
+  }
+
+  @include mx.media-mobile-s {
+    font-size: 8px;
+  }
 }
 
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  font-family: vars.$font-family-base;
+  font-size: vars.$fs-md;
+  line-height: vars.$lh-base;
+  color: vars.$text-base;
+  background-color: vars.$bg-base;
+  color-scheme: light dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-button {
-  border: none;
-  background-color: transparent;
-  transition: all 0.5s;
-  @media (hover: hover) {
-    &:hover {
-      cursor: pointer;
-      opacity: 0.7;
-    }
-  }
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 vars.$space-sm;
+  line-height: vars.$lh-tight;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: vars.$fs-3xl;
+}
+h2 {
+  font-size: vars.$fs-2xl;
+}
+h3 {
+  font-size: vars.$fs-xl;
+}
+h4 {
+  font-size: vars.$fs-lg;
+}
+h5 {
+  font-size: vars.$fs-md;
+}
+h6 {
+  font-size: vars.$fs-sm;
+}
+
+p {
+  margin: 0 0 vars.$space-md;
+  text-wrap: pretty;
 }
 
 p,
@@ -29,20 +88,102 @@ li {
   font-size: vars.$p-size;
 }
 
-a {
-  text-decoration: none;
-  color: vars.$color-font-base;
-  transition: all 0.5s;
+small {
+  font-size: vars.$fs-xs;
+  color: vars.$text-muted;
+}
 
-  @media (hover: hover) {
+a {
+  color: inherit;
+  text-decoration: none;
+  @include mx.transition(color, vars.$duration-fast, vars.$ease-out);
+
+  @include mx.hover {
+    &:hover {
+      color: vars.$accent;
+    }
+  }
+
+  &:focus-visible {
+    @include mx.focus-ring;
+    border-radius: vars.$radius-sm;
+  }
+}
+
+.link {
+  color: vars.$accent;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  @include mx.transition(color, vars.$duration-fast, vars.$ease-out);
+
+  @include mx.hover {
+    &:hover {
+      color: vars.$accent-hover;
+    }
+  }
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background-color: transparent;
+  @include mx.transition(opacity, vars.$duration-base, vars.$ease-out);
+
+  @include mx.hover {
     &:hover {
       cursor: pointer;
-      opacity: 0.7;
+      opacity: 0.75;
     }
+  }
+
+  &:focus-visible {
+    @include mx.focus-ring;
   }
 }
 
 ul,
 ol {
   list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+::selection {
+  background: vars.$accent-soft;
+  color: vars.$text-base;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: vars.$border-strong transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: vars.$border-strong;
+  border-radius: vars.$radius-pill;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: vars.$text-muted;
+  background-clip: padding-box;
+}
+
+@include mx.reduce-motion {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,3 +1,22 @@
+@use "../../styles/abstract/variables" as vars;
+@use "../../styles/abstract/mixins" as mix;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
 .main {
-  min-height: 80vh;
+  flex: 1;
+  width: 100%;
+  padding: 0 vars.$space-lg;
+
+  @include mix.media-tablet {
+    padding: 0 vars.$space-md;
+  }
+
+  @include mix.media-mobile-l {
+    padding: 0 vars.$space-sm;
+  }
 }

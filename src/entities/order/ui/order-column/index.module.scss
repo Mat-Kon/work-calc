@@ -1,0 +1,59 @@
+@use "../../../../styles/abstract/variables" as vars;
+@use "../../../../styles/abstract/mixins" as mix;
+
+.column {
+  @include mix.flex($direction: column, $gap: vars.$space-sm);
+  min-width: 0;
+}
+
+.head {
+  @include mix.flex($alignItems: center, $gap: vars.$space-xs);
+}
+
+.title {
+  margin: 0;
+  font-size: vars.$fs-md;
+  font-weight: 700;
+  color: vars.$text-base;
+}
+
+.count {
+  @include mix.flex($alignItems: center, $justify: center);
+  min-width: 24px;
+  height: 24px;
+  padding: 0 vars.$space-2xs;
+  border-radius: vars.$radius-pill;
+  background-color: vars.$bg-surface-2;
+  color: vars.$text-muted;
+  font-size: vars.$fs-xs;
+  font-weight: 600;
+}
+
+.list {
+  @include mix.flex($direction: column, $gap: vars.$space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.empty {
+  margin: 0;
+  padding: vars.$space-lg vars.$space-md;
+  border: 1px dashed vars.$border-base;
+  border-radius: vars.$radius-lg;
+  color: vars.$text-muted;
+  font-size: vars.$fs-sm;
+  text-align: center;
+}
+
+.column[data-status="QUEUED"] .title {
+  color: hsl(28 30% 35%);
+}
+
+.column[data-status="IN_PROGRESS"] .title {
+  color: vars.$accent-hover;
+}
+
+.column[data-status="DONE"] .title {
+  color: hsl(150 60% 28%);
+}

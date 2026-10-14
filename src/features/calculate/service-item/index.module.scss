@@ -1,38 +1,28 @@
 @use "../../../styles/abstract/variables" as vars;
 @use "../../../styles/abstract/mixins" as mix;
 
-.headings {
+.heading {
   text-align: left;
-  text-wrap: wrap;
-  width: 25%;
+  word-break: break-word;
 }
 
-.item__btns {
-  @include mix.flex($alignItems: center, $justify: center, $gap: 20px);
+.actions {
+  @include mix.flex(
+    $alignItems: center,
+    $justify: center,
+    $gap: vars.$space-xs
+  );
   flex-wrap: wrap;
 }
 
-.item__editBtn,
-.item__deleteBtn {
-  padding: 3px;
-
-  @include mix.hover {
-    &:hover {
-      color: vars.$color-font-base;
-      border: 3px solid vars.$color-font-base;
-    }
-  }
-}
-
-.item__editBtn {
-  border: 3px solid vars.$color-warning;
+.editBtn {
   color: vars.$color-warning;
 }
 
-.item__deleteBtn {
-  border: 3px solid vars.$color-error;
+.deleteBtn {
   color: vars.$color-error;
 }
+
 .noPrint {
   @media print {
     display: none !important;

@@ -1,19 +1,30 @@
-import { useRouter } from 'next/navigation';
-import { BaseBtn } from '../buttons';
-import st from './index.module.scss';
+"use client";
 
-interface Props {
+import { useRouter } from "next/navigation";
+
+import { BaseBtn } from "@/shared/buttons/base";
+
+import st from "./index.module.scss";
+
+interface PageHeadingProps {
   text: string;
   hasButton?: boolean;
 }
 
-export const PageHeading: React.FC<Props> = ({ text, hasButton }) => {
-  const route = useRouter();
+export function PageHeading({ text, hasButton }: PageHeadingProps) {
+  const router = useRouter();
 
   return (
-    <div className={st.pageHeading}>
-      <h1 className={`${hasButton ? st.hasButton : ''}`}>{text}</h1>
-      {hasButton && <BaseBtn text="Назад" onClick={() => route.back()} />}
+    <div className={st.wrap}>
+      <div className={st.back}>
+        {hasButton ? (
+          <BaseBtn text="Назад" variant="ghost" onClick={() => router.back()} />
+        ) : null}
+      </div>
+
+      <h1 className={st.title}>{text}</h1>
+
+      <div className={st.spacer} aria-hidden />
     </div>
   );
-};
+}

@@ -1,14 +1,20 @@
-import { forwardRef } from "react";
+import { forwardRef, type InputHTMLAttributes } from "react";
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  placeholder?: string;
-}
+import st from "./index.module.scss";
 
-export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
-  { placeholder, ...props },
-  ref,
-) {
-  return (
-    <input type="text" placeholder={placeholder ?? ""} {...props} ref={ref} />
-  );
-});
+type TextInputProps = InputHTMLAttributes<HTMLInputElement>;
+
+export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+  function TextInput({ type = "text", className, ...props }, ref) {
+    return (
+      <input
+        ref={ref}
+        type={type}
+        className={[st.input, className].filter(Boolean).join(" ")}
+        {...props}
+      />
+    );
+  },
+);
+
+TextInput.displayName = "TextInput";
