@@ -4,7 +4,6 @@
 }
 
 @media print {
-  // Скрываем явно помеченное
   .no-print,
   [data-print="hide"],
   header,
@@ -14,12 +13,13 @@
   }
 
   html,
-  body {
+  body,
+  button {
     margin: 0;
     padding: 0;
     background: #fff !important;
     color: #000 !important;
-    font-size: 12pt;
+    font-size: 6pt;
     line-height: 1.4;
   }
 
@@ -29,9 +29,21 @@
     padding: 0;
     box-shadow: none !important;
     border: none !important;
+
+    p {
+      margin: 0;
+    }
+
+    form input {
+      border: none;
+      padding: 0;
+    }
+
+    label {
+      display: none;
+    }
   }
 
-  // Убираем тени и фоновые градиенты — экономим тонер
   * {
     box-shadow: none !important;
     text-shadow: none !important;

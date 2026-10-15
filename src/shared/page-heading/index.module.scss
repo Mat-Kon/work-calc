@@ -16,6 +16,10 @@
     padding: vars.$space-xs vars.$space-sm;
     min-height: 56px;
   }
+
+  @media print {
+    display: none !important;
+  }
 }
 
 .back {
